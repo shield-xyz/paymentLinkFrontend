@@ -1,0 +1,10 @@
+{
+  "editor.formatOnSave": false,
+  "eslint.validate": ["javascript", "javascriptreact"],
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.removeUnusedImports": "always",
+    "source.removeUnusedVariables": "always"
+  },
+  "cSpell.enabled": true,
+}
