@@ -26,7 +26,7 @@ export function formatDateShort(date) {
   return formattedDate;
 }
 
-export function fromatCurrency(amount, digits = 2) {
+export function formatCurrency(amount, digits = 2) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -94,3 +94,6 @@ export function validateResponse(response, message) {
 export const formatNetwork = (network) => {
   return network ? network.toLocaleLowerCase().replace('-mainnet', '') : '';
 };
+
+export const TYPES = { Deposit: 'Deposit', Withdrawal: 'Withdrawal' };
+export const STATUSES = { Completed: 'Completed', Pending: 'Pending' };

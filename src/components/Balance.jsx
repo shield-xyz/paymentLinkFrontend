@@ -1,7 +1,8 @@
 import { Icons } from './Icons';
 import Chart from './Recharts/Chart';
-import Button from './ui/button';
 import Container from './ui/container';
+
+import { Withdraw } from '@/features/withdraw';
 
 const Balance = () => {
   return (
@@ -14,12 +15,12 @@ const Balance = () => {
           <div className="flex items-baseline gap-2">
             <span className="text-5xl font-semibold">$3,200</span>
             <span className="text-5xl font-semibold text-gray-400">.80</span>
-            <div className="text-success flex items-baseline gap-1">
+            <div className="flex items-baseline gap-1 text-success">
               <Icons.arrowUpCompressed className="" />
               <span>85.66%</span>
             </div>
           </div>
-          <Button className="px-4 py-3 text-xs">Withdraw</Button>
+          <Withdraw />
         </div>
       </div>
 

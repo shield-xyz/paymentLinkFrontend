@@ -13,16 +13,16 @@ export const pages = [
   {
     name: 'Transactions',
     icon: 'profile_circled',
-    path: '/transactions',
+    path: '/dashboard/transactions',
   },
   {
     name: 'Withdrawals',
     icon: 'store',
-    path: '/withdrawals',
+    path: '/dashboard/withdrawals',
   },
   {
     name: 'Settings',
     icon: 'pie_chart',
-    path: '/settings',
+    path: '/dashboard/settings',
   },
 ];

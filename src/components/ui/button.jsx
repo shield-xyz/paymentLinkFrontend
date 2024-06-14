@@ -23,7 +23,7 @@ const Button = ({
   };
 
   const commonClasses =
-    'inline-flex disabled:opacity-75 items-center justify-center rounded-lg text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50';
+    'inline-flex disabled:opacity-75 py-3 items-center justify-center rounded-xl text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50';
   const classes = cn(commonClasses, variants[variant], className);
 
   return (

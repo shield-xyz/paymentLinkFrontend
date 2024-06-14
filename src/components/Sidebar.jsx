@@ -7,6 +7,7 @@ import { Icons } from './Icons';
 
 import { LogoIcon } from '@/assets';
 import { pages } from '@/config';
+import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
   const pathname = usePathname();
@@ -19,19 +20,36 @@ const Sidebar = () => {
         </div>
         <span className="font-semibold text-gray-500">SHIELD</span>
       </div>
-      <div className="flex flex-col gap-8 px-8">
+      <div className="flex flex-col gap-2 px-4">
         {pages.map((page, index) => {
           const Icon = Icons[page.icon];
           return (
             <Link
-              className="flex items-center gap-2"
+              className="flex items-center gap-2 rounded-xl px-5 py-3 duration-300 hover:bg-gray-500/10"
               href={page.path}
               key={index}
             >
-              <Icon />
-              <span className="text-gray-500">{page.name}</span>
+              <Icon
+                className={cn('', {
+                  'text-gray-500': pathname !== page.path,
+                  'text-black': pathname === page.path,
+                })}
+              />
+              <span
+                className={cn('', {
+                  'text-gray-500': pathname !== page.path,
+                  'text-black': pathname === page.path,
+                })}
+              >
+                {page.name}
+              </span>
               {pathname === page.path && (
-                <Icons.chevronRight className="ml-auto text-gray-500" />
+                <Icons.chevronRight
+                  className={cn('ml-auto', {
+                    'text-gray-500': pathname !== page.path,
+                    'text-black': pathname === page.path,
+                  })}
+                />
               )}
             </Link>
           );
