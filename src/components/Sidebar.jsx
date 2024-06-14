@@ -13,7 +13,7 @@ const Sidebar = () => {
   const pathname = usePathname();
   console.log({ pathname });
   return (
-    <div className="fixed z-30 flex h-screen w-72 flex-col gap-10 border-r border-gray-200 bg-background py-4">
+    <div className="fixed z-30 flex h-screen w-80 flex-col gap-10 border-r border-gray-200 bg-background py-4">
       <div className="flex w-full items-center gap-3 px-5">
         <div className="rounded-md bg-black/5">
           <LogoIcon className="scale-[0.65]" />

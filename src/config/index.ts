@@ -6,6 +6,11 @@ export const env = {
 
 export const pages = [
   {
+    name: 'Create Payment Link',
+    icon: 'addCircle',
+    path: '/create-payment-link',
+  },
+  {
     name: 'Dashboard',
     icon: 'home',
     path: '/dashboard',
@@ -13,16 +18,16 @@ export const pages = [
   {
     name: 'Transactions',
     icon: 'profile_circled',
-    path: '/dashboard/transactions',
+    path: '/transactions',
   },
   {
     name: 'Withdrawals',
     icon: 'store',
-    path: '/dashboard/withdrawals',
+    path: '/withdrawals',
   },
   {
     name: 'Settings',
     icon: 'pie_chart',
-    path: '/dashboard/settings',
+    path: '/settings',
   },
 ];

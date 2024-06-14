@@ -97,3 +97,16 @@ export const formatNetwork = (network) => {
 
 export const TYPES = { Deposit: 'Deposit', Withdrawal: 'Withdrawal' };
 export const STATUSES = { Completed: 'Completed', Pending: 'Pending' };
+export const PAYMENT_STATUSES = {
+  Pending: 'Pending',
+  Expired: 'Expired',
+  Paid: 'Paid',
+};
+export const PAYMENT_DESCRIPTIONS = {
+  Monthly_Subscription: 'Monthly Subscription',
+  Annual_Membership: 'Annual Membership',
+  One_time_payment: 'One-time Payment',
+  Service_fee: 'Service Fee',
+  Donation: 'Donation',
+  Other: 'Other',
+};

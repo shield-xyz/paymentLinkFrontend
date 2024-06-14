@@ -1,14 +1,20 @@
 import { Icons } from './Icons';
 import { Input } from './ui/input';
 
-const SearchBar = () => {
+import { cn } from '@/lib/utils';
+
+const SearchBar = ({ placeholder = 'Search', value, onChange, className }) => {
   return (
-    <div className="flex items-center rounded-xl bg-gray-100 px-2">
+    <div
+      className={cn('flex items-center rounded-xl bg-gray-100 px-2', className)}
+    >
       <Icons.search className="h-5 text-gray-500" />
       <Input
         type="text"
-        placeholder="Search"
+        placeholder={placeholder}
         className="w-60 border-none bg-transparent px-2 text-sm outline-none ring-0 placeholder:text-gray-400 focus:bg-transparent focus:ring-0 focus-visible:ring-0"
+        value={value}
+        onChange={onChange}
       />
     </div>
   );

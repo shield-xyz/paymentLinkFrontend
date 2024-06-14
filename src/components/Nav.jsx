@@ -7,7 +7,7 @@ import SearchBar from './Searchbar';
 const Nav = ({ session }) => {
   return (
     <nav className="fixed z-20 flex h-[var(--nav-height)] w-full items-center border-b border-gray-200 bg-background/70 backdrop-blur-sm">
-      <div className="m-auto flex h-20 w-full items-center justify-between pl-[calc(288px+2rem)] pr-8">
+      <div className="m-auto flex h-20 w-full items-center justify-between pl-[calc(320px+2rem)] pr-8">
         <SearchBar />
         <div className="flex items-center gap-8">
           <div className="relative">
