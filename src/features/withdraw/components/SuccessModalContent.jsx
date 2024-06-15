@@ -1,5 +1,5 @@
 import { Icons } from '@/components';
-import Button from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 
 const SuccessModalContent = ({ handleClose }) => {
   return (

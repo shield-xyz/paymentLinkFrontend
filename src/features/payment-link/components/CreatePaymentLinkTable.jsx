@@ -3,7 +3,7 @@ import { Badge } from '@/components/Bage';
 import { Card } from '@/components/Card';
 import CustomTable from '@/components/CustomTable';
 import SearchBar from '@/components/Searchbar';
-import Button from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
@@ -154,7 +154,7 @@ export function CreatePaymentLinkTable() {
           </div>
         </div>
         <Tabs defaultValue="all" className="w-full">
-          <TabsList className="w-full justify-start border-b">
+          <TabsList className="w-full justify-start">
             <TabsTrigger value="all">
               All <span className="ml-1 text-muted-foreground">(20)</span>
             </TabsTrigger>

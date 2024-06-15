@@ -14,8 +14,6 @@ const CustomTable = ({ headers, rows, rowKey, cellRenderers }) => {
         {rows.map((row) => (
           <tr key={row[rowKey]} className="border-b text-sm font-semibold">
             {headers.map((header) => {
-              console.log({ row });
-              console.log({ header });
               const CellRenderer = cellRenderers[header.key];
               return (
                 <td key={header.key} className="px-2 py-4">

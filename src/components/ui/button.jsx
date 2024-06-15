@@ -2,7 +2,7 @@ import Spinner from './spinner';
 
 import { cn } from '@/lib/utils';
 
-const Button = ({
+export const Button = ({
   variant = 'default',
   isLoading,
   children,
@@ -31,5 +31,3 @@ const Button = ({
     </button>
   );
 };
-
-export default Button;

@@ -3,9 +3,9 @@
 import { useEffect } from 'react';
 
 import Nav from '../components/Nav';
-import Button from '../components/ui/button';
 
 import { Sidebar } from '@/components';
+import { Button } from '@/components/ui/button';
 
 export default function Error({ error }) {
   useEffect(() => {
