@@ -4,6 +4,13 @@ import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 import CustomTooltip from './CustomTooltip';
 
+// remove recharts error https://github.com/recharts/recharts/issues/3615
+const error = console.error;
+console.error = (...args) => {
+  if (/defaultProps/.test(args[0])) return;
+  error(...args);
+};
+
 const data = [
   {
     name: 'Oct',

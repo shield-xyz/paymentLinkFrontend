@@ -50,7 +50,7 @@ const LoginForm = () => {
       }
 
       handleSubmissionSuccess('Logged in successfully');
-      router.push('/dashboard');
+      router.push('/payment-links');
     } catch (error) {
       handleSubmissionError(error, 'Could not login');
     }

@@ -48,6 +48,16 @@ module.exports = {
           foreground: 'hsl(var(--success-foreground))',
         },
       },
+      fontSize: {
+        xxs: [
+          '0.65rem',
+          {
+            lineHeight: '0.2rem',
+            letterSpacing: '-0.01em',
+            fontWeight: '300',
+          },
+        ],
+      },
       screens: {
         xs: '375px',
       },

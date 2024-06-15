@@ -6,12 +6,12 @@ import { usePathname } from 'next/navigation';
 import { Icons } from './Icons';
 
 import { LogoIcon } from '@/assets';
-import { pages } from '@/config';
+import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
   const pathname = usePathname();
-  console.log({ pathname });
+
   return (
     <div className="fixed z-30 flex h-screen w-80 flex-col gap-10 border-r border-gray-200 bg-background py-4">
       <div className="flex w-full items-center gap-3 px-5">
@@ -21,7 +21,7 @@ const Sidebar = () => {
         <span className="font-semibold text-gray-500">SHIELD</span>
       </div>
       <div className="flex flex-col gap-2 px-4">
-        {pages.map((page, index) => {
+        {SIDEBAR_PAGES.map((page, index) => {
           const Icon = Icons[page.icon];
           return (
             <Link
@@ -30,7 +30,7 @@ const Sidebar = () => {
               key={index}
             >
               <Icon
-                className={cn('', {
+                className={cn('h-10 w-10', {
                   'text-gray-500': pathname !== page.path,
                   'text-black': pathname === page.path,
                 })}

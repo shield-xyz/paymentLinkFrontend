@@ -4,11 +4,11 @@ export const env = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
 };
 
-export const pages = [
+export const SIDEBAR_PAGES = [
   {
     name: 'Create Payment Link',
     icon: 'addCircle',
-    path: '/create-payment-link',
+    path: '/payment-link',
   },
   {
     name: 'Dashboard',
@@ -30,4 +30,11 @@ export const pages = [
     icon: 'pie_chart',
     path: '/settings',
   },
+];
+
+export const COINS = [
+  { name: 'USDT', largeName: 'USDT ', icon: 'usdt' },
+  { name: 'BTC', largeName: 'Bitcoin (coming soon)', icon: 'btc' },
+  { name: 'ETH', largeName: 'Ethereum (coming soon)', icon: 'eth' },
+  { name: 'TRX', largeName: 'Tron (coming soon)', icon: 'tron' },
 ];

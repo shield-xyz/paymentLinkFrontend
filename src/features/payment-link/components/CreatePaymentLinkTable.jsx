@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import { Card } from '@/components/Card';
@@ -148,9 +150,11 @@ export function CreatePaymentLinkTable() {
               <Icons.filter className="h-5 text-gray-500" />
               Filter
             </Button>
-            <Button className="px-4 py-2 font-light">
-              Create payment link
-            </Button>
+            <Link href="/create-payment-link">
+              <Button className="px-4 py-2 font-light">
+                Create payment link
+              </Button>
+            </Link>
           </div>
         </div>
         <Tabs defaultValue="all" className="w-full">

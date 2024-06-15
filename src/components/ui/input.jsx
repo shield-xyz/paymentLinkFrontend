@@ -8,10 +8,7 @@ const Input = React.forwardRef(
       <>
         {label && (
           <label
-            className={cn(
-              'block text-sm font-medium text-muted-foreground',
-              labelClassName,
-            )}
+            className={cn('block text-sm', labelClassName)}
             htmlFor={props.id}
           >
             {label}

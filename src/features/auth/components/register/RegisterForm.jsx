@@ -99,7 +99,7 @@ const RegisterForm = () => {
         ...loginCredentials,
         redirect: false,
       });
-      router.push('/create-payment-link');
+      router.push('/payment-links');
     } catch (error) {
       handleSubmissionError(error, 'Could not register');
     }
