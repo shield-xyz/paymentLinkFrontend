@@ -1,6 +1,9 @@
 import { Nav, Sidebar } from '@/components';
+import { getServerAuthSession } from '@/lib/auth';
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
+  const session = await getServerAuthSession();
+  console.log({ session });
   return (
     <>
       <Nav />

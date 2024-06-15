@@ -14,33 +14,47 @@ import { register } from '../..';
 
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
+const ACCEPTED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
+];
+const MAX_FILE_SIZE = 5000000;
+
 export const RegisterSchema = z
   .object({
     user_name: z
       .string()
-      .min(3, {
-        message: 'Name must be at least 3 characters long',
-      })
-      .max(60, {
-        message: 'Name must be at most 60 characters long',
-      }),
+      .min(3, { message: 'Name must be at least 3 characters long' })
+      .max(60, { message: 'Name must be at most 60 characters long' }),
     email: z.string().email({ message: 'Please enter a valid email' }),
     password: z
       .string()
-      .min(3, {
-        message: 'Password must be at least 3 characters long',
-      })
-      .max(60, {
-        message: 'Password must be at most 60 characters long',
-      }),
+      .min(3, { message: 'Password must be at least 3 characters long' })
+      .max(60, { message: 'Password must be at most 60 characters long' }),
     passwordConfirm: z
       .string()
-      .min(3, {
-        message: 'Password must be at least 3 characters long',
-      })
-      .max(60, {
-        message: 'Password must be at most 60 characters long',
-      }),
+      .min(3, { message: 'Password must be at least 3 characters long' })
+      .max(60, { message: 'Password must be at most 60 characters long' }),
+    description: z
+      .string()
+      .min(10, { message: 'Description must be at least 10 characters long' })
+      .optional(),
+    logo: z
+      .any()
+      .refine(
+        (file) => file[0]?.size <= MAX_FILE_SIZE,
+        `Max image size is 5MB.`,
+      )
+      .refine(
+        (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+        'Only .jpg, .jpeg, .png and .webp formats are supported.',
+      ),
+    company: z
+      .string()
+      .min(3, { message: 'Company name must be at least 3 characters long' })
+      .optional(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: 'Passwords do not match',
@@ -59,14 +73,33 @@ const RegisterForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      await register(data);
+      const { email, password, user_name, description, logo, company } = data;
+
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('user_name', user_name);
+      formData.append('description', description);
+      formData.append('logo', logo[0]);
+      formData.append('company', company);
+
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+
+      await register(formData);
+
+      const loginCredentials = {
+        email,
+        password,
+      };
 
       handleSubmissionSuccess('Registered successfully');
       await signIn('credentials', {
-        ...data,
+        ...loginCredentials,
         redirect: false,
       });
-      router.push('/dashboard');
+      router.push('/create-payment-link');
     } catch (error) {
       handleSubmissionError(error, 'Could not register');
     }
@@ -82,7 +115,7 @@ const RegisterForm = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="m-auto flex flex-col">
         {STEPS[step]}
       </form>
-      <Steps step={step} />
+      <Steps step={step} setStep={setStep} />
     </div>
   );
 };

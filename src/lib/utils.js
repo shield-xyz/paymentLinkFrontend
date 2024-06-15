@@ -84,10 +84,27 @@ export function handleSubmissionSuccess(successMessage) {
   toast.success(successMessage);
 }
 
-export function validateResponse(response, message) {
+async function parseResponse(response) {
+  try {
+    return await response.json();
+  } catch (error) {
+    console.error('Error parsing response JSON:', error);
+    return null;
+  }
+}
+
+export async function validateResponse(response, defaultMessage) {
   if (!response.ok) {
+    const data = await parseResponse(response);
+    const message = data?.data?.response || defaultMessage;
     console.error(`${message}: ${response.status} - ${response.statusText}`);
     throw new Error(message);
+  } else {
+    const res = await parseResponse(response);
+    if (res && res.status === 'error') {
+      throw new Error(res.response || defaultMessage);
+    }
+    return res;
   }
 }
 

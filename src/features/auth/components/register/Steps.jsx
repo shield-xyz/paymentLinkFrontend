@@ -1,6 +1,6 @@
 import { cn } from '@/lib/utils';
 
-const Steps = ({ step }) => {
+const Steps = ({ step, setStep }) => {
   const OPTIONS = [
     {
       title: 'Your details',
@@ -14,7 +14,13 @@ const Steps = ({ step }) => {
   return (
     <div className="flex w-full items-center justify-center gap-4 px-6 pb-6">
       {OPTIONS.map((option, index) => (
-        <div key={index} className="flex h-full w-full flex-col">
+        <div
+          key={index}
+          className="flex h-full w-full cursor-pointer flex-col"
+          onClick={() => {
+            if (index < step) setStep(index + 1);
+          }}
+        >
           <div className="flex flex-col items-center gap-2">
             <div
               className={`flex h-1 w-full items-center justify-center rounded-full ${

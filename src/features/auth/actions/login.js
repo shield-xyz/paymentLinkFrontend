@@ -15,15 +15,13 @@ export async function login(credentials) {
       body: JSON.stringify({ email, password }),
     });
 
-    validateResponse(res, 'Error authenticating user');
+    const data = await validateResponse(res, 'Error authenticating user');
 
-    const user = await res.json();
-    console.log({ user });
-    const accessToken = user.token;
+    const accessToken = data.token;
 
     return {
-      name: user.user_name,
-      id: user._id,
+      name: data.user_name,
+      id: data._id,
       ...credentials,
       accessToken,
     };

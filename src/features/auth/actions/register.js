@@ -3,27 +3,16 @@
 import { env } from '@/config';
 import { handleError, validateResponse } from '@/lib/utils';
 
-export async function register(input) {
+export async function register(formData) {
   try {
-    const { email, password } = input;
-
     const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/auth/register`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
+      body: formData,
     });
 
-    validateResponse(res, 'Error registering user');
+    const data = await validateResponse(res, 'Error registering user');
 
-    const user = await res.json();
-
-    console.log({ user });
-
-    return {
-      user,
-    };
+    return { data };
   } catch (error) {
     handleError(error, 'Could not register');
   }
