@@ -11,7 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { COINS } from '@/config';
 import { cn } from '@/lib/utils';
 
-export const StepOne = ({ form, setStep }) => {
+export const StepTwo = ({ form, setStep }) => {
   const {
     register,
     formState: { errors },
