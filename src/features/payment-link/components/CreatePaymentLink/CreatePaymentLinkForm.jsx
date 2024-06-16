@@ -3,10 +3,11 @@
 import { StepOne } from './StepOne';
 import { Steps } from './Steps';
 import { StepTwo } from './StepTwo';
-import { usePaymentLink } from '../hooks';
+import { useCreatePaymentLink } from '../../hooks';
 
 export const CreatePaymentLinkForm = () => {
-  const { form, step, steps, onSubmit, link, handleSubmit } = usePaymentLink();
+  const { form, step, steps, onSubmit, link, handleSubmit } =
+    useCreatePaymentLink();
 
   const STEPS = {
     1: <StepOne form={form} />,

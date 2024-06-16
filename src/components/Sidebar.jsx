@@ -5,7 +5,6 @@ import { usePathname } from 'next/navigation';
 
 import { Icons } from './Icons';
 
-import { LogoIcon } from '@/assets';
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
@@ -14,9 +13,9 @@ const Sidebar = () => {
 
   return (
     <div className="fixed z-30 flex h-screen w-80 flex-col gap-10 border-r border-gray-200 bg-background py-4">
-      <div className="flex w-full items-center gap-3 px-5">
-        <div className="rounded-md bg-black/5">
-          <LogoIcon className="scale-[0.65]" />
+      <div className="flex w-full items-center gap-3 px-6">
+        <div className="flex items-center justify-center rounded-lg bg-black/5">
+          <Icons.logo className="scale-[0.65]" />
         </div>
         <span className="font-semibold text-gray-500">SHIELD</span>
       </div>

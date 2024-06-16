@@ -15,3 +15,5 @@ export {
   Assets,
   RecentActivities,
 };
+
+export * from './StepIndicator';

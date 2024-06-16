@@ -1,2 +1,3 @@
 export * from './CreatePaymentLinkTable';
-export * from './CreatePaymentLinkForm';
+export * from './CreatePaymentLink';
+export * from './PaymentLink';

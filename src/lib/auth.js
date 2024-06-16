@@ -4,12 +4,10 @@ import Credentials from 'next-auth/providers/credentials';
 import { env } from '@/config';
 import { login } from '@/features/auth';
 
-// maxAge: 30 * 24 * 60 * 60, // 30 days
-
 export const authOptions = {
   secret: env.NEXTAUTH_SECRET,
   session: {
-    maxAge: 60 * 60 * 30, // 30 days
+    maxAge: 360000, // 100 hours or approximately 4.17 days
     strategy: 'jwt',
   },
   callbacks: {

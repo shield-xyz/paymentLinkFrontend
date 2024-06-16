@@ -4,7 +4,7 @@ import { ErrorMessage } from '@hookform/error-message';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
-import { LogoIcon } from '@/assets';
+import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 
@@ -41,7 +41,9 @@ const StepOne = ({ form, setStep }) => {
   return (
     <div className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4">
       <div className="mb-5 flex flex-col items-center">
-        <LogoIcon />
+        <div className="rounded-lg bg-black/5 p-1">
+          <Icons.logo className="scale-75" />
+        </div>
         <span className="mb-2 mt-5 text-2xl font-bold">Get started</span>
         <span className="text-sm text-muted-foreground">
           Sign up in less than 2 minutes

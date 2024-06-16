@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { COINS, env } from '@/config';
+import { COINS } from '@/config';
 import { cn } from '@/lib/utils';
 
 export const StepOne = ({ form }) => {
@@ -29,8 +29,6 @@ export const StepOne = ({ form }) => {
   const handleSelectToken = (token) => {
     setValue('token', token);
   };
-
-  console.log(env.NEXT_PUBLIC_APP_URL);
 
   return (
     <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
@@ -66,6 +64,7 @@ export const StepOne = ({ form }) => {
           placeholder="0.00"
           type="number"
           label="Price"
+          step="0.01"
           {...register('amount')}
         />
         <span className="absolute bottom-[11px] right-10 text-xs font-semibold">
@@ -106,7 +105,11 @@ export const StepOne = ({ form }) => {
         </div>
         <span className="text-xxs leading-[0.1rem]">
           You can update your accepted networks and currencies in{' '}
-          <Link href="/settings" className="text-primary underline">
+          <Link
+            href="/settings"
+            className="text-primary underline"
+            tabIndex="-1"
+          >
             account settings
           </Link>
         </span>

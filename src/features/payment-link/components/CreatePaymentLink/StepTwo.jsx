@@ -40,16 +40,16 @@ export const StepTwo = ({ link }) => {
             <Icons.shareLink className="h-6 w-6" />
             <span className="text-muted-foreground">Share payment link</span>
           </div>
-          <div className="mt-4 flex h-12 w-full items-center rounded-md border bg-background px-4">
-            <span className="line-clamp-1 w-full overflow-hidden text-ellipsis text-blue-400">
+          <div
+            className="group mt-4 flex h-12 w-full items-center rounded-md border bg-background px-4"
+            onClick={copyCode}
+          >
+            <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis text-blue-400">
               {link}
             </span>
-            <Icons.copy
-              className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted"
-              onClick={copyCode}
-            />
+            <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />
           </div>
-          <span className="mb-4 mt-4 text-center text-sm font-light tracking-tight text-muted-foreground">
+          <span className="mt-4 text-center text-sm font-light tracking-tight text-muted-foreground">
             Share a link to our pre-built checkout page
           </span>
         </div>

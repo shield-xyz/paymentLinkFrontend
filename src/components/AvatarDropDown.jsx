@@ -80,7 +80,11 @@ const AvatarDropDown = ({ session }) => {
               return (
                 <>
                   <DropdownMenuRadioItem key={index} value={option.name}>
-                    <Button variant="ghost" onClick={option.onClick}>
+                    <Button
+                      variant="ghost"
+                      className="p-0"
+                      onClick={option.onClick}
+                    >
                       {option.name}
                     </Button>
                   </DropdownMenuRadioItem>
