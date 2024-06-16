@@ -8,14 +8,13 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { COINS } from '@/config';
+import { COINS, env } from '@/config';
 import { cn } from '@/lib/utils';
 
-export const StepOne = ({ form, setStep }) => {
+export const StepOne = ({ form }) => {
   const {
     register,
-    formState: { errors },
-    trigger,
+    formState: { errors, isSubmitting },
     setValue,
     watch,
   } = form;
@@ -25,38 +24,22 @@ export const StepOne = ({ form, setStep }) => {
 
   const { token } = values;
 
-  const handleContinue = async () => {
-    const fields = ['name', 'description', 'amount', 'token'];
-
-    await trigger(fields);
-
-    const allFieldsFilled = fields.every((field) => !!values[field]);
-    const noErrors = fields.every((field) => !errors[field]);
-
-    if (allFieldsFilled && noErrors) {
-      setStep(2);
-    }
-  };
-
   watch('token');
 
   const handleSelectToken = (token) => {
     setValue('token', token);
   };
 
+  console.log(env.NEXT_PUBLIC_APP_URL);
+
   return (
-    <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4">
+    <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
       <h1 className="mb-4 font-bold">Create payment link</h1>
       <Input
         placeholder="Product name"
         label="Product name"
         autoFocus
         {...register('name')}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            handleContinue();
-          }
-        }}
       />
       <ErrorMessage
         errors={errors}
@@ -69,11 +52,6 @@ export const StepOne = ({ form, setStep }) => {
         label="Description (optional)"
         placeholder="Tell us about the product"
         {...register('description')}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            handleContinue();
-          }
-        }}
       />
       <ErrorMessage
         errors={errors}
@@ -89,11 +67,6 @@ export const StepOne = ({ form, setStep }) => {
           type="number"
           label="Price"
           {...register('amount')}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              handleContinue();
-            }
-          }}
         />
         <span className="absolute bottom-[11px] right-10 text-xs font-semibold">
           USD
@@ -140,10 +113,11 @@ export const StepOne = ({ form, setStep }) => {
       </Container>
 
       <Button
-        type="button"
+        type="submit"
         variant="default"
         className="mt-2 py-3 text-sm font-medium tracking-wider"
-        onClick={handleContinue}
+        isLoading={isSubmitting}
+        isDisabled={isSubmitting}
       >
         Continue
       </Button>

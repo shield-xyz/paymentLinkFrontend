@@ -83,10 +83,6 @@ const RegisterForm = () => {
       formData.append('logo', logo[0]);
       formData.append('company', company);
 
-      for (let pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
-
       await register(formData);
 
       const loginCredentials = {

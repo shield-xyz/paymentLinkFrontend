@@ -1,13 +1,10 @@
 'use client';
 
-import { usePaymentLink } from '../hooks';
-
 import { cn } from '@/lib/utils';
 
-export const Steps = () => {
-  const { steps, step } = usePaymentLink();
+export const Steps = ({ steps, step }) => {
   return (
-    <div className="flex h-24 items-center justify-center bg-gray-100">
+    <div className="flex h-24 items-center justify-center bg-muted">
       <div className="flex items-center gap-2">
         {steps.map((s, i) => (
           <div key={i} className="flex items-center gap-2">
@@ -15,8 +12,8 @@ export const Steps = () => {
               className={cn(
                 'flex h-5 w-5 items-center justify-center rounded-full bg-primary p-1 text-[10px]',
                 {
-                  'bg-primary text-primary-foreground': i <= step,
-                  'bg-gray-300 text-foreground': i > step,
+                  'bg-primary text-primary-foreground': i + 1 <= step,
+                  'bg-gray-300 text-foreground': i + 1 > step,
                 },
               )}
             >

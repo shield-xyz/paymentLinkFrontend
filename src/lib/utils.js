@@ -108,6 +108,16 @@ export async function validateResponse(response, defaultMessage) {
   }
 }
 
+export const fetchWithToken = async (url, token, options = {}) => {
+  return await fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      'x-auth-token': token,
+    },
+  });
+};
+
 export const formatNetwork = (network) => {
   return network ? network.toLocaleLowerCase().replace('-mainnet', '') : '';
 };

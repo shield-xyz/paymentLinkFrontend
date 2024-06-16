@@ -16,11 +16,9 @@ export const authOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
-        token.firstName = user.firstName;
-        token.lastName = user.lastName;
         token.email = user.email;
-        token.picture = user.image;
-        token.username = user.username;
+        token.name = user.name;
+        token.accessToken = user.accessToken;
       }
 
       return token;
@@ -28,11 +26,9 @@ export const authOptions = {
     async session({ token, session }) {
       if (token) {
         session.user.id = token.id;
-        session.user.firstName = token.firstName;
-        session.user.lastName = token.lastName;
         session.user.email = token.email;
-        session.user.image = token.picture;
-        session.user.username = token.username;
+        session.user.name = token.name;
+        session.accessToken = token.accessToken;
       }
 
       return session;

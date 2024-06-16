@@ -1,17 +1,21 @@
 'use server';
 
 import { env } from '@/config';
-import { handleError, validateResponse } from '@/lib/utils';
+import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 
-export async function createLink(linkData) {
+export async function createLink(linkData, token) {
   try {
-    const res = await fetch(`${env.NEXT_PUBLIC_API_URL}/api/auth/login`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const res = await fetchWithToken(
+      `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/`,
+      token,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(linkData),
       },
-      body: JSON.stringify(linkData),
-    });
+    );
 
     const { response: data } = await validateResponse(
       res,
