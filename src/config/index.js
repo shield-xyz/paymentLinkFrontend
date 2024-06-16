@@ -8,7 +8,7 @@ export const SIDEBAR_PAGES = [
   {
     name: 'Create Payment Link',
     icon: 'addCircle',
-    path: '/payment-link',
+    path: '/payment-links',
   },
   {
     name: 'Dashboard',

@@ -30,7 +30,7 @@ const Sidebar = () => {
               key={index}
             >
               <Icon
-                className={cn('h-10 w-10', {
+                className={cn('h-5 w-5', {
                   'text-gray-500': pathname !== page.path,
                   'text-black': pathname === page.path,
                 })}
