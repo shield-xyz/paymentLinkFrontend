@@ -109,13 +109,16 @@ export async function validateResponse(response, defaultMessage) {
 }
 
 export const fetchWithToken = async (url, token, options = {}) => {
-  return await fetch(url, {
+  console.log('Fetching with token:', token); // Log the token
+  const response = await fetch(url, {
     ...options,
     headers: {
       ...options.headers,
       'x-auth-token': token,
     },
   });
+  console.log('Fetch response:', response); // Log the fetch response
+  return response;
 };
 
 export const formatNetwork = (network) => {

@@ -1,4 +1,9 @@
+'use client'; // Add this line at the top
+
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
+import { fetchLinks } from '../actions'; // Import the fetchLinks function
 
 import { Icons } from '@/components';
 import { Badge } from '@/components/Bage';
@@ -9,71 +14,26 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
-  PAYMENT_DESCRIPTIONS,
   PAYMENT_STATUSES,
   formatCurrency,
-  formatDate,
+  formatDate
 } from '@/lib/utils';
 
-const PaymentLinks = [
-  {
-    name: 'EZE LLC',
-    nameShort: 'AM',
-    id: '9467656911',
-    status: PAYMENT_STATUSES.Paid,
-    description: PAYMENT_DESCRIPTIONS.Annual_Membership,
-    currency: 'USD',
-    amount: 10288.96,
-    date: '2024-05-16',
-  },
-  {
-    nameShort: 'AM',
-    id: '9467656912',
-    status: PAYMENT_STATUSES.Paid,
-    description: PAYMENT_DESCRIPTIONS.Annual_Membership,
-    currency: 'USD',
-    amount: 10288.96,
-    date: '2024-05-16',
-  },
-  {
-    nameShort: 'AM',
-    id: '9467656913',
-    status: PAYMENT_STATUSES.Paid,
-    description: PAYMENT_DESCRIPTIONS.Annual_Membership,
-    currency: 'USD',
-    amount: 10288.96,
-    date: '2024-05-16',
-  },
-  {
-    nameShort: 'AM',
-    id: '9467656914',
-    status: PAYMENT_STATUSES.Paid,
-    description: PAYMENT_DESCRIPTIONS.Annual_Membership,
-    currency: 'USD',
-    amount: 10288.96,
-    date: '2024-05-16',
-  },
-  {
-    nameShort: 'AM',
-    id: '9467656915',
-    status: PAYMENT_STATUSES.Paid,
-    description: PAYMENT_DESCRIPTIONS.Annual_Membership,
-    currency: 'USD',
-    amount: 10288.96,
-    date: '2024-05-16',
-  },
-  {
-    nameShort: 'AM',
-    id: '9467656916',
-    status: PAYMENT_STATUSES.Paid,
-    description: PAYMENT_DESCRIPTIONS.Annual_Membership,
-    currency: 'USD',
-    amount: 10288.96,
-    date: '2024-05-16',
-  },
-];
-
 export function CreatePaymentLinkTable() {
+  const { data: session } = useSession();
+  const [paymentLinks, setPaymentLinks] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (session?.accessToken) {
+        const data = await fetchLinks(session.accessToken);
+        setPaymentLinks(data);
+      }
+    };
+
+    fetchData();
+  }, [session]);
+
   const headers = [
     { key: 'name', title: 'Name', className: 'px-2 font-light font-semibold' },
     {
@@ -169,7 +129,7 @@ export function CreatePaymentLinkTable() {
           <TabsContent value="all">
             <CustomTable
               headers={headers}
-              rows={PaymentLinks}
+              rows={paymentLinks}
               rowKey="id"
               cellRenderers={cellRenderers}
             />
@@ -177,7 +137,7 @@ export function CreatePaymentLinkTable() {
           <TabsContent value="paid">
             <CustomTable
               headers={headers}
-              rows={PaymentLinks}
+              rows={paymentLinks.filter(link => link.status === PAYMENT_STATUSES.Paid)}
               rowKey="id"
               cellRenderers={cellRenderers}
             />
@@ -185,7 +145,7 @@ export function CreatePaymentLinkTable() {
           <TabsContent value="pending">
             <CustomTable
               headers={headers}
-              rows={PaymentLinks}
+              rows={paymentLinks.filter(link => link.status === PAYMENT_STATUSES.Pending)}
               rowKey="id"
               cellRenderers={cellRenderers}
             />
@@ -193,7 +153,7 @@ export function CreatePaymentLinkTable() {
           <TabsContent value="expired">
             <CustomTable
               headers={headers}
-              rows={PaymentLinks}
+              rows={paymentLinks.filter(link => link.status === PAYMENT_STATUSES.Expired)}
               rowKey="id"
               cellRenderers={cellRenderers}
             />
