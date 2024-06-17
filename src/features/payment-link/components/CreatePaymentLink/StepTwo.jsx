@@ -1,7 +1,8 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+
+import { copyCode } from '../../utils';
 
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
@@ -12,18 +13,6 @@ export const StepTwo = ({ link }) => {
 
   const handleContinue = async () => {
     router.push('/payment-links');
-  };
-
-  const copyCode = async () => {
-    try {
-      // eslint-disable-next-line no-undef
-      await navigator.clipboard.writeText(link);
-      toast.success('Address copied to clipboard');
-    } catch (err) {
-      if (err instanceof Error) {
-        console.log(err.message);
-      }
-    }
   };
 
   return (
@@ -42,7 +31,7 @@ export const StepTwo = ({ link }) => {
           </div>
           <div
             className="group mt-4 flex h-12 w-full items-center rounded-md border bg-background px-4"
-            onClick={copyCode}
+            onClick={() => copyCode(link)}
           >
             <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis text-blue-400">
               {link}

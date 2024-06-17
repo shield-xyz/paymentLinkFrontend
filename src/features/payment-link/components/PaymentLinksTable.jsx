@@ -3,46 +3,48 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { Icons } from '@/components';
+import { copyCode, getFinalPaymentLink } from '../utils';
+
+import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
 import SearchBar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-} from '@/components/ui/pagination';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
 import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
 
 const headers = [
-  { key: 'name', title: 'Name', className: 'px-2 font-light font-semibold' },
+  {
+    key: 'name',
+    title: 'Name',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
+  },
   {
     key: 'amount',
     title: 'Amount',
-    className: 'px-2 font-light font-semibold',
+    className: 'px-2 min-w-[100px] font-light font-semibold',
   },
   {
     key: 'currency',
     title: 'Currency',
-    className: 'px-2 font-light font-semibold',
+    className: 'px-2 min-w-[100px] font-light font-semibold',
   },
   {
     key: 'status',
     title: 'Status',
-    className: 'px-2 font-light font-semibold',
+    className: 'px-2 min-w-[100px] font-light font-semibold',
   },
-  { key: 'date', title: 'Date', className: 'px-2 font-light font-semibold' },
+  {
+    key: 'date',
+    title: 'Date',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
   {
     key: 'actions',
     title: 'Actions',
-    className: 'px-2 font-light font-semibold',
+    className: 'px-2 min-w-[100px] font-light font-semibold',
   },
 ];
 
@@ -67,16 +69,23 @@ export function PaymentLinksTable({ paymentLinks }) {
     date: ({ row }) => (
       <span className="font-light">{formatDate(row.date)}</span>
     ),
-    actions: () => (
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" className="px-2 py-2 font-light">
-          <Icons.edit className="h-5 text-gray-500" />
-        </Button>
-        <Button variant="ghost" className="px-2 py-2 font-light">
-          <Icons.share className="h-5 text-gray-500" />
-        </Button>
-      </div>
-    ),
+    actions: ({ row }) => {
+      const link = getFinalPaymentLink(row.id);
+      return (
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" className="px-2 py-2 font-light">
+            <Icons.edit className="h-5 text-gray-500" />
+          </Button>
+          <Button
+            variant="ghost"
+            className="px-2 py-2 font-light"
+            onClick={() => copyCode(link)}
+          >
+            <Icons.share className="h-5 text-gray-500" />
+          </Button>
+        </div>
+      );
+    },
   };
 
   const statusGroups = [
@@ -122,9 +131,9 @@ export function PaymentLinksTable({ paymentLinks }) {
   return (
     <div className="flex h-full flex-col gap-2">
       <Container className="flex h-full w-full flex-col px-6 py-8">
-        <div className="mb-10 flex items-center justify-between">
+        <div className="mb-10 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-xl font-medium">All Payment Links</h1>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <SearchBar
               placeholder="Search by Date, Time, Status"
               className="w-fit border bg-background"
@@ -142,7 +151,7 @@ export function PaymentLinksTable({ paymentLinks }) {
         </div>
         <Tabs
           defaultValue="all"
-          className="w-full"
+          className="w-full overflow-auto"
           onValueChange={setSelectedTab}
         >
           <TabsList className="w-full justify-start">
@@ -156,7 +165,11 @@ export function PaymentLinksTable({ paymentLinks }) {
             ))}
           </TabsList>
           {statusGroups.map((group) => (
-            <TabsContent value={group.value} key={group.value}>
+            <TabsContent
+              className="w-full"
+              value={group.value}
+              key={group.value}
+            >
               <CustomTable
                 headers={headers}
                 rows={currentData}
@@ -166,23 +179,13 @@ export function PaymentLinksTable({ paymentLinks }) {
             </TabsContent>
           ))}
         </Tabs>
-        <Pagination className="mt-5 flex items-center justify-between">
-          <PaginationPrevious onClick={prev} className="cursor-pointer" />
-          <PaginationContent>
-            {Array.from({ length: maxPage }, (_, i) => (
-              <PaginationItem
-                key={i}
-                onClick={() => jump(i + 1)}
-                className="cursor-pointer"
-              >
-                <PaginationLink isActive={i + 1 === currentPage}>
-                  {i + 1}
-                </PaginationLink>
-              </PaginationItem>
-            ))}
-          </PaginationContent>
-          <PaginationNext onClick={next} className="cursor-pointer" />
-        </Pagination>
+        <CustomPagination
+          currentPage={currentPage}
+          maxPage={maxPage}
+          jump={jump}
+          prev={prev}
+          next={next}
+        />
       </Container>
     </div>
   );

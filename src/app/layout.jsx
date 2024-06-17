@@ -4,6 +4,13 @@ import './globals.css';
 
 import Provider from '@/lib/Provider';
 
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+};
+
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {

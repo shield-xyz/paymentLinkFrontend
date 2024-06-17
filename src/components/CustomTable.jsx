@@ -1,7 +1,7 @@
 const CustomTable = ({ headers, rows, rowKey, cellRenderers }) => {
   return (
     <table className="w-full">
-      <thead className="h-10 border-b px-4">
+      <thead className="h-10 w-full border-b px-4">
         <tr className="text-left text-xs text-gray-400">
           {headers.map((header) => (
             <th key={header.key} className={header.className}>
@@ -12,7 +12,10 @@ const CustomTable = ({ headers, rows, rowKey, cellRenderers }) => {
       </thead>
       <tbody className="w-full">
         {rows.map((row) => (
-          <tr key={row[rowKey]} className="border-b text-sm font-semibold">
+          <tr
+            key={row[rowKey]}
+            className="w-full border-b text-sm font-semibold"
+          >
             {headers.map((header) => {
               const CellRenderer = cellRenderers[header.key];
               return (

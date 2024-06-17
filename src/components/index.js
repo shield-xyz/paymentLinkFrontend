@@ -17,3 +17,4 @@ export {
 };
 
 export * from './StepIndicator';
+export * from './CustomPagination';
