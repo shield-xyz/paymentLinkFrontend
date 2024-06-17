@@ -4,8 +4,6 @@ import Credentials from 'next-auth/providers/credentials';
 import { env } from '@/config';
 import { login } from '@/features/auth';
 
-// maxAge: 30 * 24 * 60 * 60, // 30 days
-
 export const authOptions = {
   secret: env.NEXTAUTH_SECRET,
   session: {
@@ -20,7 +18,6 @@ export const authOptions = {
         token.name = user.name;
         token.accessToken = user.accessToken;
       }
-
       return token;
     },
     async session({ token, session }) {
@@ -30,7 +27,6 @@ export const authOptions = {
         session.user.name = token.name;
         session.accessToken = token.accessToken;
       }
-
       return session;
     },
   },
@@ -47,7 +43,8 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          return await login(credentials);
+          const user = await login(credentials);
+          return user;
         } catch (error) {
           return null;
         }

@@ -1,4 +1,4 @@
-'use client'; // Add this line at the top
+'use client';
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ export function CreatePaymentLinkTable() {
     const fetchData = async () => {
       if (session?.accessToken) {
         const data = await fetchLinks(session.accessToken);
-        setPaymentLinks(data);
+        setPaymentLinks(data || []); // Ensure paymentLinks is an array
       }
     };
 

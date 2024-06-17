@@ -1,11 +1,10 @@
 'use server';
 
 import { env } from '@/config';
-import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
+import { fetchWithToken, handleError } from '@/lib/utils';
 
 export async function fetchLinks(token) {
   try {
-    console.log('Token:', token); // Log the token
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/`,
       token,
@@ -14,14 +13,12 @@ export async function fetchLinks(token) {
       },
     );
 
-    console.log('Response:', res); // Log the response
 
-    const { response: data } = await validateResponse(
-      res,
-      'Error fetching links',
-    );
+    const data = await res.json(); // Parse the response JSON
 
-    console.log({ data });
+    if (!data) {
+      throw new Error('No data returned from API');
+    }
 
     return data;
   } catch (error) {

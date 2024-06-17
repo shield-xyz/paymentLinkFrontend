@@ -4,7 +4,7 @@ const allowedPaths = ['/login', '/register', '/forgot-password', '/paylink'];
 
 export default withAuth(
   function middleware(req) {
-    console.log(req.nextauth.token);
+    console.log('Middleware - Token:', req.nextauth.token);
   },
   {
     callbacks: {
