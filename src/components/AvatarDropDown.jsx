@@ -78,24 +78,25 @@ const AvatarDropDown = ({ session }) => {
           {options.map((option, index) => {
             if (option.type === 'button') {
               return (
-                <>
-                  <DropdownMenuRadioItem key={index} value={option.name}>
-                    <Button
-                      variant="ghost"
-                      className="p-0"
-                      onClick={option.onClick}
-                    >
-                      {option.name}
-                    </Button>
-                  </DropdownMenuRadioItem>
-                </>
+                <DropdownMenuRadioItem
+                  className="py-0"
+                  key={index}
+                  value={option.name}
+                >
+                  <Button
+                    variant="ghost"
+                    className="p-0"
+                    onClick={option.onClick}
+                  >
+                    {option.name}
+                  </Button>
+                </DropdownMenuRadioItem>
               );
             } else if (option.type === 'link') {
               return (
-                <>
+                <span key={index}>
                   <Link href={option.path} className={cn('', {})}>
                     <DropdownMenuRadioItem
-                      key={index}
                       value={option.name}
                       onClick={option.onClick}
                     >
@@ -103,7 +104,7 @@ const AvatarDropDown = ({ session }) => {
                     </DropdownMenuRadioItem>
                   </Link>
                   <DropdownMenuSeparator />
-                </>
+                </span>
               );
             }
           })}

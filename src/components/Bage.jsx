@@ -5,6 +5,8 @@ const variants = {
   secondary: 'bg-secondary/10 text-secondary-foreground',
   success: 'bg-success/10 text-success',
   danger: 'bg-danger/10 text-danger-foreground',
+  pending: 'bg-[#FEF6EE] text-[#B93815]',
+  Paused: 'bg-muted text-muted-foreground',
 };
 
 const inverseVariants = {
@@ -12,6 +14,8 @@ const inverseVariants = {
   secondary: 'bg-secondary-foreground text-secondary',
   success: 'bg-success text-success',
   danger: 'bg-danger-foreground text-danger',
+  pending: 'bg-[#B93815] text-[#FEF6EE]',
+  Paused: 'bg-muted-foreground text-muted',
 };
 
 export const Badge = ({ children, className, variant = 'primary' }) => {

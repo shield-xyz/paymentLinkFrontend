@@ -20,8 +20,6 @@ export async function getPaymentLinkData(id) {
       'Error getting payment Link',
     );
 
-    console.log({ data });
-
     return data;
   } catch (error) {
     handleError(error, 'Could not get payment link');

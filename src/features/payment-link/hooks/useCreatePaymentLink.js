@@ -8,8 +8,8 @@ import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { createPaymentLink } from '../actions';
+import { getFinalPaymentLink } from '../utils';
 
-import { env } from '@/config';
 import { handleSubmissionError } from '@/lib/utils';
 
 export const CreatePaymentLinkSchema = z.object({
@@ -43,8 +43,8 @@ export const useCreatePaymentLink = () => {
     try {
       console.log({ data });
       const res = await createPaymentLink(data, session.accessToken);
-      const realLink = `${env.NEXT_PUBLIC_APP_URL}/paylink?id=${res.id}`;
-      setLink(realLink);
+      const finalLink = getFinalPaymentLink(res.id);
+      setLink(finalLink);
       toast.success('Payment link created successfully');
       setStep(2);
     } catch (error) {

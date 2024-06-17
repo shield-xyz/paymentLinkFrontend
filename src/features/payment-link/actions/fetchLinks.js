@@ -1,7 +1,7 @@
 'use server';
 
 import { env } from '@/config';
-import { fetchWithToken, handleError } from '@/lib/utils';
+import { fetchWithToken } from '@/lib/utils';
 
 export async function fetchLinks(token) {
   try {
@@ -13,7 +13,6 @@ export async function fetchLinks(token) {
       },
     );
 
-
     const data = await res.json(); // Parse the response JSON
 
     if (!data) {
@@ -22,6 +21,7 @@ export async function fetchLinks(token) {
 
     return data;
   } catch (error) {
-    handleError(error, 'Could not fetch payment links');
+    console.error(error);
+    return [];
   }
 }

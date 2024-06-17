@@ -4,7 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { fetchLinks } from '../actions'; // Import the fetchLinks function
+
+import { fetchLinks } from '../actions';
 
 import { handleSubmissionError } from '@/lib/utils';
 
@@ -44,8 +45,6 @@ export const usePaymentLink = () => {
     }
   };
 
-<<<<<<< HEAD
-=======
   const fetchPaymentLinks = async () => {
     if (session?.accessToken) {
       const data = await fetchLinks(session.accessToken);
@@ -54,7 +53,6 @@ export const usePaymentLink = () => {
     return [];
   };
 
->>>>>>> luis
   const steps = [
     {
       title: 'Personal information',
@@ -71,6 +69,6 @@ export const usePaymentLink = () => {
     form,
     onSubmit,
     handleSubmit,
-    fetchPaymentLinks, // Export the fetchPaymentLinks function
+    fetchPaymentLinks,
   };
 };
