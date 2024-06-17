@@ -8,10 +8,10 @@ export const PaymentLinkForm = () => {
   const { form, onSubmit, handleSubmit } = usePaymentLink();
 
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="mx-auto flex flex-col gap-4 py-24"
+        className="mx-auto flex w-full flex-col gap-4 py-24"
       >
         <StepOne form={form} />
         <StepTwo />

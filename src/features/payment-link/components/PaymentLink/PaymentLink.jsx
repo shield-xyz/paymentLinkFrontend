@@ -15,7 +15,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
 
   return (
     <div className="flex h-screen min-h-screen flex-col bg-background p-5 lg:flex-row">
-      <div className="flex h-full flex-col bg-muted px-10 py-6 sm:basis-1/2 sm:px-20">
+      <div className="flex h-full flex-col bg-muted px-4 py-6 sm:basis-1/2 sm:px-20">
         <div className="mb-10 flex items-center gap-4">
           <Image
             src={logoImage}
@@ -27,7 +27,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
           <h1>{company}</h1>
         </div>
         <div className="mb-10 border-b pb-5">
-          <span className="text-4xl font-extrabold tracking-tighter">
+          <span className="min-w-fit text-4xl font-extrabold tracking-tighter">
             {formatCrypto(amount, 2)} {token}
           </span>
         </div>
@@ -36,11 +36,11 @@ export const PaymentLink = ({ paymentLinkData }) => {
             Transaction summary
           </span>
           <div className="mt-2 w-full rounded-lg bg-background px-6">
-            <div className="flex w-full items-center justify-between border-b py-6 text-sm">
+            <div className="flex w-full items-center justify-between gap-4 border-b py-6 text-sm">
               <span className="text-sm text-muted-foreground">
                 1x {name} - {description}
               </span>
-              <span className="tracking-tighter">
+              <span className="w-fit min-w-fit tracking-tighter">
                 {formatCrypto(amount, 2)} {token}
               </span>
             </div>

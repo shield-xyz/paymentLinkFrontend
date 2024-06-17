@@ -14,7 +14,7 @@ export const StepOne = ({ form }) => {
   } = form;
 
   return (
-    <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
+    <Container className="m-auto flex w-full max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
       <div className="flex items-center gap-2 text-sm">
         <StepIndicator step={1} index={0} />
         <span>Personal information</span>
