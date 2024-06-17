@@ -120,7 +120,7 @@ export const StepOne = ({ form }) => {
         variant="default"
         className="mt-2 py-3 text-sm font-medium tracking-wider"
         isLoading={isSubmitting}
-        isDisabled={isSubmitting}
+        disabled={isSubmitting}
       >
         Continue
       </Button>

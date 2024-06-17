@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 import { PaymentLinkForm } from './PaymentLinkForm';
 
-import { Icons } from '@/components';
+import { LogoIcon } from '@/assets';
 import { env } from '@/config';
 import { formatCrypto } from '@/lib/utils';
 
@@ -57,7 +57,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
         </div>
       </div>
       <div className="h-full bg-background sm:basis-1/2">
-        <PaymentLinkForm />
+        <PaymentLinkForm paymentLinkData={paymentLinkData} />
       </div>
       <div className="w-full py-4 lg:hidden">
         <PaymentLinkFooter />
@@ -70,15 +70,15 @@ const PaymentLinkFooter = () => {
   return (
     <div className="flex w-full flex-wrap items-center justify-between gap-4">
       <div className="flex items-center">
-        <span className="mr-2 font-light text-muted-foreground">
+        <span className="mr-2 hidden font-light text-muted-foreground lg:flex">
           Powered by
         </span>
         <div className="mr-1 flex h-11 w-11 items-center justify-center rounded-md bg-black/5">
-          <Icons.logo className="scale-[0.5]" />
+          <LogoIcon className="scale-[0.5]" />
         </div>
         <span className="font-bold tracking-tight text-primary">Shield</span>
       </div>
-      <div className="flex items-center gap-4 text-sm font-light text-muted-foreground">
+      <div className="flex items-center gap-2 text-xxs font-light text-muted-foreground lg:gap-4 lg:text-sm">
         <Link href="/status">Status</Link>
         <span>&bull;</span>
         <Link href="/terms">Terms</Link>

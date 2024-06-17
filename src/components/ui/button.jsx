@@ -52,7 +52,7 @@ const Button = React.forwardRef(
         {...props}
       >
         {isLoading ? (
-          <Icons.loaderCircle className="animate-spin" />
+          <Icons.loaderCircle className="mx-auto animate-spin" />
         ) : (
           props.children
         )}

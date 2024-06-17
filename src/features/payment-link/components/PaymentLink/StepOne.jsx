@@ -14,7 +14,7 @@ export const StepOne = ({ form }) => {
   } = form;
 
   return (
-    <Container className="m-auto flex w-full max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
+    <Container className="m-auto flex w-full max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-5 sm:w-[450px]">
       <div className="flex items-center gap-2 text-sm">
         <StepIndicator step={1} index={0} />
         <span>Personal information</span>
@@ -22,7 +22,7 @@ export const StepOne = ({ form }) => {
           Generate
         </Button>
       </div>
-      <Input placeholder="Your name" autoFocus {...register('name')} />
+      <Input placeholder="Full Name" autoFocus {...register('name')} />
       <ErrorMessage
         errors={errors}
         name="name"
@@ -30,7 +30,7 @@ export const StepOne = ({ form }) => {
           <span className="text-sm text-destructive">{message}</span>
         )}
       />
-      <Input placeholder="your@email.com" autoFocus {...register('email')} />
+      <Input placeholder="Email Address" autoFocus {...register('email')} />
       <ErrorMessage
         errors={errors}
         name="email"
@@ -44,9 +44,9 @@ export const StepOne = ({ form }) => {
       <Button
         type="submit"
         variant="default"
-        className="mt-2 py-3 text-sm font-medium tracking-wider"
+        className="mt-3 rounded-lg py-7 text-base font-medium tracking-wider"
         isLoading={isSubmitting}
-        isDisabled={isSubmitting}
+        disabled={isSubmitting}
       >
         Continue
       </Button>

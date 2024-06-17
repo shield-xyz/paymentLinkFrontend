@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import clsx from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
@@ -75,6 +76,7 @@ export function handleSubmissionError(error, defaultMessage) {
   if (error instanceof Error) {
     message = error.message;
   }
+  console.error(error);
   toast.error(message);
 }
 
@@ -116,8 +118,10 @@ export const fetchWithToken = async (url, token, options = {}) => {
   return response;
 };
 
-export const formatNetwork = (network) => {
-  return network ? network.toLocaleLowerCase().replace('-mainnet', '') : '';
+export const parseAmountToDecimals = (amount, decimals) => {
+  const factor = new BigNumber(10).pow(decimals);
+  const parsedAmount = new BigNumber(amount).times(factor);
+  return parsedAmount.toFixed(0);
 };
 
 export const TYPES = { Deposit: 'Deposit', Withdrawal: 'Withdrawal' };

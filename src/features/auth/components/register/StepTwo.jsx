@@ -56,7 +56,7 @@ const StepTwo = ({ form }) => {
         isLoading={isSubmitting}
         type="submit"
         variant="default"
-        isDisabled={isSubmitting}
+        disabled={isSubmitting}
       >
         Get started
       </Button>

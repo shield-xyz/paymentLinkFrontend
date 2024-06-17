@@ -23,7 +23,7 @@ const Spinner = ({ customClass }) => {
             animation: spinner_zKoa 2s linear infinite;
           }
           .spinner_V8m1 circle {
-            stroke-linecap: round;
+            strokelinecap: round;
             animation: spinner_YpZS 1.5s ease-in-out infinite;
           }
           @keyframes spinner_zKoa {
