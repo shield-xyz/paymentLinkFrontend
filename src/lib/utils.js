@@ -67,7 +67,6 @@ export function handleError(error, defaultMessage) {
   if (error instanceof Error) {
     message = error.message;
   }
-  console.error(error);
   throw new Error(message);
 }
 
@@ -76,7 +75,6 @@ export function handleSubmissionError(error, defaultMessage) {
   if (error instanceof Error) {
     message = error.message;
   }
-  console.error(error);
   toast.error(message);
 }
 
@@ -86,9 +84,9 @@ export function handleSubmissionSuccess(successMessage) {
 
 async function parseResponse(response) {
   try {
-    return await response.json();
+    const data = await response.json();
+    return data;
   } catch (error) {
-    console.error('Error parsing response JSON:', error);
     return null;
   }
 }
@@ -97,7 +95,6 @@ export async function validateResponse(response, defaultMessage) {
   if (!response.ok) {
     const data = await parseResponse(response);
     const message = data?.data?.response || defaultMessage;
-    console.error(`${message}: ${response.status} - ${response.statusText}`);
     throw new Error(message);
   } else {
     const res = await parseResponse(response);
@@ -109,13 +106,14 @@ export async function validateResponse(response, defaultMessage) {
 }
 
 export const fetchWithToken = async (url, token, options = {}) => {
-  return await fetch(url, {
+  const response = await fetch(url, {
     ...options,
     headers: {
       ...options.headers,
       'x-auth-token': token,
     },
   });
+  return response;
 };
 
 export const formatNetwork = (network) => {

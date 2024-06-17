@@ -18,7 +18,6 @@ export const authOptions = {
         token.name = user.name;
         token.accessToken = user.accessToken;
       }
-
       return token;
     },
     async session({ token, session }) {
@@ -28,7 +27,6 @@ export const authOptions = {
         session.user.name = token.name;
         session.accessToken = token.accessToken;
       }
-
       return session;
     },
   },
@@ -45,7 +43,8 @@ export const authOptions = {
       },
       async authorize(credentials) {
         try {
-          return await login(credentials);
+          const user = await login(credentials);
+          return user;
         } catch (error) {
           return null;
         }
