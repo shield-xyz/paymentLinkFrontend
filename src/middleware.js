@@ -3,8 +3,8 @@ import { withAuth } from 'next-auth/middleware';
 const allowedPaths = ['/login', '/register', '/forgot-password', '/paylink'];
 
 export default withAuth(
-  function middleware(req) {
-    console.log('Middleware - Token:', req.nextauth.token);
+  function middleware() {
+    // console.log('Middleware - Token:', req.nextauth.token);
   },
   {
     callbacks: {
