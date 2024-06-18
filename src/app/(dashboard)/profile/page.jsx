@@ -4,7 +4,11 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { showAlert } from '../../../services/tronLinkService';
+import DashboardLayout from '../layout';
 
+import { Alert } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import { getUser, updateUser } from '@/features/auth/actions/login';
 import { useToken } from '@/providers/AuthContext';
 
@@ -82,79 +86,81 @@ const Profile = () => {
   };
 
   return (
-    <div className="pt-2 text-center">
-      <h2>Update Profile</h2>
-      <form
-        onSubmit={handleSubmit}
-        className="col-md-4 col-md-offset-4 section-title row"
-        encType="multipart/form-data"
-      >
-        <div className="form-group">
-          <label htmlFor="email">Email:</label>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            disabled
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="user_name">Name:</label>
-          <input
-            type="text"
-            id="user_name"
-            name="user_name"
-            value={formData.user_name}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="logo">Logo</label>
-          <input
-            type="file"
-            id="logo"
-            name="logo"
-            onChange={handleImageChange}
-            accept="image/*"
-          />
-          {preview && (
-            <img
-              src={preview}
-              alt="Preview"
-              style={{ width: '100px', height: '100px' }}
+    <DashboardLayout>
+      <div className="pt-2 text-center">
+        <h2>Update Profile</h2>
+        <form
+          onSubmit={handleSubmit}
+          className="col-md-4 col-md-offset-4 section-title row"
+          encType="multipart/form-data"
+        >
+          <div className="form-group">
+            <label htmlFor="email">Email:</label>
+            <Input
+              type="text"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              disabled
             />
-          )}
-        </div>
-        <div className="form-group">
-          <label htmlFor="company">Company Name:</label>
-          <input
-            type="text"
-            id="company"
-            name="company"
-            value={formData.company}
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Update</button>
-        {error && (
-          <div className="alert alert-danger" role="alert">
-            <strong>{error}</strong>
           </div>
-        )}
-      </form>
-    </div>
+          <div className="form-group">
+            <label htmlFor="user_name">Name:</label>
+            <Input
+              type="text"
+              id="user_name"
+              name="user_name"
+              value={formData.user_name}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="logo">Logo</label>
+            <Input
+              type="file"
+              id="logo"
+              name="logo"
+              onChange={handleImageChange}
+              accept="image/*"
+            />
+            {preview && (
+              <img
+                src={preview}
+                alt="Preview"
+                style={{ width: '100px', height: '100px' }}
+              />
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="company">Company Name:</label>
+            <Input
+              type="text"
+              id="company"
+              name="company"
+              value={formData.company}
+              onChange={handleChange}
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="password">Password:</label>
+            <Input
+              type="password"
+              id="password"
+              name="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+          </div>
+          <Button type="submit">Update</Button>
+          {error && (
+            <Alert type="danger">
+              <strong>{error}</strong>
+            </Alert>
+          )}
+        </form>
+      </div>
+    </DashboardLayout>
   );
 };
 
