@@ -3,6 +3,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { useToken } from '../../../providers/AuthContext';
 import { getUser } from '../../../services/loginServices';
 
