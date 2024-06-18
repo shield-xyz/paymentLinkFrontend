@@ -12,7 +12,7 @@ const SearchBar = ({ placeholder = 'Search', value, onChange, className }) => {
       <Input
         type="text"
         placeholder={placeholder}
-        className="w-60 border-none bg-transparent px-2 text-sm outline-none ring-0 placeholder:text-gray-400 focus:bg-transparent focus:ring-0 focus-visible:ring-0"
+        className="h-9 w-60 border-none bg-transparent px-2 text-sm outline-none ring-0 placeholder:text-gray-400 focus:bg-transparent focus:ring-0 focus-visible:ring-0"
         value={value}
         onChange={onChange}
       />

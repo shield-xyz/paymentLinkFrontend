@@ -15,7 +15,7 @@ export const CreatePaymentLinkForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-screen flex-col">
+    <div className="flex min-h-screen w-screen flex-col pt-14 sm:pt-24">
       <Steps step={step} steps={steps} />
       <form
         onSubmit={handleSubmit(onSubmit)}

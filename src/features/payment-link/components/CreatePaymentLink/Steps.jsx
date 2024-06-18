@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 export const Steps = ({ steps, step }) => {
   return (
-    <div className="flex h-24 items-center justify-center bg-muted">
+    <div className="fixed top-0 flex h-24 w-full items-center justify-center bg-muted/90 backdrop-blur-sm">
       <div className="flex items-center gap-2">
         {steps.map((s, i) => (
           <div key={i} className="flex items-center gap-2">

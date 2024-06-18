@@ -44,9 +44,10 @@ export const StepOne = ({ form }) => {
       <Button
         type="submit"
         variant="default"
-        className="mt-3 rounded-lg py-7 text-base font-medium tracking-wider"
+        className="mt-3 rounded-lg text-base font-medium tracking-wider"
         isLoading={isSubmitting}
         disabled={isSubmitting}
+        size="lg"
       >
         Continue
       </Button>

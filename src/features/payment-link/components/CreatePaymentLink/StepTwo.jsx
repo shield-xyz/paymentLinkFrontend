@@ -47,8 +47,9 @@ export const StepTwo = ({ link }) => {
       <Button
         type="button"
         variant="default"
-        className="mt-4 py-4 text-base font-semibold tracking-wider"
+        className="mt-4 font-semibold"
         onClick={handleContinue}
+        size="lg"
       >
         Continue
       </Button>

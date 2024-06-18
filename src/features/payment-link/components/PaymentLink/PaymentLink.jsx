@@ -27,7 +27,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
           <h1>{company}</h1>
         </div>
         <div className="mb-10 border-b pb-5">
-          <span className="min-w-fit text-4xl font-extrabold tracking-tighter">
+          <span className="min-w-fit text-5xl font-extrabold tracking-tighter lg:text-5xl">
             {formatCrypto(amount, 2)} {token}
           </span>
         </div>

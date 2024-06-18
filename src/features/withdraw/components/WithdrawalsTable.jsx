@@ -3,8 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-import { copyCode, getFinalPaymentLink } from '../utils';
-
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
@@ -12,28 +10,24 @@ import SearchBar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { copyCode, getFinalPaymentLink } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
 import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
 
 const headers = [
   {
     key: 'name',
-    title: 'Name',
+    title: 'Asset',
     className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'amount',
-    title: 'Amount',
+    title: 'Destination',
     className: 'px-2 min-w-[100px] font-light font-semibold',
   },
   {
     key: 'currency',
-    title: 'Currency',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
-  },
-  {
-    key: 'status',
-    title: 'Status',
+    title: 'USD',
     className: 'px-2 min-w-[100px] font-light font-semibold',
   },
   {
@@ -42,8 +36,8 @@ const headers = [
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
-    key: 'actions',
-    title: 'Actions',
+    key: 'status',
+    title: 'Status',
     className: 'px-2 min-w-[100px] font-light font-semibold',
   },
 ];
@@ -108,7 +102,7 @@ const cellRenderers = {
   },
 };
 
-export function PaymentLinksTable({ paymentLinks }) {
+export function WithdrawalsTable({ paymentLinks }) {
   const groupCounts = statusGroups.map((group) => ({
     ...group,
     count: paymentLinks.filter(group.filter).length,
@@ -129,7 +123,7 @@ export function PaymentLinksTable({ paymentLinks }) {
     <div className="flex h-full flex-col gap-2">
       <Container className="flex h-full w-full flex-col px-6 py-8">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <h1 className="text-xl font-medium">All Payment Links</h1>
+          <h1 className="text-xl font-medium">Withdrawal History</h1>
           <div className="flex flex-wrap items-center gap-2">
             <SearchBar
               placeholder="Search by Date, Time, Status"

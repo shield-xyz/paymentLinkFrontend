@@ -79,7 +79,7 @@ export const StepOne = ({ form }) => {
         )}
       />
 
-      <Container className="rounded-md p-2">
+      <Container className="rounded-md p-2 lg:rounded-md">
         <span className="flex w-full border-b pb-2 text-sm text-muted-foreground">
           Settlement networks & currencies
         </span>
@@ -118,9 +118,10 @@ export const StepOne = ({ form }) => {
       <Button
         type="submit"
         variant="default"
-        className="mt-2 py-3 text-sm font-medium tracking-wider"
+        className="mt-2 font-semibold"
         isLoading={isSubmitting}
         disabled={isSubmitting}
+        size="lg"
       >
         Continue
       </Button>
