@@ -15,12 +15,9 @@ export const StepOne = ({ form }) => {
 
   return (
     <Container className="m-auto flex w-full max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-5 sm:w-[450px]">
-      <div className="flex items-center gap-2 text-sm">
+      <div className="mb-4 flex items-center gap-2 text-sm">
         <StepIndicator step={1} index={0} />
         <span>Personal information</span>
-        <Button variant="ghost" className="ml-auto font-semibold text-primary">
-          Generate
-        </Button>
       </div>
       <Input placeholder="Full Name" autoFocus {...register('name')} />
       <ErrorMessage

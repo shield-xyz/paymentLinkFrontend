@@ -49,20 +49,20 @@ const AvatarDropDown = ({ session }) => {
       <DropdownMenuTrigger asChild>
         <Image
           alt="Avatar"
-          src="/images/Avatar.png"
+          src={session?.user?.logo || ''}
           width={200}
           height={200}
-          className="h-10 w-10 cursor-pointer overflow-auto rounded-full"
+          className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 rounded-xl">
         <DropdownMenuLabel className="flex items-center gap-2">
           <Image
             alt="Avatar"
-            src="/images/Avatar.png"
+            src={session?.user?.logo || ''}
             width={200}
             height={200}
-            className="h-10 w-10 cursor-pointer overflow-auto rounded-full border"
+            className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input"
           />
           <div className="flex flex-col">
             <span className="text-sm font-semibold">

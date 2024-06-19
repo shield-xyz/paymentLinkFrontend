@@ -4,7 +4,6 @@ import { Input } from './ui/input';
 import { cn } from '@/lib/utils';
 
 const SearchBar = ({ placeholder = 'Search', value, onChange, className }) => {
-
   return (
     <div
       className={cn('flex items-center rounded-xl bg-gray-100 px-2', className)}
