@@ -1,11 +1,13 @@
 import { Nav, Sidebar } from '@/components';
+import { getServerAuthSession } from '@/lib/auth';
 
-export default function DashboardLayout({ children }) {
+export default async function DashboardLayout({ children }) {
+  const session = await getServerAuthSession();
   return (
     <>
-      <Nav />
+      <Nav session={session} />
       <Sidebar />
-      <main className="pb-4 pl-[calc(288px+2rem)] pr-8 pt-[calc(80px+2rem)]">
+      <main className="min-h-screen pt-[80px] lg:pb-8 lg:pl-[calc(320px+2rem)] lg:pr-8 lg:pt-[calc(80px+2rem)]">
         {children}
       </main>
     </>

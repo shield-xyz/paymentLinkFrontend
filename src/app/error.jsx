@@ -1,22 +1,22 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 
 import Nav from '../components/Nav';
-import Button from '../components/ui/button';
 
 import { Sidebar } from '@/components';
+import { Button } from '@/components/ui/button';
 
 export default function Error({ error }) {
-  const router = useRouter();
-
   useEffect(() => {
     console.error(error);
   }, [error]);
 
   const reset = () => {
-    router.refresh();
+    if (typeof window !== 'undefined') {
+      // eslint-disable-next-line no-undef
+      window.location.reload();
+    }
   };
 
   return (

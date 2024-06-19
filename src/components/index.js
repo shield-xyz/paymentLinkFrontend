@@ -15,3 +15,6 @@ export {
   Assets,
   RecentActivities,
 };
+
+export * from './StepIndicator';
+export * from './CustomPagination';

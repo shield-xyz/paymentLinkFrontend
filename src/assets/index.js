@@ -1,3 +1,1 @@
-import LogoIcon from './LogoIcon';
-
-export { LogoIcon };
+export * from './LogoIcon';

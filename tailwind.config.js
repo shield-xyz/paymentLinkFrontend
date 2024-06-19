@@ -43,6 +43,20 @@ module.exports = {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
         },
+        success: {
+          DEFAULT: 'hsl(var(--success))',
+          foreground: 'hsl(var(--success-foreground))',
+        },
+      },
+      fontSize: {
+        xxs: [
+          '0.65rem',
+          {
+            lineHeight: '0.2rem',
+            letterSpacing: '-0.01em',
+            fontWeight: '300',
+          },
+        ],
       },
       screens: {
         xs: '375px',

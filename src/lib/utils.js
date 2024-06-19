@@ -1,6 +1,9 @@
+import BigNumber from 'bignumber.js';
 import clsx from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
+
+import { env } from '@/config';
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
@@ -26,7 +29,7 @@ export function formatDateShort(date) {
   return formattedDate;
 }
 
-export function fromatCurrency(amount, digits = 2) {
+export function formatCurrency(amount, digits = 2) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
     currency: 'USD',
@@ -84,13 +87,85 @@ export function handleSubmissionSuccess(successMessage) {
   toast.success(successMessage);
 }
 
-export function validateResponse(response, message) {
-  if (!response.ok) {
-    console.error(`${message}: ${response.status} - ${response.statusText}`);
-    throw new Error(message);
+async function parseResponse(response) {
+  try {
+    const data = await response.json();
+    console.error('error data:', data);
+    return data;
+  } catch (error) {
+    return null;
   }
 }
 
-export const formatNetwork = (network) => {
-  return network ? network.toLocaleLowerCase().replace('-mainnet', '') : '';
+export async function validateResponse(response, defaultMessage) {
+  if (!response.ok) {
+    const data = await parseResponse(response);
+    const message = data?.data?.response || defaultMessage;
+    throw new Error(message);
+  } else {
+    console.log({ response });
+    const res = await parseResponse(response);
+    console.log({ res });
+    if (res && res.status === 'error') {
+      throw new Error(res.response || defaultMessage);
+    }
+    return res;
+  }
+}
+
+export const fetchWithToken = async (url, token, options = {}) => {
+  const response = await fetch(url, {
+    ...options,
+    headers: {
+      ...options.headers,
+      'x-auth-token': token,
+    },
+  });
+  return response;
+};
+
+export const parseAmountToDecimals = (amount, decimals) => {
+  const factor = new BigNumber(10).pow(decimals);
+  const parsedAmount = new BigNumber(amount).times(factor);
+  return parsedAmount.toFixed(0);
+};
+
+export const TYPES = { Deposit: 'Deposit', Withdrawal: 'Withdrawal' };
+export const STATUSES = { Completed: 'completed', Pending: 'pending' };
+export const PAYMENT_STATUSES = {
+  Pending: 'pending',
+  Expired: 'expired',
+  Paid: 'paid',
+  Paused: 'Paused',
+};
+export const PAYMENT_DESCRIPTIONS = {
+  Monthly_Subscription: 'Monthly Subscription',
+  Annual_Membership: 'Annual Membership',
+  One_time_payment: 'One-time Payment',
+  Service_fee: 'Service Fee',
+  Donation: 'Donation',
+  Other: 'Other',
+};
+
+export const getLogoUrl = (url) => {
+  return `${env.NEXT_PUBLIC_API_URL}/${url}`;
+};
+
+export const downloadImage = async (imageUrl, imageName = undefined) => {
+  try {
+    const finalImageName = imageName || imageUrl.split('/').pop();
+
+    const response = await fetch(imageUrl);
+    if (!response.ok) throw new Error('Network response was not ok.');
+
+    const imageBlob = await response.blob();
+
+    const imageFile = new File([imageBlob], finalImageName, {
+      type: imageBlob.type,
+    });
+
+    return imageFile;
+  } catch (error) {
+    handleError(error, 'Error downloading or setting image');
+  }
 };
