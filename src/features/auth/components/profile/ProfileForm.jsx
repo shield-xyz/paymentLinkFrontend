@@ -4,9 +4,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Alert } from '@/components/ui/alert';
@@ -26,6 +26,7 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/jpg',
   'image/png',
   'image/webp',
+  'application/octet-stream',
 ];
 const MAX_FILE_SIZE = 5000000;
 
@@ -33,11 +34,17 @@ export const ProfileSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
   password: z
     .string()
-    .min(3, {
-      message: 'Password must be at least 3 characters long',
+    .min(8, {
+      message: 'Password must be at least 8 characters long',
     })
     .max(60, {
       message: 'Password must be at most 60 characters long',
+    })
+    .regex(/[A-Z]/, {
+      message: 'Password must contain at least 1 uppercase character',
+    })
+    .regex(/[!@#$%^&*]/, {
+      message: 'Password must contain at least 1 special character',
     }),
   user_name: z.string().min(3, {
     message: 'Name must be at least 3 characters long',
@@ -50,22 +57,19 @@ export const ProfileSchema = z.object({
       (file) => file === null || file[0]?.size <= MAX_FILE_SIZE,
       `Max image size is 5MB.`,
     )
-    .refine(
-      (file) => file === null || ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.',
-    ),
+    .refine((file) => {
+      return file === null || ACCEPTED_IMAGE_TYPES.includes(file[0]?.type);
+    }, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
 });
 
 export const ProfileForm = ({ session, userData }) => {
   const router = useRouter();
+  const { update } = useSession();
 
   const [error, setError] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
 
   const fileInputRef = useRef(null);
-
-  console.log({ userData });
-  console.log({ fileUrl });
 
   const form = useForm({
     resolver: zodResolver(ProfileSchema),
@@ -88,8 +92,6 @@ export const ProfileForm = ({ session, userData }) => {
 
   const values = getValues();
 
-  console.log({ values });
-
   async function downloadAndSetImageAsFile(imageUrl) {
     try {
       const imageFile = await downloadImage(imageUrl);
@@ -99,7 +101,7 @@ export const ProfileForm = ({ session, userData }) => {
       const fileUrl = URL.createObjectURL(imageFile);
       setFileUrl(fileUrl);
     } catch (error) {
-      console.error('Error downloading or setting image:', error);
+      handleSubmissionError('', 'Error downloading or setting image');
     }
   }
 
@@ -134,14 +136,17 @@ export const ProfileForm = ({ session, userData }) => {
 
     try {
       const data = await updateUser(session?.accessToken, formData);
-      if (data.status === 'success') {
-        toast.success('Profile updated');
-      } else {
+      if (data.status === 'error') {
         throw new Error(data.response);
       }
 
-      handleSubmissionSuccess('Logged in successfully');
+      await update({
+        updatedUser: data,
+      });
+
+      handleSubmissionSuccess('Profile updated successfully');
       router.refresh();
+      window.location.reload();
     } catch (error) {
       setError('Error updating profile');
       handleSubmissionError(error, 'Could not login');
@@ -157,6 +162,13 @@ export const ProfileForm = ({ session, userData }) => {
     e.preventDefault();
     form.setValue('logo', null);
     setFileUrl(null);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSubmit(onSubmit)();
+    }
   };
 
   return (
@@ -225,6 +237,7 @@ export const ProfileForm = ({ session, userData }) => {
               placeholder="Enter your name"
               autoFocus
               {...register('user_name')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}
@@ -240,6 +253,7 @@ export const ProfileForm = ({ session, userData }) => {
               labelClassName="mb-1"
               placeholder="Enter your email address"
               {...register('email')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}
@@ -255,6 +269,7 @@ export const ProfileForm = ({ session, userData }) => {
               labelClassName="mb-1"
               placeholder="Enter your company name"
               {...register('company')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}
@@ -272,6 +287,7 @@ export const ProfileForm = ({ session, userData }) => {
               placeholder="Choose a password"
               type="password"
               {...register('password')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}

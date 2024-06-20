@@ -19,7 +19,9 @@ export async function fetchLinks(token) {
       throw new Error('No data returned from API');
     }
 
-    return data;
+    const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    return sortedData;
   } catch (error) {
     console.error(error);
     return [];

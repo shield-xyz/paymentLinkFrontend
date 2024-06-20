@@ -3,14 +3,14 @@
 import { ErrorMessage } from '@hookform/error-message';
 
 import { StepIndicator } from '@/components';
-import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 
 export const StepOne = ({ form }) => {
   const {
     register,
-    formState: { errors, isSubmitting },
+    formState: { errors },
+    setValue,
   } = form;
 
   return (
@@ -19,7 +19,19 @@ export const StepOne = ({ form }) => {
         <StepIndicator step={1} index={0} />
         <span>Personal information</span>
       </div>
-      <Input placeholder="Full Name" autoFocus {...register('name')} />
+      <Input
+        type="text"
+        placeholder="Full Name"
+        autoFocus
+        {...register('name')}
+        onChange={(e) => {
+          e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+          setValue('name', e.target.value, {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        }}
+      />
       <ErrorMessage
         errors={errors}
         name="name"
@@ -38,16 +50,6 @@ export const StepOne = ({ form }) => {
       <span className="text-xs text-muted-foreground">
         Get transaction updates and receipt notifications via email
       </span>
-      <Button
-        type="submit"
-        variant="default"
-        className="mt-3 rounded-lg text-base font-medium tracking-wider"
-        isLoading={isSubmitting}
-        disabled={isSubmitting}
-        size="lg"
-      >
-        Continue
-      </Button>
     </Container>
   );
 };

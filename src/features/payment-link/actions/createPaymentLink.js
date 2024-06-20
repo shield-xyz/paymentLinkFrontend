@@ -1,10 +1,15 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import { env } from '@/config';
 import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 
 export async function createPaymentLink(linkData, token) {
   try {
+    console.log({
+      linkData,
+    });
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/`,
       token,
@@ -21,6 +26,8 @@ export async function createPaymentLink(linkData, token) {
       res,
       'Error creating Link',
     );
+
+    revalidatePath('/payment-links');
 
     return data;
   } catch (error) {

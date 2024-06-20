@@ -1,15 +1,15 @@
 'use server';
 
 import { env } from '@/config';
-import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
+import { fetchWithToken, validateResponse } from '@/lib/utils';
 
-export async function getUser(token) {
+export async function getWithdrawals(token) {
   try {
     if (!token) {
       throw new Error('No token provided');
     }
     const res = await fetchWithToken(
-      `${env.NEXT_PUBLIC_API_URL}/api/merchants/me`,
+      `${env.NEXT_PUBLIC_API_URL}/api/withdraws`,
       token,
       {
         method: 'GET',
@@ -18,11 +18,12 @@ export async function getUser(token) {
 
     const { response: data } = await validateResponse(
       res,
-      'Error fetching user data',
+      'Error fetching withdrawals',
     );
 
     return data;
   } catch (error) {
-    handleError(error, 'Could not fetch user data');
+    console.error(error);
+    return [];
   }
 }

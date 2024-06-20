@@ -2,7 +2,7 @@ import { Icons } from './Icons';
 import Chart from './Recharts/Chart';
 import Container from './ui/container';
 
-import { Withdraw } from '@/features/withdraw';
+import { Withdraw } from '@/features/withdrawals';
 
 const Balance = () => {
   return (

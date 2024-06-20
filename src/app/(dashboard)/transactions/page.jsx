@@ -1,6 +1,6 @@
 import CustomTable from '@/components/CustomTable';
 import Container from '@/components/ui/container';
-import { WithdrawTypeIcon } from '@/features/withdraw';
+import { WithdrawTypeIcon } from '@/features/withdrawals';
 import { STATUSES, TYPES, cn, formatCurrency, formatDate } from '@/lib/utils';
 
 const WITHDRAWALS = [

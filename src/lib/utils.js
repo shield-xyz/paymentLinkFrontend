@@ -74,6 +74,15 @@ export function handleError(error, defaultMessage) {
   throw new Error(message);
 }
 
+export function handleReturnError(error, defaultMessage) {
+  let message = defaultMessage;
+  if (error instanceof Error) {
+    message = error.message;
+  }
+  console.error(error);
+  return { error: message };
+}
+
 export function handleSubmissionError(error, defaultMessage) {
   let message = defaultMessage;
   if (error instanceof Error) {
@@ -90,23 +99,24 @@ export function handleSubmissionSuccess(successMessage) {
 async function parseResponse(response) {
   try {
     const data = await response.json();
-    console.error('error data:', data);
     return data;
   } catch (error) {
+    console.error('Error parsing response:', error);
     return null;
   }
 }
 
 export async function validateResponse(response, defaultMessage) {
+  console.log({ response });
   if (!response.ok) {
     const data = await parseResponse(response);
+    console.error('error data:', data);
     const message = data?.data?.response || defaultMessage;
     throw new Error(message);
   } else {
-    console.log({ response });
     const res = await parseResponse(response);
-    console.log({ res });
     if (res && res.status === 'error') {
+      console.error('error data:', res);
       throw new Error(res.response || defaultMessage);
     }
     return res;
@@ -154,15 +164,13 @@ export const getLogoUrl = (url) => {
 export const downloadImage = async (imageUrl, imageName = undefined) => {
   try {
     const finalImageName = imageName || imageUrl.split('/').pop();
-
     const response = await fetch(imageUrl);
+
     if (!response.ok) throw new Error('Network response was not ok.');
 
     const imageBlob = await response.blob();
-
-    const imageFile = new File([imageBlob], finalImageName, {
-      type: imageBlob.type,
-    });
+    const mimeType = imageBlob.type || 'application/octet-stream';
+    const imageFile = new File([imageBlob], finalImageName, { type: mimeType });
 
     return imageFile;
   } catch (error) {

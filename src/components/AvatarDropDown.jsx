@@ -27,16 +27,16 @@ const AvatarDropDown = ({ session }) => {
       name: 'View Profile',
       path: '/profile',
     },
-    {
-      type: 'link',
-      name: 'Settings',
-      path: '/settings',
-    },
-    {
-      type: 'link',
-      name: 'Support',
-      path: '/support',
-    },
+    // {
+    //   type: 'link',
+    //   name: 'Settings',
+    //   path: '/settings',
+    // },
+    // {
+    //   type: 'link',
+    //   name: 'Support',
+    //   path: '/support',
+    // },
     {
       type: 'button',
       name: 'Logout',
@@ -49,20 +49,20 @@ const AvatarDropDown = ({ session }) => {
       <DropdownMenuTrigger asChild>
         <Image
           alt="Avatar"
-          src={session?.user?.logo || ''}
+          src={`${session?.user?.logo || ''}?v=${Date.now()}`} // timestamp to force refresh on update
           width={200}
           height={200}
-          className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input"
+          className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input object-cover"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 rounded-xl">
         <DropdownMenuLabel className="flex items-center gap-2">
           <Image
             alt="Avatar"
-            src={session?.user?.logo || ''}
+            src={`${session?.user?.logo || ''}?v=${Date.now()}`} // timestamp to force refresh on update
             width={200}
             height={200}
-            className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input"
+            className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input object-cover"
           />
           <div className="flex flex-col">
             <span className="text-sm font-semibold">
@@ -82,6 +82,7 @@ const AvatarDropDown = ({ session }) => {
                   className="py-0"
                   key={index}
                   value={option.name}
+                  onClick={option.onClick}
                 >
                   <Button
                     variant="ghost"

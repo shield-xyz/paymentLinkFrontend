@@ -1,7 +1,9 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
@@ -10,24 +12,18 @@ import SearchBar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { copyCode, getFinalPaymentLink } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
 import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
 
 const headers = [
   {
-    key: 'name',
+    key: 'asset',
     title: 'Asset',
     className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'amount',
-    title: 'Destination',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
-  },
-  {
-    key: 'currency',
-    title: 'USD',
+    title: 'Amount',
     className: 'px-2 min-w-[100px] font-light font-semibold',
   },
   {
@@ -67,14 +63,22 @@ const statusGroups = [
 ];
 
 const cellRenderers = {
-  name: ({ row }) => (
-    <div className="flex w-full items-center gap-5">
-      {/* <Card type="light" className="flex items-center gap-2">
-        <span>{row.name}</span>
-      </Card> */}
-      <span className="font-medium">{row.name}</span>
-    </div>
-  ),
+  asset: ({ row, assets }) => {
+    const asset = assets[row.assetId];
+    let logoSrc = asset.logo;
+    return (
+      <div className="flex w-full items-center gap-5">
+        <img
+          key={asset.assetId}
+          src={logoSrc}
+          alt={asset.assetId}
+          width={14}
+          height={14}
+        />
+        <span className="text-sm">{asset.name}</span>
+      </div>
+    );
+  },
   amount: ({ row }) => {
     return (
       <span className="font-light">{formatCurrency(row.amount || 0)}</span>
@@ -83,41 +87,54 @@ const cellRenderers = {
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
   status: ({ row }) => <Badge variant={row.status}>{row.status}</Badge>,
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
-  actions: ({ row }) => {
-    const link = getFinalPaymentLink(row.id);
-    return (
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" className="px-2 py-2 font-light">
-          <Icons.edit className="h-5 text-gray-500" />
-        </Button>
-        <Button
-          variant="ghost"
-          className="px-2 py-2 font-light"
-          onClick={() => copyCode(link)}
-        >
-          <Icons.share className="h-5 text-gray-500" />
-        </Button>
-      </div>
-    );
-  },
 };
 
-export function WithdrawalsTable({ paymentLinks }) {
-  const groupCounts = statusGroups.map((group) => ({
-    ...group,
-    count: paymentLinks.filter(group.filter).length,
-  }));
+export function WithdrawalsTable({ withdrawals, assets }) {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredData, setFilteredData] = useState(withdrawals);
+  const [selectedTab, setSelectedTab] = useState('all');
+
+  const groupCounts = useMemo(
+    () =>
+      statusGroups.map((group) => ({
+        ...group,
+        count: withdrawals.filter(group.filter).length,
+      })),
+    [withdrawals],
+  );
 
   const itemsPerPage = 5;
-  const [selectedTab, setSelectedTab] = useState('all');
-  const data = paymentLinks.filter(
-    (link) => selectedTab === 'all' || link.status === selectedTab,
-  );
 
   const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    data,
+    filteredData,
     itemsPerPage,
   );
+
+  useEffect(() => {
+    const filterData = () => {
+      const filteredLinks = withdrawals.filter((link) => {
+        const matchesTab = selectedTab === 'all' || link.status === selectedTab;
+        if (!searchQuery && matchesTab) return true;
+        const lowercasedQuery = searchQuery.toLowerCase();
+        return (
+          matchesTab &&
+          (link.status.toLowerCase().includes(lowercasedQuery) ||
+            formatDate(link.date).toLowerCase().includes(lowercasedQuery))
+        );
+      });
+      setFilteredData(filteredLinks);
+    };
+
+    filterData();
+  }, [withdrawals, searchQuery, selectedTab]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
 
   return (
     <div className="flex h-full flex-col gap-2">
@@ -128,6 +145,8 @@ export function WithdrawalsTable({ paymentLinks }) {
             <SearchBar
               placeholder="Search by Date, Time, Status"
               className="w-fit border border-input bg-background"
+              onChange={handleSearch}
+              value={searchQuery}
             />
             <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
@@ -143,7 +162,7 @@ export function WithdrawalsTable({ paymentLinks }) {
         <Tabs
           defaultValue="all"
           className="w-full overflow-auto"
-          onValueChange={setSelectedTab}
+          onValueChange={handleTabChange}
         >
           <TabsList className="mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
@@ -166,6 +185,7 @@ export function WithdrawalsTable({ paymentLinks }) {
                 rows={currentData}
                 rowKey="id"
                 cellRenderers={cellRenderers}
+                assets={assets}
               />
             </TabsContent>
           ))}

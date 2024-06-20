@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { copyCode, getFinalPaymentLink } from '../utils';
 
@@ -75,9 +75,6 @@ const statusGroups = [
 const cellRenderers = {
   name: ({ row }) => (
     <div className="flex w-full items-center gap-5">
-      {/* <Card type="light" className="flex items-center gap-2">
-        <span>{row.name}</span>
-      </Card> */}
       <span className="font-medium">{row.name}</span>
     </div>
   ),
@@ -109,21 +106,52 @@ const cellRenderers = {
 };
 
 export function PaymentLinksTable({ paymentLinks }) {
-  const groupCounts = statusGroups.map((group) => ({
-    ...group,
-    count: paymentLinks.filter(group.filter).length,
-  }));
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredData, setFilteredData] = useState(paymentLinks);
+  const [selectedTab, setSelectedTab] = useState('all');
+
+  const groupCounts = useMemo(
+    () =>
+      statusGroups.map((group) => ({
+        ...group,
+        count: paymentLinks.filter(group.filter).length,
+      })),
+    [paymentLinks],
+  );
 
   const itemsPerPage = 5;
-  const [selectedTab, setSelectedTab] = useState('all');
-  const data = paymentLinks.filter(
-    (link) => selectedTab === 'all' || link.status === selectedTab,
-  );
 
   const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    data,
+    filteredData,
     itemsPerPage,
   );
+
+  useEffect(() => {
+    const filterData = () => {
+      const filteredLinks = paymentLinks.filter((link) => {
+        const matchesTab = selectedTab === 'all' || link.status === selectedTab;
+        if (!searchQuery && matchesTab) return true;
+        const lowercasedQuery = searchQuery.toLowerCase();
+        return (
+          matchesTab &&
+          (link.name.toLowerCase().includes(lowercasedQuery) ||
+            link.status.toLowerCase().includes(lowercasedQuery) ||
+            formatDate(link.date).toLowerCase().includes(lowercasedQuery))
+        );
+      });
+      setFilteredData(filteredLinks);
+    };
+
+    filterData();
+  }, [paymentLinks, searchQuery, selectedTab]);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleTabChange = (tab) => {
+    setSelectedTab(tab);
+  };
 
   return (
     <div className="flex h-full flex-col gap-2">
@@ -134,6 +162,8 @@ export function PaymentLinksTable({ paymentLinks }) {
             <SearchBar
               placeholder="Search by Date, Time, Status"
               className="w-fit border border-input bg-background"
+              onChange={handleSearch}
+              value={searchQuery}
             />
             <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
@@ -149,7 +179,7 @@ export function PaymentLinksTable({ paymentLinks }) {
         <Tabs
           defaultValue="all"
           className="w-full overflow-auto"
-          onValueChange={setSelectedTab}
+          onValueChange={handleTabChange}
         >
           <TabsList className="mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
