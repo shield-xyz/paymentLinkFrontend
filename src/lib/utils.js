@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
+import { env } from '@/config';
+
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
 }
@@ -68,6 +70,7 @@ export function handleError(error, defaultMessage) {
   if (error instanceof Error) {
     message = error.message;
   }
+  console.error(error);
   throw new Error(message);
 }
 
@@ -87,6 +90,7 @@ export function handleSubmissionSuccess(successMessage) {
 async function parseResponse(response) {
   try {
     const data = await response.json();
+    console.error('error data:', data);
     return data;
   } catch (error) {
     return null;
@@ -99,7 +103,9 @@ export async function validateResponse(response, defaultMessage) {
     const message = data?.data?.response || defaultMessage;
     throw new Error(message);
   } else {
+    console.log({ response });
     const res = await parseResponse(response);
+    console.log({ res });
     if (res && res.status === 'error') {
       throw new Error(res.response || defaultMessage);
     }
@@ -139,4 +145,27 @@ export const PAYMENT_DESCRIPTIONS = {
   Service_fee: 'Service Fee',
   Donation: 'Donation',
   Other: 'Other',
+};
+
+export const getLogoUrl = (url) => {
+  return `${env.NEXT_PUBLIC_API_URL}/${url}`;
+};
+
+export const downloadImage = async (imageUrl, imageName = undefined) => {
+  try {
+    const finalImageName = imageName || imageUrl.split('/').pop();
+
+    const response = await fetch(imageUrl);
+    if (!response.ok) throw new Error('Network response was not ok.');
+
+    const imageBlob = await response.blob();
+
+    const imageFile = new File([imageBlob], finalImageName, {
+      type: imageBlob.type,
+    });
+
+    return imageFile;
+  } catch (error) {
+    handleError(error, 'Error downloading or setting image');
+  }
 };

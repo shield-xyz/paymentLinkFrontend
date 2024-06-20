@@ -4,14 +4,13 @@ import Link from 'next/link';
 import { PaymentLinkForm } from './PaymentLinkForm';
 
 import { LogoIcon } from '@/assets';
-import { env } from '@/config';
-import { formatCrypto } from '@/lib/utils';
+import { formatCrypto, getLogoUrl } from '@/lib/utils';
 
 export const PaymentLink = ({ paymentLinkData }) => {
   const { merchant, amount, token, name, description } = paymentLinkData;
   const { logo, company } = merchant;
 
-  const logoImage = `${env.NEXT_PUBLIC_API_URL}/${logo}`;
+  const logoImage = getLogoUrl(logo);
 
   return (
     <div className="flex h-screen min-h-screen flex-col bg-background p-5 lg:flex-row">
@@ -27,7 +26,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
           <h1>{company}</h1>
         </div>
         <div className="mb-10 border-b pb-5">
-          <span className="min-w-fit text-4xl font-extrabold tracking-tighter">
+          <span className="min-w-fit text-5xl font-extrabold tracking-tighter lg:text-5xl">
             {formatCrypto(amount, 2)} {token}
           </span>
         </div>

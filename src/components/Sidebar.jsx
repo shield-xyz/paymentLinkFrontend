@@ -2,35 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 import { Icons } from './Icons';
 
 import { SIDEBAR_PAGES } from '@/config';
-import { useWidth } from '@/hooks';
 import { cn } from '@/lib/utils';
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const [open, setOpen] = useState(false);
-  const width = useWidth();
-
-  useEffect(() => {
-    if (width > 768) {
-      setOpen(true);
-    } else {
-      setOpen(false);
-    }
-  }, [width]);
 
   return (
     <div
       className={cn(
-        'fixed z-30 flex h-screen w-80 flex-col gap-10 border-r border-gray-200 bg-background py-4',
-        {
-          'translate-x-0': open,
-          '-translate-x-full': !open,
-        },
+        'fixed z-30 hidden h-screen w-80 translate-x-0 flex-col gap-10 border-r border-gray-200 bg-background py-4 lg:flex',
       )}
     >
       <div className="flex w-full items-center gap-3 px-6">

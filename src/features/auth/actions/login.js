@@ -1,7 +1,9 @@
 'use server';
 
+import { getUser } from './getUser';
+
 import { env } from '@/config';
-import { handleError, validateResponse } from '@/lib/utils';
+import { getLogoUrl, handleError, validateResponse } from '@/lib/utils';
 
 export async function login(credentials) {
   try {
@@ -20,11 +22,15 @@ export async function login(credentials) {
       'Error authenticating user',
     );
 
+    const user = await getUser(data.token);
+    const logo = getLogoUrl(user.logo);
+
     return {
       email: data.email,
       name: data.user_name,
       id: data._id,
       accessToken: data.token,
+      logo,
       ...credentials,
     };
   } catch (error) {

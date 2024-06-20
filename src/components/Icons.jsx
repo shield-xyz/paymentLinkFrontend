@@ -14,6 +14,7 @@ import {
   Loader,
   Loader2,
   LoaderCircle,
+  Menu,
   Moon,
   MoreVertical,
   Pizza,
@@ -55,6 +56,7 @@ export const Icons = {
   moon: Moon,
   laptop: Laptop,
   search: Search,
+  menu: Menu,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"

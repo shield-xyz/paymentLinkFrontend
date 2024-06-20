@@ -1,4 +1,4 @@
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { ArrowLeft, ArrowRight, MoreHorizontal } from 'lucide-react';
 import * as React from 'react';
 
 import { buttonVariants } from '@/components/ui/button';
@@ -36,7 +36,7 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }) => (
         variant: 'ghost',
         size,
       }),
-      'rounded-full text-sm font-light text-muted-foreground',
+      'select-none rounded-full text-sm text-muted-foreground',
       {
         'bg-primary/10 text-primary': isActive,
       },
@@ -54,7 +54,7 @@ const PaginationPrevious = ({ className, ...props }) => (
     className={cn('gap-1 pl-2.5', className)}
     {...props}
   >
-    <ChevronLeft className="h-4 w-4" />
+    <ArrowLeft className="h-5 w-5" />
     <span className="hidden lg:flex">Previous</span>
   </PaginationLink>
 );
@@ -68,7 +68,7 @@ const PaginationNext = ({ className, ...props }) => (
     {...props}
   >
     <span className="hidden lg:flex">Next</span>
-    <ChevronRight className="h-4 w-4" />
+    <ArrowRight className="h-5 w-5" />
   </PaginationLink>
 );
 PaginationNext.displayName = 'PaginationNext';

@@ -28,11 +28,11 @@ export const SIDEBAR_PAGES = [
     icon: 'store',
     path: '/withdrawals',
   },
-  {
-    name: 'Settings',
-    icon: 'pie_chart',
-    path: '/settings',
-  },
+  // {
+  //   name: 'Settings',
+  //   icon: 'pie_chart',
+  //   path: '/settings',
+  // },
 ];
 
 export const COINS = [

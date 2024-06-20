@@ -17,6 +17,7 @@ export const authOptions = {
         token.email = user.email;
         token.name = user.name;
         token.accessToken = user.accessToken;
+        token.logo = user.logo;
       }
       return token;
     },
@@ -25,6 +26,7 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.email = token.email;
         session.user.name = token.name;
+        session.user.logo = token.logo;
         session.accessToken = token.accessToken;
       }
       return session;
