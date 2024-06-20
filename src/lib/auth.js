@@ -13,7 +13,6 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
-      console.log({ token, session, user });
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -25,7 +24,6 @@ export const authOptions = {
       if (trigger === 'update' && session.updatedUser) {
         const updatedUser = session.updatedUser;
         const logo = getLogoUrl(updatedUser.logo);
-        console.log({ updatedUser });
         token.id = updatedUser.id;
         token.email = updatedUser.email;
         token.name = updatedUser.user_name;

@@ -1,7 +1,7 @@
 import { Icons } from './Icons';
 import Container from './ui/container';
 
-import { WithdrawTypeIcon } from '@/features/withdraw';
+import { WithdrawTypeIcon } from '@/features/withdrawals';
 import { STATUSES, TYPES } from '@/lib/utils';
 
 const ACTIVITIES = [

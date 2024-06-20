@@ -9,8 +9,6 @@ export const CreatePaymentLinkForm = ({ assets }) => {
   const { form, step, steps, onSubmit, link, handleSubmit } =
     useCreatePaymentLink();
 
-  console.log({ assets });
-
   const STEPS = {
     1: <StepOne form={form} assets={assets} />,
     2: <StepTwo link={link} />,

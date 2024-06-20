@@ -19,7 +19,7 @@ export const StepOne = ({ form, assets }) => {
     watch,
   } = form;
 
-  console.log({ assets });
+  console.log(assets);
 
   const { getValues } = form;
   const values = getValues();

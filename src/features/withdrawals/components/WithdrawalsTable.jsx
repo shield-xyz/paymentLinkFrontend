@@ -102,15 +102,15 @@ const cellRenderers = {
   },
 };
 
-export function WithdrawalsTable({ paymentLinks }) {
+export function WithdrawalsTable({ withdrawals }) {
   const groupCounts = statusGroups.map((group) => ({
     ...group,
-    count: paymentLinks.filter(group.filter).length,
+    count: withdrawals.filter(group.filter).length,
   }));
 
   const itemsPerPage = 5;
   const [selectedTab, setSelectedTab] = useState('all');
-  const data = paymentLinks.filter(
+  const data = withdrawals.filter(
     (link) => selectedTab === 'all' || link.status === selectedTab,
   );
 

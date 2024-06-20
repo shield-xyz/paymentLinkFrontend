@@ -105,7 +105,7 @@ export async function validateResponse(response, defaultMessage) {
   } else {
     const res = await parseResponse(response);
     if (res && res.status === 'error') {
-      console.log({ res });
+      console.error('error data:', res);
       throw new Error(res.response || defaultMessage);
     }
     return res;
@@ -152,20 +152,13 @@ export const getLogoUrl = (url) => {
 
 export const downloadImage = async (imageUrl, imageName = undefined) => {
   try {
-    console.log({ imageUrl });
     const finalImageName = imageName || imageUrl.split('/').pop();
     const response = await fetch(imageUrl);
+
     if (!response.ok) throw new Error('Network response was not ok.');
 
     const imageBlob = await response.blob();
-
-    console.log({ imageBlob });
-    console.log(imageBlob.type);
-
     const mimeType = imageBlob.type || 'application/octet-stream';
-
-    console.log({ mimeType });
-
     const imageFile = new File([imageBlob], finalImageName, { type: mimeType });
 
     return imageFile;

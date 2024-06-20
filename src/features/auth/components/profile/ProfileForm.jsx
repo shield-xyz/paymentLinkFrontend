@@ -52,7 +52,6 @@ export const ProfileSchema = z.object({
       `Max image size is 5MB.`,
     )
     .refine((file) => {
-      console.log({ file });
       return file === null || ACCEPTED_IMAGE_TYPES.includes(file[0]?.type);
     }, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
 });
@@ -65,8 +64,6 @@ export const ProfileForm = ({ session, userData }) => {
   const [fileUrl, setFileUrl] = useState(null);
 
   const fileInputRef = useRef(null);
-
-  console.log({ userData });
 
   const form = useForm({
     resolver: zodResolver(ProfileSchema),
@@ -89,19 +86,16 @@ export const ProfileForm = ({ session, userData }) => {
 
   const values = getValues();
 
-  console.log({ fileUrl });
-
   async function downloadAndSetImageAsFile(imageUrl) {
     try {
       const imageFile = await downloadImage(imageUrl);
-      console.log({ imageFile });
 
       form.setValue('logo', [imageFile]);
 
       const fileUrl = URL.createObjectURL(imageFile);
       setFileUrl(fileUrl);
     } catch (error) {
-      console.error('Error downloading or setting image:', error);
+      handleSubmissionError('', 'Error downloading or setting image');
     }
   }
 
@@ -140,15 +134,12 @@ export const ProfileForm = ({ session, userData }) => {
         throw new Error(data.response);
       }
 
-      console.log({ data });
-
       await update({
         updatedUser: data,
       });
 
       handleSubmissionSuccess('Profile updated successfully');
       router.refresh();
-      window.location.reload();
     } catch (error) {
       setError('Error updating profile');
       handleSubmissionError(error, 'Could not login');

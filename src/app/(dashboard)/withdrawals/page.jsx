@@ -1,10 +1,11 @@
-import { fetchLinks } from '@/features/payment-link/actions';
-import { WithdrawalsTable } from '@/features/withdraw';
+import { WithdrawalsTable, getWithdrawals } from '@/features/withdrawals';
 import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  const paymentLinks = await fetchLinks(session.accessToken);
+  const withdrawals = await getWithdrawals(session.accessToken);
 
-  return <WithdrawalsTable paymentLinks={paymentLinks} />;
+  console.log({ withdrawals });
+
+  return <WithdrawalsTable withdrawals={withdrawals} />;
 }
