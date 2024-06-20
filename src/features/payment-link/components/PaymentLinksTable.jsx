@@ -75,9 +75,6 @@ const statusGroups = [
 const cellRenderers = {
   name: ({ row }) => (
     <div className="flex w-full items-center gap-5">
-      {/* <Card type="light" className="flex items-center gap-2">
-        <span>{row.name}</span>
-      </Card> */}
       <span className="font-medium">{row.name}</span>
     </div>
   ),

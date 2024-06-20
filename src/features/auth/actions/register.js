@@ -1,7 +1,7 @@
 'use server';
 
 import { env } from '@/config';
-import { handleError, validateResponse } from '@/lib/utils';
+import { handleReturnError, validateResponse } from '@/lib/utils';
 
 export async function register(formData) {
   try {
@@ -14,6 +14,6 @@ export async function register(formData) {
 
     return { data };
   } catch (error) {
-    handleError(error, 'Could not register');
+    return handleReturnError(error, 'Error registering user');
   }
 }

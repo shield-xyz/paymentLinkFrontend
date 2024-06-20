@@ -74,6 +74,15 @@ export function handleError(error, defaultMessage) {
   throw new Error(message);
 }
 
+export function handleReturnError(error, defaultMessage) {
+  let message = defaultMessage;
+  if (error instanceof Error) {
+    message = error.message;
+  }
+  console.error(error);
+  return { error: message };
+}
+
 export function handleSubmissionError(error, defaultMessage) {
   let message = defaultMessage;
   if (error instanceof Error) {
@@ -98,6 +107,7 @@ async function parseResponse(response) {
 }
 
 export async function validateResponse(response, defaultMessage) {
+  console.log({ response });
   if (!response.ok) {
     const data = await parseResponse(response);
     console.error('error data:', data);

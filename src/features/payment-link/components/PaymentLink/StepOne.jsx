@@ -10,6 +10,7 @@ export const StepOne = ({ form }) => {
   const {
     register,
     formState: { errors },
+    setValue,
   } = form;
 
   return (
@@ -18,7 +19,19 @@ export const StepOne = ({ form }) => {
         <StepIndicator step={1} index={0} />
         <span>Personal information</span>
       </div>
-      <Input placeholder="Full Name" autoFocus {...register('name')} />
+      <Input
+        type="text"
+        placeholder="Full Name"
+        autoFocus
+        {...register('name')}
+        onChange={(e) => {
+          e.target.value = e.target.value.replace(/[^A-Za-z\s]/g, '');
+          setValue('name', e.target.value, {
+            shouldValidate: true,
+            shouldDirty: true,
+          });
+        }}
+      />
       <ErrorMessage
         errors={errors}
         name="name"

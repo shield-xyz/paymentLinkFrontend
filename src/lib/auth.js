@@ -9,7 +9,7 @@ import { login } from '@/features/auth';
 export const authOptions = {
   secret: env.NEXTAUTH_SECRET,
   session: {
-    maxAge: 36000, // 10 hours    strategy: 'jwt',
+    maxAge: 36000,
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {

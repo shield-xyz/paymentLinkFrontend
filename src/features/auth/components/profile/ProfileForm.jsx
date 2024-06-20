@@ -146,6 +146,7 @@ export const ProfileForm = ({ session, userData }) => {
 
       handleSubmissionSuccess('Profile updated successfully');
       router.refresh();
+      window.location.reload();
     } catch (error) {
       setError('Error updating profile');
       handleSubmissionError(error, 'Could not login');

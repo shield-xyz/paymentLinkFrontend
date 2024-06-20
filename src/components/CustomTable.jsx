@@ -1,13 +1,21 @@
-const CustomTable = ({ headers, rows, rowKey, cellRenderers }) => {
+const CustomTable = ({
+  headers,
+  rows,
+  rowKey,
+  cellRenderers,
+  assets = undefined,
+}) => {
   return (
     <table className="w-full">
       <thead className="h-10 w-full border-b border-input px-4">
         <tr className="text-left text-xs text-gray-400">
-          {headers.map((header) => (
-            <th key={header.key} className={header.className}>
-              {header.title}
-            </th>
-          ))}
+          {headers.map((header) => {
+            return (
+              <th key={header.key} className={header.className}>
+                {header.title}
+              </th>
+            );
+          })}
         </tr>
       </thead>
       <tbody className="w-full">
@@ -19,8 +27,12 @@ const CustomTable = ({ headers, rows, rowKey, cellRenderers }) => {
             {headers.map((header) => {
               const CellRenderer = cellRenderers[header.key];
               return (
-                <td key={header.key} className="px-2 py-4">
-                  {CellRenderer ? <CellRenderer row={row} /> : row[header.key]}
+                <td key={header.key + '-td'} className="px-2 py-4">
+                  {CellRenderer ? (
+                    <CellRenderer row={row} assets={assets} />
+                  ) : (
+                    row[header.key]
+                  )}
                 </td>
               );
             })}

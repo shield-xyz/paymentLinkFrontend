@@ -93,7 +93,11 @@ const RegisterForm = () => {
       formData.append('logo', logo[0]);
       formData.append('company', company);
 
-      await register(formData);
+      const res = await register(formData);
+
+      if (res.error) {
+        throw new Error(res.error);
+      }
 
       const loginCredentials = {
         email,
