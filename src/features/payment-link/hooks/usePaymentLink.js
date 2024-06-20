@@ -36,6 +36,8 @@ export const usePaymentLink = ({ paymentLinkData }) => {
   const { data: session } = useSession();
 
   const [tronWeb, setTronWeb] = useState(null);
+  const [tronAddress, setTronAddress] = useState(null);
+  const [isTronReady, setIsTronReady] = useState(false);
   const [isLoadingConnection, setIsLoadingConnection] = useState(false);
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
 
@@ -69,11 +71,14 @@ export const usePaymentLink = ({ paymentLinkData }) => {
       const res = await connectToTronLink();
       console.log({ res });
       if (res?.tronWeb) {
-        setTronWeb(res);
-        addWallet(paymentLinkData.id, res.address);
+        setTronWeb(res.tronWeb);
+        setTronAddress(res.address);
+        setIsTronReady(res.tronWeb.ready);
         toast.success('Connected to TronLink');
+        return res;
+      } else {
+        throw new Error('Error connecting to TronLink');
       }
-      return res;
     } catch (error) {
       handleSubmissionError(error, 'Error connecting to TronLink');
     } finally {
@@ -89,44 +94,33 @@ export const usePaymentLink = ({ paymentLinkData }) => {
 
       const amount = paymentLinkData.amount;
 
-      console.log({ amount });
+      let address = tronAddress;
+      let isReady = isTronReady;
+      let tronWebInstance = tronWeb;
 
-      console.log({ tokenID, recipient });
-
-      if (!tronWeb || !tronWeb.ready) {
-        toast.info('We need access to your wallet');
+      if (!tronWebInstance || !isReady) {
         const res = await connectToTron();
-
-        try {
-          await sendTRC20(
-            res.tronWeb,
-            tokenID,
-            recipient,
-            parseAmountToDecimals(amount, 6),
-            paymentLinkData.id,
-          );
-
-          router.refresh();
-        } catch (error) {
-          console.error('Transaction failed:', error);
-        }
-      } else {
-        try {
-          addWallet(paymentLinkData.id, tronWeb.address);
-          sendTRC20(
-            tronWeb.tronWeb,
-            tokenID,
-            recipient,
-            parseAmountToDecimals(amount, 6),
-            paymentLinkData.id,
-          );
-          router.refresh();
-        } catch (error) {
-          toast.error('Transaction failed:', error);
-        }
+        address = res.address;
+        tronWebInstance = res.tronWeb;
+        isReady = res.tronWeb.ready;
       }
+
+      await addWallet({
+        id: paymentLinkData.id,
+        wallet: address,
+      });
+      await sendTRC20(
+        tronWebInstance,
+        tokenID,
+        recipient,
+        parseAmountToDecimals(amount, 6),
+        paymentLinkData.id,
+      );
+
+      router.refresh();
     } catch (error) {
-      console.error(error);
+      console.error('Transaction failed:', error);
+      toast.error('Transaction failed:', error);
     } finally {
       setIsLoadingPayment(false);
     }

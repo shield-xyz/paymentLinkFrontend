@@ -7,6 +7,9 @@ import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 
 export async function createPaymentLink(linkData, token) {
   try {
+    console.log({
+      linkData,
+    });
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/`,
       token,

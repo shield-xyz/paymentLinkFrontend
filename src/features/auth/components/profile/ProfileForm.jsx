@@ -34,11 +34,17 @@ export const ProfileSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
   password: z
     .string()
-    .min(3, {
-      message: 'Password must be at least 3 characters long',
+    .min(8, {
+      message: 'Password must be at least 8 characters long',
     })
     .max(60, {
       message: 'Password must be at most 60 characters long',
+    })
+    .regex(/[A-Z]/, {
+      message: 'Password must contain at least 1 uppercase character',
+    })
+    .regex(/[!@#$%^&*]/, {
+      message: 'Password must contain at least 1 special character',
     }),
   user_name: z.string().min(3, {
     message: 'Name must be at least 3 characters long',

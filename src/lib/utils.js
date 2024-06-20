@@ -92,6 +92,7 @@ async function parseResponse(response) {
     const data = await response.json();
     return data;
   } catch (error) {
+    console.error('Error parsing response:', error);
     return null;
   }
 }
