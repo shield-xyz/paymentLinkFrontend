@@ -10,8 +10,6 @@ import {
   PaginationPrevious,
 } from './ui/pagination';
 
-import { useWidth } from '@/hooks';
-
 export const CustomPagination = ({
   currentPage,
   maxPage,
@@ -19,16 +17,13 @@ export const CustomPagination = ({
   prev,
   next,
 }) => {
-  const width = useWidth();
-  const isMobile = width < 640;
-
   if (maxPage <= 1) {
     return (
       <Pagination className="mt-5 flex items-center justify-between">
         <PaginationPrevious onClick={prev} className="cursor-pointer" />
         <PaginationContent>
           <PaginationItem className="cursor-pointer">
-            <PaginationLink size={isMobile ? 'iconSm' : 'icon'} isActive>
+            <PaginationLink size="icon" isActive>
               {1}
             </PaginationLink>
           </PaginationItem>
@@ -43,10 +38,7 @@ export const CustomPagination = ({
       <PaginationPrevious onClick={prev} className="cursor-pointer" />
       <PaginationContent>
         <PaginationItem onClick={() => jump(1)} className="cursor-pointer">
-          <PaginationLink
-            size={isMobile ? 'iconSm' : 'icon'}
-            isActive={1 === currentPage}
-          >
+          <PaginationLink size="icon" isActive={1 === currentPage}>
             1
           </PaginationLink>
         </PaginationItem>
@@ -68,7 +60,7 @@ export const CustomPagination = ({
             onClick={() => jump(currentPage)}
             className="cursor-pointer"
           >
-            <PaginationLink size={isMobile ? 'iconSm' : 'icon'} isActive>
+            <PaginationLink size="icon" isActive>
               {currentPage}
             </PaginationLink>
           </PaginationItem>
@@ -90,10 +82,7 @@ export const CustomPagination = ({
           onClick={() => jump(maxPage)}
           className="cursor-pointer"
         >
-          <PaginationLink
-            size={isMobile ? 'iconSm' : 'icon'}
-            isActive={maxPage === currentPage}
-          >
+          <PaginationLink size="icon" isActive={maxPage === currentPage}>
             {maxPage}
           </PaginationLink>
         </PaginationItem>

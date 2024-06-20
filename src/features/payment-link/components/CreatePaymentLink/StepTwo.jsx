@@ -33,7 +33,7 @@ export const StepTwo = ({ link }) => {
             className="group mt-4 flex h-12 w-full items-center rounded-md border bg-background px-4"
             onClick={() => copyCode(link)}
           >
-            <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis text-blue-400">
+            <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
               {link}
             </span>
             <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />

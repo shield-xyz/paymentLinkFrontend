@@ -1,3 +1,5 @@
+'use server';
+
 import { env } from '@/config';
 import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 

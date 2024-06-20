@@ -20,6 +20,7 @@ import { cn } from '@/lib/utils';
 
 const AvatarDropDown = ({ session }) => {
   const [position, setPosition] = useState('bottom');
+  console.log('AvatarDropDown -> session', session);
 
   const options = [
     {
@@ -49,7 +50,7 @@ const AvatarDropDown = ({ session }) => {
       <DropdownMenuTrigger asChild>
         <Image
           alt="Avatar"
-          src={session?.user?.logo || ''}
+          src={`${session?.user?.logo || ''}?v=${Date.now()}`} // timestamp to force refresh on update
           width={200}
           height={200}
           className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input"
@@ -59,7 +60,7 @@ const AvatarDropDown = ({ session }) => {
         <DropdownMenuLabel className="flex items-center gap-2">
           <Image
             alt="Avatar"
-            src={session?.user?.logo || ''}
+            src={`${session?.user?.logo || ''}?v=${Date.now()}`} // timestamp to force refresh on update
             width={200}
             height={200}
             className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input"

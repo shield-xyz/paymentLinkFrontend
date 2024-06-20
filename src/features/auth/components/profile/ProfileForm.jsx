@@ -4,9 +4,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
 import { Alert } from '@/components/ui/alert';
@@ -26,6 +26,7 @@ const ACCEPTED_IMAGE_TYPES = [
   'image/jpg',
   'image/png',
   'image/webp',
+  'application/octet-stream',
 ];
 const MAX_FILE_SIZE = 5000000;
 
@@ -50,14 +51,15 @@ export const ProfileSchema = z.object({
       (file) => file === null || file[0]?.size <= MAX_FILE_SIZE,
       `Max image size is 5MB.`,
     )
-    .refine(
-      (file) => file === null || ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-      'Only .jpg, .jpeg, .png and .webp formats are supported.',
-    ),
+    .refine((file) => {
+      console.log({ file });
+      return file === null || ACCEPTED_IMAGE_TYPES.includes(file[0]?.type);
+    }, 'Only .jpg, .jpeg, .png and .webp formats are supported.'),
 });
 
 export const ProfileForm = ({ session, userData }) => {
   const router = useRouter();
+  const { update } = useSession();
 
   const [error, setError] = useState(null);
   const [fileUrl, setFileUrl] = useState(null);
@@ -65,7 +67,6 @@ export const ProfileForm = ({ session, userData }) => {
   const fileInputRef = useRef(null);
 
   console.log({ userData });
-  console.log({ fileUrl });
 
   const form = useForm({
     resolver: zodResolver(ProfileSchema),
@@ -88,11 +89,12 @@ export const ProfileForm = ({ session, userData }) => {
 
   const values = getValues();
 
-  console.log({ values });
+  console.log({ fileUrl });
 
   async function downloadAndSetImageAsFile(imageUrl) {
     try {
       const imageFile = await downloadImage(imageUrl);
+      console.log({ imageFile });
 
       form.setValue('logo', [imageFile]);
 
@@ -134,14 +136,19 @@ export const ProfileForm = ({ session, userData }) => {
 
     try {
       const data = await updateUser(session?.accessToken, formData);
-      if (data.status === 'success') {
-        toast.success('Profile updated');
-      } else {
+      if (data.status === 'error') {
         throw new Error(data.response);
       }
 
-      handleSubmissionSuccess('Logged in successfully');
+      console.log({ data });
+
+      await update({
+        updatedUser: data,
+      });
+
+      handleSubmissionSuccess('Profile updated successfully');
       router.refresh();
+      window.location.reload();
     } catch (error) {
       setError('Error updating profile');
       handleSubmissionError(error, 'Could not login');
@@ -157,6 +164,13 @@ export const ProfileForm = ({ session, userData }) => {
     e.preventDefault();
     form.setValue('logo', null);
     setFileUrl(null);
+  };
+
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      handleSubmit(onSubmit)();
+    }
   };
 
   return (
@@ -225,6 +239,7 @@ export const ProfileForm = ({ session, userData }) => {
               placeholder="Enter your name"
               autoFocus
               {...register('user_name')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}
@@ -240,6 +255,7 @@ export const ProfileForm = ({ session, userData }) => {
               labelClassName="mb-1"
               placeholder="Enter your email address"
               {...register('email')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}
@@ -255,6 +271,7 @@ export const ProfileForm = ({ session, userData }) => {
               labelClassName="mb-1"
               placeholder="Enter your company name"
               {...register('company')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}
@@ -272,6 +289,7 @@ export const ProfileForm = ({ session, userData }) => {
               placeholder="Choose a password"
               type="password"
               {...register('password')}
+              onKeyDown={handleKeyDown}
             />
             <ErrorMessage
               errors={errors}

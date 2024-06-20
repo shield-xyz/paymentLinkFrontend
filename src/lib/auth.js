@@ -1,17 +1,19 @@
 import { getServerSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 
+import { getLogoUrl } from './utils';
+
 import { env } from '@/config';
 import { login } from '@/features/auth';
 
 export const authOptions = {
   secret: env.NEXTAUTH_SECRET,
   session: {
-    maxAge: 360000, // 100 hours or approximately 4.17 days
-    strategy: 'jwt',
+    maxAge: 36000, // 10 hours    strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
+      console.log({ token, session, user });
       if (user) {
         token.id = user.id;
         token.email = user.email;
@@ -19,6 +21,17 @@ export const authOptions = {
         token.accessToken = user.accessToken;
         token.logo = user.logo;
       }
+
+      if (trigger === 'update' && session.updatedUser) {
+        const updatedUser = session.updatedUser;
+        const logo = getLogoUrl(updatedUser.logo);
+        console.log({ updatedUser });
+        token.id = updatedUser.id;
+        token.email = updatedUser.email;
+        token.name = updatedUser.user_name;
+        token.logo = logo;
+      }
+
       return token;
     },
     async session({ token, session }) {
@@ -46,6 +59,7 @@ export const authOptions = {
       async authorize(credentials) {
         try {
           const user = await login(credentials);
+          console.log({ user });
           return user;
         } catch (error) {
           return null;

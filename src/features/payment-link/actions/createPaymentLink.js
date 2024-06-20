@@ -1,5 +1,7 @@
 'use server';
 
+import { revalidatePath } from 'next/cache';
+
 import { env } from '@/config';
 import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 
@@ -21,6 +23,8 @@ export async function createPaymentLink(linkData, token) {
       res,
       'Error creating Link',
     );
+
+    revalidatePath('/payment-links');
 
     return data;
   } catch (error) {
