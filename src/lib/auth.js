@@ -21,6 +21,7 @@ export const authOptions = {
         token.logo = user.logo;
       }
 
+      // When the user updates profile, we update the session data.
       if (trigger === 'update' && session.updatedUser) {
         const updatedUser = session.updatedUser;
         const logo = getLogoUrl(updatedUser.logo);

@@ -11,19 +11,35 @@ import SearchBar from '@/components/SearchBar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { copyCode } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
 import { formatCurrency, formatDate } from '@/lib/utils';
 
 const headers = [
   {
+    key: 'network',
+    title: 'Network',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
     key: 'asset',
     title: 'Asset',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
+    key: 'hash',
+    title: 'Hash',
+    className: 'px-2 min-w-[220px] font-light font-semibold',
   },
   {
     key: 'amount',
     title: 'Amount',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
+    key: 'linkPaymentId',
+    title: 'Payment ID',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'date',
@@ -35,6 +51,10 @@ const headers = [
 const statusGroups = [{ label: 'All', value: 'all', filter: () => true }];
 
 const cellRenderers = {
+  network: ({ row, networks }) => {
+    const network = networks.find((network) => network._id === row.networkId);
+    return <span className="font-light">{network.name}</span>;
+  },
   asset: ({ row, assets }) => {
     const asset = Object.values(assets).find(
       (asset) => asset._id === row.assetId,
@@ -53,19 +73,35 @@ const cellRenderers = {
       </div>
     );
   },
+  hash: ({ row }) => (
+    <span
+      className="flex max-w-[200px] items-center gap-1 font-light"
+      onClick={() => copyCode(row.hash)}
+    >
+      <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
+        {row.hash}
+      </span>
+      <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />
+    </span>
+  ),
   amount: ({ row }) => {
     return (
       <span className="font-light">{formatCurrency(row.amount || 0)}</span>
     );
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
+  linkPaymentId: ({ row }) => (
+    <span className="font-light">{row.linkPaymentId || '-'}</span>
+  ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
 };
 
-export function TransactionsTable({ transactions, assets }) {
+export function TransactionsTable({ transactions, assets, networks }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
+
+  console.log({ transactions, assets, networks });
 
   const assetsByAssetId = useMemo(
     () =>
@@ -101,9 +137,13 @@ export function TransactionsTable({ transactions, assets }) {
         const lowercasedQuery = searchQuery.toLowerCase();
         const assetName =
           assetsByAssetId[transaction.assetId].name.toLowerCase();
+        const networkName = networks
+          .find((network) => network._id === transaction.networkId)
+          .name.toLowerCase();
         return (
           matchesTab &&
           (assetName.includes(lowercasedQuery) ||
+            networkName.includes(lowercasedQuery) ||
             formatDate(transaction.date)
               .toLowerCase()
               .includes(lowercasedQuery))
@@ -130,7 +170,7 @@ export function TransactionsTable({ transactions, assets }) {
           <h1 className="text-xl font-medium">Transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
             <SearchBar
-              placeholder="Search by Asset, Date"
+              placeholder="Search by Network, Asset, Date"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
               value={searchQuery}
@@ -153,7 +193,7 @@ export function TransactionsTable({ transactions, assets }) {
         >
           <TabsList className="mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
-              <TabsTrigger value={group.value} key={group.value}>
+              <TabsTrigger value={group.value} key={group.value + 'tab'}>
                 {group.label}{' '}
                 <span className="ml-1 text-muted-foreground">
                   ({group.count})
@@ -170,9 +210,10 @@ export function TransactionsTable({ transactions, assets }) {
               <CustomTable
                 headers={headers}
                 rows={currentData}
-                rowKey="id"
+                rowKey="_id"
                 cellRenderers={cellRenderers}
                 assets={assets}
+                networks={networks}
               />
             </TabsContent>
           ))}

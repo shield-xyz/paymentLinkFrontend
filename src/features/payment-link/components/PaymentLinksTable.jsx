@@ -200,7 +200,7 @@ export function PaymentLinksTable({ paymentLinks }) {
               <CustomTable
                 headers={headers}
                 rows={currentData}
-                rowKey="id"
+                rowKey="_id"
                 cellRenderers={cellRenderers}
               />
             </TabsContent>
