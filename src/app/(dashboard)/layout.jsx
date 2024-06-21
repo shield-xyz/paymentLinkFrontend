@@ -3,7 +3,6 @@ import { getServerAuthSession } from '@/lib/auth';
 
 export default async function DashboardLayout({ children }) {
   const session = await getServerAuthSession();
-  console.log({ session });
   return (
     <>
       <Nav session={session} />
