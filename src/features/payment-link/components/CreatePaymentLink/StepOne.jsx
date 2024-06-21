@@ -1,25 +1,23 @@
 'use client';
 
 import { ErrorMessage } from '@hookform/error-message';
+import Image from 'next/image';
 import Link from 'next/link';
 
-import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { COINS } from '@/config';
 import { cn } from '@/lib/utils';
 
-export const StepOne = ({ form, assets }) => {
+export const StepOne = ({ form, networks }) => {
   const {
     register,
     formState: { errors, isSubmitting },
-    setValue,
     watch,
   } = form;
 
-  console.log(assets);
+  console.log({ networks });
 
   const { getValues } = form;
   const values = getValues();
@@ -28,12 +26,12 @@ export const StepOne = ({ form, assets }) => {
 
   watch('token');
 
-  const handleSelectToken = (token) => {
-    if (token !== 'USDT') {
-      return;
-    }
-    setValue('token', token);
-  };
+  // const handleSelectToken = (token) => {
+  //   if (token !== 'USDT') {
+  //     return;
+  //   }
+  //   setValue('token', token);
+  // };
 
   return (
     <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
@@ -89,56 +87,34 @@ export const StepOne = ({ form, assets }) => {
           Settlement networks & currencies
         </span>
         <div className="flex w-full flex-col gap-2 py-2">
-          {
-            // TODO: adjust when assets are available
-            // assets.map((asset) => {
-            //   return (
-            //     <div
-            //       className={cn(
-            //         'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1',
-            //         {
-            //           'bg-gray-100': token === asset.name,
-            //         },
-            //       )}
-            //     >
-            //       <Image
-            //         key={asset.assetId}
-            //         src={asset.logo}
-            //         alt={asset.assetId}
-            //         width={14}
-            //         height={14}
-            //         onClick={() => handleSelectToken(asset.assetId)}
-            //       />
-            //       <span className="text-sm">{asset.name}</span>
-            //     </div>
-            //   );
-
-            COINS.map((coin) => {
-              const Icon = Icons[coin.icon];
-              return (
+          {networks.map((network) => (
+            <div key={network.id}>
+              {network.assets.map((asset) => (
                 <div
-                  key={coin.name}
+                  key={asset.assetId}
                   className={cn(
                     'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1',
                     {
-                      'bg-gray-100': token === coin.name,
-                      'cursor-not-allowed': coin.name !== 'USDT',
+                      'bg-gray-100': token === asset.symbol,
                     },
                   )}
-                  onClick={() => handleSelectToken(coin.name)}
-                  title={coin.name !== 'USDT' ? 'Coming soon' : ''}
                 >
-                  <Icon className={cn('', {})} />
-                  <span className="text-sm">{coin.name}</span>
+                  <Image
+                    src={asset.logo}
+                    alt={asset.assetId}
+                    width={14}
+                    height={14}
+                  />
+                  <span className="text-sm">{asset.name}</span>
                 </div>
-              );
-            })
-          }
+              ))}
+            </div>
+          ))}
         </div>
         <span className="text-xxs leading-[0.1rem]">
           You can update your accepted networks and currencies in{' '}
           <Link
-            href="/settings"
+            href="/profile"
             className="text-primary underline"
             tabIndex="-1"
           >

@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
-import SearchBar from '@/components/Searchbar';
+import SearchBar from '@/components/SearchBar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -43,22 +43,22 @@ const statusGroups = [
   {
     label: 'Paid',
     value: PAYMENT_STATUSES.Paid,
-    filter: (link) => link.status === PAYMENT_STATUSES.Paid,
+    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Paid,
   },
   {
     label: 'Pending',
     value: PAYMENT_STATUSES.Pending,
-    filter: (link) => link.status === PAYMENT_STATUSES.Pending,
+    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Pending,
   },
   {
     label: 'Paused',
     value: PAYMENT_STATUSES.Paused,
-    filter: (link) => link.status === PAYMENT_STATUSES.Paused,
+    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Paused,
   },
   {
     label: 'Expired',
     value: PAYMENT_STATUSES.Expired,
-    filter: (link) => link.status === PAYMENT_STATUSES.Expired,
+    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Expired,
   },
 ];
 
@@ -112,14 +112,15 @@ export function WithdrawalsTable({ withdrawals, assets }) {
 
   useEffect(() => {
     const filterData = () => {
-      const filteredLinks = withdrawals.filter((link) => {
-        const matchesTab = selectedTab === 'all' || link.status === selectedTab;
+      const filteredLinks = withdrawals.filter((withdrawal) => {
+        const matchesTab =
+          selectedTab === 'all' || withdrawal.status === selectedTab;
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
         return (
           matchesTab &&
-          (link.status.toLowerCase().includes(lowercasedQuery) ||
-            formatDate(link.date).toLowerCase().includes(lowercasedQuery))
+          (withdrawal.status.toLowerCase().includes(lowercasedQuery) ||
+            formatDate(withdrawal.date).toLowerCase().includes(lowercasedQuery))
         );
       });
       setFilteredData(filteredLinks);
@@ -152,9 +153,9 @@ export function WithdrawalsTable({ withdrawals, assets }) {
               <Icons.filter className="h-5 text-gray-500" />
               Filter
             </Button>
-            <Link href="/create-payment-link">
+            <Link href="/create-payment-withdrawal">
               <Button className="font-light" size="sm">
-                Create payment link
+                Create payment withdrawal
               </Button>
             </Link>
           </div>

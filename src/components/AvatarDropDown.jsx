@@ -49,7 +49,7 @@ const AvatarDropDown = ({ session }) => {
       <DropdownMenuTrigger asChild>
         <Image
           alt="Avatar"
-          src={`${session?.user?.logo || ''}?v=${Date.now()}`} // timestamp to force refresh on update
+          src={`${session?.user?.logo || ''}`} // timestamp to force refresh on update
           width={200}
           height={200}
           className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input object-cover"
@@ -59,7 +59,7 @@ const AvatarDropDown = ({ session }) => {
         <DropdownMenuLabel className="flex items-center gap-2">
           <Image
             alt="Avatar"
-            src={`${session?.user?.logo || ''}?v=${Date.now()}`} // timestamp to force refresh on update
+            src={`${session?.user?.logo || ''}`} // timestamp to force refresh on update
             width={200}
             height={200}
             className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input object-cover"

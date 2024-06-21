@@ -1,8 +1,9 @@
-import { getAssets } from '@/actions/getAssets';
-import { CreatePaymentLinkForm } from '@/features/payment-link';
+import { CreatePaymentLinkForm, getNetworks } from '@/features/payment-link';
 
 export default async function Page() {
-  const assets = await getAssets();
+  const networks = await getNetworks();
 
-  return <CreatePaymentLinkForm assets={assets} />;
+  console.log({ networks });
+
+  return <CreatePaymentLinkForm networks={networks} />;
 }
