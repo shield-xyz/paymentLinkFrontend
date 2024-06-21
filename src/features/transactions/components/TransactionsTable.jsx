@@ -1,82 +1,88 @@
+/* eslint-disable @next/next/no-img-element */
+
 'use client';
 
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
-import { copyCode, getFinalPaymentLink } from '../utils';
-
 import { CustomPagination, Icons } from '@/components';
-import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
 import SearchBar from '@/components/SearchBar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { copyCode } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
-import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency, formatDate } from '@/lib/utils';
 
 const headers = [
   {
-    key: 'name',
-    title: 'Name',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    key: 'network',
+    title: 'Network',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
+    key: 'asset',
+    title: 'Asset',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
+    key: 'hash',
+    title: 'Hash',
+    className: 'px-2 min-w-[220px] font-light font-semibold',
   },
   {
     key: 'amount',
     title: 'Amount',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
-    key: 'currency',
-    title: 'Currency',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
-  },
-  {
-    key: 'status',
-    title: 'Status',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    key: 'linkPaymentId',
+    title: 'Payment ID',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'date',
     title: 'Date',
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
-  {
-    key: 'actions',
-    title: 'Actions',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
-  },
 ];
 
-const statusGroups = [
-  { label: 'All', value: 'all', filter: () => true },
-  {
-    label: 'Paid',
-    value: PAYMENT_STATUSES.Paid,
-    filter: (link) => link.status === PAYMENT_STATUSES.Paid,
-  },
-  {
-    label: 'Pending',
-    value: PAYMENT_STATUSES.Pending,
-    filter: (link) => link.status === PAYMENT_STATUSES.Pending,
-  },
-  {
-    label: 'Paused',
-    value: PAYMENT_STATUSES.Paused,
-    filter: (link) => link.status === PAYMENT_STATUSES.Paused,
-  },
-  {
-    label: 'Expired',
-    value: PAYMENT_STATUSES.Expired,
-    filter: (link) => link.status === PAYMENT_STATUSES.Expired,
-  },
-];
+const statusGroups = [{ label: 'All', value: 'all', filter: () => true }];
 
 const cellRenderers = {
-  name: ({ row }) => (
-    <div className="flex w-full items-center gap-5">
-      <span className="font-medium">{row.name}</span>
-    </div>
+  network: ({ row, networks }) => {
+    const network = networks.find((network) => network._id === row.networkId);
+    return <span className="font-light">{network.name}</span>;
+  },
+  asset: ({ row, assets }) => {
+    const asset = Object.values(assets).find(
+      (asset) => asset._id === row.assetId,
+    );
+    let logoSrc = asset.logo;
+    return (
+      <div className="flex w-full items-center gap-5">
+        <img
+          key={asset.assetId}
+          src={logoSrc}
+          alt={asset.assetId}
+          width={14}
+          height={14}
+        />
+        <span className="text-sm">{asset.name}</span>
+      </div>
+    );
+  },
+  hash: ({ row }) => (
+    <span
+      className="flex max-w-[200px] items-center gap-1 font-light"
+      onClick={() => copyCode(row.hash)}
+    >
+      <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
+        {row.hash}
+      </span>
+      <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />
+    </span>
   ),
   amount: ({ row }) => {
     return (
@@ -84,39 +90,35 @@ const cellRenderers = {
     );
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
-  status: ({ row }) => <Badge variant={row.status}>{row.status}</Badge>,
+  linkPaymentId: ({ row }) => (
+    <span className="font-light">{row.linkPaymentId || '-'}</span>
+  ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
-  actions: ({ row }) => {
-    const link = getFinalPaymentLink(row.id);
-    return (
-      <div className="flex items-center gap-2">
-        <Button variant="ghost" className="px-2 py-2 font-light">
-          <Icons.edit className="h-5 text-gray-500" />
-        </Button>
-        <Button
-          variant="ghost"
-          className="px-2 py-2 font-light"
-          onClick={() => copyCode(link)}
-        >
-          <Icons.share className="h-5 text-gray-500" />
-        </Button>
-      </div>
-    );
-  },
 };
 
-export function PaymentLinksTable({ paymentLinks }) {
+export function TransactionsTable({ transactions, assets, networks }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState(paymentLinks);
+  const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
+
+  console.log({ transactions, assets, networks });
+
+  const assetsByAssetId = useMemo(
+    () =>
+      Object.values(assets).reduce((acc, asset) => {
+        acc[asset._id] = asset;
+        return acc;
+      }, {}),
+    [assets],
+  );
 
   const groupCounts = useMemo(
     () =>
       statusGroups.map((group) => ({
         ...group,
-        count: paymentLinks.filter(group.filter).length,
+        count: transactions.filter(group.filter).length,
       })),
-    [paymentLinks],
+    [transactions],
   );
 
   const itemsPerPage = 5;
@@ -128,22 +130,30 @@ export function PaymentLinksTable({ paymentLinks }) {
 
   useEffect(() => {
     const filterData = () => {
-      const filteredLinks = paymentLinks.filter((link) => {
-        const matchesTab = selectedTab === 'all' || link.status === selectedTab;
+      const filteredLinks = transactions.filter((transaction) => {
+        const matchesTab =
+          selectedTab === 'all' || transaction.status === selectedTab;
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
+        const assetName =
+          assetsByAssetId[transaction.assetId].name.toLowerCase();
+        const networkName = networks
+          .find((network) => network._id === transaction.networkId)
+          .name.toLowerCase();
         return (
           matchesTab &&
-          (link.name.toLowerCase().includes(lowercasedQuery) ||
-            link.status.toLowerCase().includes(lowercasedQuery) ||
-            formatDate(link.date).toLowerCase().includes(lowercasedQuery))
+          (assetName.includes(lowercasedQuery) ||
+            networkName.includes(lowercasedQuery) ||
+            formatDate(transaction.date)
+              .toLowerCase()
+              .includes(lowercasedQuery))
         );
       });
       setFilteredData(filteredLinks);
     };
 
     filterData();
-  }, [paymentLinks, searchQuery, selectedTab]);
+  }, [transactions, searchQuery, selectedTab]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -157,10 +167,10 @@ export function PaymentLinksTable({ paymentLinks }) {
     <div className="flex h-full flex-col gap-2">
       <Container className="flex h-full w-full flex-col px-6 py-8">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <h1 className="text-xl font-medium">All Payment Links</h1>
+          <h1 className="text-xl font-medium">Transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
             <SearchBar
-              placeholder="Search by Date, Time, Status"
+              placeholder="Search by Network, Asset, Date"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
               value={searchQuery}
@@ -183,7 +193,7 @@ export function PaymentLinksTable({ paymentLinks }) {
         >
           <TabsList className="mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
-              <TabsTrigger value={group.value} key={group.value}>
+              <TabsTrigger value={group.value} key={group.value + 'tab'}>
                 {group.label}{' '}
                 <span className="ml-1 text-muted-foreground">
                   ({group.count})
@@ -202,6 +212,8 @@ export function PaymentLinksTable({ paymentLinks }) {
                 rows={currentData}
                 rowKey="_id"
                 cellRenderers={cellRenderers}
+                assets={assets}
+                networks={networks}
               />
             </TabsContent>
           ))}

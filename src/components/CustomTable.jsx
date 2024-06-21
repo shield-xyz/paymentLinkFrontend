@@ -3,7 +3,7 @@ const CustomTable = ({
   rows,
   rowKey,
   cellRenderers,
-  assets = undefined,
+  ...otherProps
 }) => {
   return (
     <table className="w-full">
@@ -11,7 +11,7 @@ const CustomTable = ({
         <tr className="text-left text-xs text-gray-400">
           {headers.map((header) => {
             return (
-              <th key={header.key} className={header.className}>
+              <th key={header.key + '-th'} className={header.className}>
                 {header.title}
               </th>
             );
@@ -29,7 +29,7 @@ const CustomTable = ({
               return (
                 <td key={header.key + '-td'} className="px-2 py-4">
                   {CellRenderer ? (
-                    <CellRenderer row={row} assets={assets} />
+                    <CellRenderer row={row} {...otherProps} />
                   ) : (
                     row[header.key]
                   )}

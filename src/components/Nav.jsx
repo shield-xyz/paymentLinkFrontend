@@ -3,7 +3,7 @@
 import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
-import SearchBar from './Searchbar';
+import SearchBar from './SearchBar';
 
 const Nav = ({ session }) => {
   return (

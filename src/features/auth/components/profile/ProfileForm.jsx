@@ -33,19 +33,33 @@ const MAX_FILE_SIZE = 5000000;
 export const ProfileSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
   password: z
-    .string()
-    .min(8, {
-      message: 'Password must be at least 8 characters long',
-    })
-    .max(60, {
-      message: 'Password must be at most 60 characters long',
-    })
-    .regex(/[A-Z]/, {
-      message: 'Password must contain at least 1 uppercase character',
-    })
-    .regex(/[!@#$%^&*]/, {
-      message: 'Password must contain at least 1 special character',
-    }),
+    .preprocess(
+      (input) => {
+        // Convert empty string to null
+        if (input === '') {
+          return null;
+        }
+        return input;
+      },
+      z.union([
+        z
+          .string()
+          .min(8, {
+            message: 'Password must be at least 8 characters long',
+          })
+          .max(60, {
+            message: 'Password must be at most 60 characters long',
+          })
+          .regex(/[A-Z]/, {
+            message: 'Password must contain at least 1 uppercase character',
+          })
+          .regex(/[!@#$%^&*]/, {
+            message: 'Password must contain at least 1 special character',
+          }),
+        z.literal(null),
+      ]),
+    )
+    .optional(),
   user_name: z.string().min(3, {
     message: 'Name must be at least 3 characters long',
   }),
@@ -79,6 +93,7 @@ export const ProfileForm = ({ session, userData }) => {
       user_name: userData.user_name,
       company: userData.company,
       logo: getLogoUrl(userData.logo),
+      password: null,
     },
   });
 
@@ -91,6 +106,8 @@ export const ProfileForm = ({ session, userData }) => {
   } = form;
 
   const values = getValues();
+
+  console.log({ values });
 
   async function downloadAndSetImageAsFile(imageUrl) {
     try {
@@ -126,9 +143,12 @@ export const ProfileForm = ({ session, userData }) => {
 
     const formData = new FormData();
     formData.append('email', email);
-    formData.append('password', password);
     formData.append('user_name', user_name);
     formData.append('company', company);
+
+    if (password) {
+      formData.append('password', password);
+    }
 
     if (logo) {
       formData.append('logo', logo[0]);
