@@ -8,7 +8,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
-import SearchBar from '@/components/SearchBar';
+import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -143,7 +143,7 @@ export function WithdrawalsTable({ withdrawals, assets }) {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-xl font-medium">Withdrawal History</h1>
           <div className="flex flex-wrap items-center gap-2">
-            <SearchBar
+            <Searchbar
               placeholder="Search by Date, Time, Status"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}

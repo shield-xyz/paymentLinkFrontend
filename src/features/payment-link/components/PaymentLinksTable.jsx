@@ -8,7 +8,7 @@ import { copyCode, getFinalPaymentLink } from '../utils';
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
-import SearchBar from '@/components/SearchBar';
+import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -159,7 +159,7 @@ export function PaymentLinksTable({ paymentLinks }) {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-xl font-medium">All Payment Links</h1>
           <div className="flex flex-wrap items-center gap-2">
-            <SearchBar
+            <Searchbar
               placeholder="Search by Date, Time, Status"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}

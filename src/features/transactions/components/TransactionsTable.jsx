@@ -7,7 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { CustomPagination, Icons } from '@/components';
 import CustomTable from '@/components/CustomTable';
-import SearchBar from '@/components/SearchBar';
+import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -169,7 +169,7 @@ export function TransactionsTable({ transactions, assets, networks }) {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-xl font-medium">Transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
-            <SearchBar
+            <Searchbar
               placeholder="Search by Network, Asset, Date"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
