@@ -49,20 +49,20 @@ const AvatarDropDown = ({ session }) => {
       <DropdownMenuTrigger asChild>
         <Image
           alt="Avatar"
-          src={`${session?.user?.logo || ''}`} // timestamp to force refresh on update
+          src={`${session?.user?.logo || ''}`}
           width={200}
           height={200}
-          className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input object-cover"
+          className="h-10 w-10 cursor-pointer overflow-hidden rounded-full border border-input object-cover text-xs"
         />
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56 rounded-xl">
         <DropdownMenuLabel className="flex items-center gap-2">
           <Image
             alt="Avatar"
-            src={`${session?.user?.logo || ''}`} // timestamp to force refresh on update
+            src={`${session?.user?.logo || ''}`}
             width={200}
             height={200}
-            className="h-10 w-10 cursor-pointer overflow-auto rounded-full border border-input object-cover"
+            className="h-10 w-10 cursor-pointer overflow-hidden rounded-full border border-input object-cover text-xs"
           />
           <div className="flex flex-col">
             <span className="text-sm font-semibold">

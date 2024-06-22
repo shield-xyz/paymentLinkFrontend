@@ -13,23 +13,24 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
+      const now = Date.now();
       if (user) {
+        // Initial login, setting up token details and last activity time
         token.id = user.id;
         token.email = user.email;
         token.name = user.name;
         token.accessToken = user.accessToken;
         token.logo = user.logo;
-      }
-
-      // When the user updates profile, we update the session data.
-      console.log({ trigger, session });
-      if (trigger === 'update' && session.updatedUser) {
+        token.lastActivity = now; // Store the current timestamp
+      } else if (trigger === 'update' && session.updatedUser) {
+        // Profile update, modifying token details and updating last activity time
         const updatedUser = session.updatedUser;
         const logo = getLogoUrl(updatedUser.logo);
         token.id = updatedUser.id;
         token.email = updatedUser.email;
         token.name = updatedUser.user_name;
         token.logo = logo;
+        token.lastActivity = now; // Update the current timestamp
       }
 
       return token;
@@ -42,6 +43,7 @@ export const authOptions = {
         session.user.logo = token.logo;
         session.accessToken = token.accessToken;
       }
+      console.log({ session });
       return session;
     },
   },
@@ -59,7 +61,6 @@ export const authOptions = {
       async authorize(credentials) {
         try {
           const user = await login(credentials);
-          console.log({ user });
           return user;
         } catch (error) {
           return null;
