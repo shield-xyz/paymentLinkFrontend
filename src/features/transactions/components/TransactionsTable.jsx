@@ -12,9 +12,8 @@ import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { copyCode } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -23,14 +22,9 @@ const headers = [
     className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
-    key: 'asset',
-    title: 'Asset',
-    className: 'px-2 min-w-[150px] font-light font-semibold',
-  },
-  {
     key: 'hash',
     title: 'Hash',
-    className: 'px-2 min-w-[220px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
     key: 'amount',
@@ -67,35 +61,20 @@ const cellRenderers = {
       </div>
     );
   },
-  asset: ({ row }) => {
-    const asset = row.asset;
-    return (
-      <div className="flex w-full items-center gap-5">
-        <Image
-          key={asset.assetId}
-          src={asset.logo}
-          alt={asset.name}
-          width={14}
-          height={14}
-        />
-        <span className="text-sm">{asset.name}</span>
-      </div>
-    );
-  },
   hash: ({ row }) => (
-    <span
-      className="flex max-w-[200px] items-center gap-1 font-light"
-      onClick={() => copyCode(row.hash, 'Hash copied to clipboard')}
-    >
-      <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
-        {row.hash}
+    <Link href={`${row.network.txView}${row.hash}`} target="_blank">
+      <span className="flex max-w-[150px] items-center gap-1 font-light">
+        <span className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
+          {`${row.hash.slice(0, 4)}...${row.hash.slice(-6)}`}
+        </span>
       </span>
-      <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />
-    </span>
+    </Link>
   ),
   amount: ({ row }) => {
     return (
-      <span className="font-light">{formatCurrency(row.amount || 0)}</span>
+      <span className="font-light">
+        {row.amount || 0} {row.asset.symbol}
+      </span>
     );
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,

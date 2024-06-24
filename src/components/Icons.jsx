@@ -11,6 +11,7 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  Link,
   Loader,
   Loader2,
   LoaderCircle,
@@ -57,6 +58,7 @@ export const Icons = {
   laptop: Laptop,
   search: Search,
   menu: Menu,
+  link: Link,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"
