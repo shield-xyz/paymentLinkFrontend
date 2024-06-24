@@ -21,7 +21,14 @@ const StepOne = ({ form, setStep }) => {
 
   const handleContinue = async () => {
     trigger(['user_name', 'email', 'company', 'logo']);
-    if (user_name && email && !errors.user_name && !errors.email) {
+    if (
+      user_name &&
+      email &&
+      !errors.user_name &&
+      !errors.email &&
+      !errors.company &&
+      !errors.logo
+    ) {
       setStep(2);
     }
   };
