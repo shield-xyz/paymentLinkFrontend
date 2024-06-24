@@ -2,34 +2,23 @@
 
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { postForgotPassword } from '../../actions';
 
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
-export const LoginSchema = z.object({
+export const ForgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),
-  password: z
-    .string()
-    .min(3, {
-      message: 'Password must be at least 3 characters long',
-    })
-    .max(60, {
-      message: 'Password must be at most 60 characters long',
-    }),
 });
 
-const LoginForm = () => {
-  const router = useRouter();
-
+const ForgotPasswordForm = () => {
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(ForgotPasswordSchema),
     mode: 'onChange',
   });
   const {
@@ -40,19 +29,14 @@ const LoginForm = () => {
 
   const onSubmit = async (data) => {
     try {
-      const result = await signIn('credentials', {
-        ...data,
-        redirect: false,
-      });
-
-      if (result?.error) {
-        throw new Error('Invalid credentials');
+      const res = await postForgotPassword({ email: data.email });
+      if (res.error) {
+        throw new Error(res.error);
       }
 
-      handleSubmissionSuccess('Logged in successfully');
-      router.push('/payment-links');
+      handleSubmissionSuccess('Recovery email sent successfully');
     } catch (error) {
-      handleSubmissionError(error, 'Could not login');
+      handleSubmissionError(error, 'Could sent recovery email');
     }
   };
 
@@ -79,19 +63,7 @@ const LoginForm = () => {
               <span className="text-sm text-destructive">{message}</span>
             )}
           />
-          <Input
-            autoComplete="current-password"
-            placeholder="Enter your password"
-            type="password"
-            {...register('password')}
-          />
-          <ErrorMessage
-            errors={errors}
-            name="password"
-            render={({ message }) => (
-              <span className="text-sm text-destructive">{message}</span>
-            )}
-          />
+
           <Button
             type="submit"
             variant="default"
@@ -99,29 +71,12 @@ const LoginForm = () => {
             isLoading={isSubmitting}
             disabled={isSubmitting}
           >
-            Login
+            Send Recovery Email
           </Button>
-          <span className="my-2 text-center text-sm text-muted-foreground">
-            <Link
-              className="text-blue-400 duration-300 hover:text-blue-500"
-              href="/forgot-password"
-            >
-              Forgot password?
-            </Link>
-          </span>
-          <span className="my-2 text-left text-sm text-muted-foreground">
-            Don&apos;t have an account?{' '}
-            <Link
-              className="text-blue-400 duration-300 hover:text-blue-500"
-              href="/register"
-            >
-              Sign up
-            </Link>
-          </span>
         </div>
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default ForgotPasswordForm;
