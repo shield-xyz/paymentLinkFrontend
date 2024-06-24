@@ -2,6 +2,7 @@
 
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -51,21 +52,29 @@ const headers = [
 const statusGroups = [{ label: 'All', value: 'all', filter: () => true }];
 
 const cellRenderers = {
-  network: ({ row, networks }) => {
-    const network = networks.find((network) => network._id === row.networkId);
-    return <span className="font-light">{network.name}</span>;
-  },
-  asset: ({ row, assets }) => {
-    const asset = Object.values(assets).find(
-      (asset) => asset._id === row.assetId,
-    );
-    let logoSrc = asset.logo;
+  network: ({ row }) => {
+    const network = row.network;
     return (
       <div className="flex w-full items-center gap-5">
-        <img
+        <Image
+          key={network.assetId}
+          src={network.logo}
+          alt={network.name}
+          width={14}
+          height={14}
+        />
+        <span className="text-sm">{network.name}</span>
+      </div>
+    );
+  },
+  asset: ({ row }) => {
+    const asset = row.asset;
+    return (
+      <div className="flex w-full items-center gap-5">
+        <Image
           key={asset.assetId}
-          src={logoSrc}
-          alt={asset.assetId}
+          src={asset.logo}
+          alt={asset.name}
           width={14}
           height={14}
         />
@@ -76,7 +85,7 @@ const cellRenderers = {
   hash: ({ row }) => (
     <span
       className="flex max-w-[200px] items-center gap-1 font-light"
-      onClick={() => copyCode(row.hash)}
+      onClick={() => copyCode(row.hash, 'Hash copied to clipboard')}
     >
       <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
         {row.hash}
@@ -96,21 +105,21 @@ const cellRenderers = {
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
 };
 
-export function TransactionsTable({ transactions, assets, networks }) {
+export function TransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
 
-  console.log({ transactions, assets, networks });
+  console.log({ transactions });
 
-  const assetsByAssetId = useMemo(
-    () =>
-      Object.values(assets).reduce((acc, asset) => {
-        acc[asset._id] = asset;
-        return acc;
-      }, {}),
-    [assets],
-  );
+  // const assetsByAssetId = useMemo(
+  //   () =>
+  //     Object.values(assets).reduce((acc, asset) => {
+  //       acc[asset._id] = asset;
+  //       return acc;
+  //     }, {}),
+  //   [assets],
+  // );
 
   const groupCounts = useMemo(
     () =>
@@ -135,18 +144,14 @@ export function TransactionsTable({ transactions, assets, networks }) {
           selectedTab === 'all' || transaction.status === selectedTab;
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
-        const assetName =
-          assetsByAssetId[transaction.assetId].name.toLowerCase();
-        const networkName = networks
-          .find((network) => network._id === transaction.networkId)
-          .name.toLowerCase();
+        // const assetName =
+        //   assetsByAssetId[transaction.assetId].name.toLowerCase();
+        // const networkName = networks
+        //   .find((network) => network._id === transaction.networkId)
+        //   .name.toLowerCase();
         return (
           matchesTab &&
-          (assetName.includes(lowercasedQuery) ||
-            networkName.includes(lowercasedQuery) ||
-            formatDate(transaction.date)
-              .toLowerCase()
-              .includes(lowercasedQuery))
+          formatDate(transaction.date).toLowerCase().includes(lowercasedQuery)
         );
       });
       setFilteredData(filteredLinks);
@@ -212,8 +217,6 @@ export function TransactionsTable({ transactions, assets, networks }) {
                 rows={currentData}
                 rowKey="_id"
                 cellRenderers={cellRenderers}
-                assets={assets}
-                networks={networks}
               />
             </TabsContent>
           ))}
