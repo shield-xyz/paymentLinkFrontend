@@ -5,12 +5,14 @@ import { Steps } from './Steps';
 import { StepTwo } from './StepTwo';
 import { useCreatePaymentLink } from '../../hooks';
 
-export const CreatePaymentLinkForm = ({ assets }) => {
+export const CreatePaymentLinkForm = ({ networks }) => {
   const { form, step, steps, onSubmit, link, handleSubmit } =
     useCreatePaymentLink();
 
+  console.log({ networks });
+
   const STEPS = {
-    1: <StepOne form={form} assets={assets} />,
+    1: <StepOne form={form} networks={networks} />,
     2: <StepTwo link={link} />,
   };
 

@@ -1,6 +1,6 @@
 import { toast } from 'sonner';
 
-import { handleSubmissionError } from '@/lib/utils';
+import { handleError } from '@/lib/utils';
 
 export const connectToTronLink = async () => {
   try {
@@ -13,8 +13,18 @@ export const connectToTronLink = async () => {
       method: 'tron_requestAccounts',
     });
 
-    while (!window.tronWeb.ready) {
+    const maxAttempts = 50;
+    let attempts = 0;
+
+    while (!window.tronWeb.ready && attempts < maxAttempts) {
       await new Promise((resolve) => setTimeout(resolve, 100));
+      attempts++;
+    }
+
+    if (attempts === maxAttempts) {
+      throw new Error(
+        'TronWeb is not ready. Please check your TronLink extension.',
+      );
     }
 
     if (user.code === 200) {
@@ -22,7 +32,6 @@ export const connectToTronLink = async () => {
       const address = tronWebInstance.defaultAddress.base58;
       const nodeInfo = await tronWebInstance.trx.getNodeInfo();
       const network = nodeInfo.configNodeInfo.network_id;
-      console.log(network, nodeInfo, 'network nodeinfo');
 
       return {
         tronWeb: tronWebInstance,
@@ -33,6 +42,6 @@ export const connectToTronLink = async () => {
       return { tronWeb: null, address: null };
     }
   } catch (error) {
-    handleSubmissionError(error, 'Error connecting to TronLink');
+    handleError(error);
   }
 };

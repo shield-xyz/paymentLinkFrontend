@@ -6,65 +6,59 @@ import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { CustomPagination, Icons } from '@/components';
-import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { copyCode } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
-import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
+import { formatCurrency, formatDate } from '@/lib/utils';
 
 const headers = [
   {
+    key: 'network',
+    title: 'Network',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
     key: 'asset',
     title: 'Asset',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
+    key: 'hash',
+    title: 'Hash',
+    className: 'px-2 min-w-[220px] font-light font-semibold',
   },
   {
     key: 'amount',
     title: 'Amount',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
+  },
+  {
+    key: 'linkPaymentId',
+    title: 'Payment ID',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'date',
     title: 'Date',
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
-  {
-    key: 'status',
-    title: 'Status',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
-  },
 ];
 
-const statusGroups = [
-  { label: 'All', value: 'all', filter: () => true },
-  {
-    label: 'Paid',
-    value: PAYMENT_STATUSES.Paid,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Paid,
-  },
-  {
-    label: 'Pending',
-    value: PAYMENT_STATUSES.Pending,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Pending,
-  },
-  {
-    label: 'Paused',
-    value: PAYMENT_STATUSES.Paused,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Paused,
-  },
-  {
-    label: 'Expired',
-    value: PAYMENT_STATUSES.Expired,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Expired,
-  },
-];
+const statusGroups = [{ label: 'All', value: 'all', filter: () => true }];
 
 const cellRenderers = {
+  network: ({ row, networks }) => {
+    const network = networks.find((network) => network._id === row.networkId);
+    return <span className="font-light">{network.name}</span>;
+  },
   asset: ({ row, assets }) => {
-    const asset = assets[row.assetId];
+    const asset = Object.values(assets).find(
+      (asset) => asset._id === row.assetId,
+    );
     let logoSrc = asset.logo;
     return (
       <div className="flex w-full items-center gap-5">
@@ -79,28 +73,52 @@ const cellRenderers = {
       </div>
     );
   },
+  hash: ({ row }) => (
+    <span
+      className="flex max-w-[200px] items-center gap-1 font-light"
+      onClick={() => copyCode(row.hash)}
+    >
+      <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
+        {row.hash}
+      </span>
+      <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />
+    </span>
+  ),
   amount: ({ row }) => {
     return (
       <span className="font-light">{formatCurrency(row.amount || 0)}</span>
     );
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
-  status: ({ row }) => <Badge variant={row.status}>{row.status}</Badge>,
+  linkPaymentId: ({ row }) => (
+    <span className="font-light">{row.linkPaymentId || '-'}</span>
+  ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
 };
 
-export function WithdrawalsTable({ withdrawals, assets }) {
+export function TransactionsTable({ transactions, assets, networks }) {
   const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState(withdrawals);
+  const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
+
+  console.log({ transactions, assets, networks });
+
+  const assetsByAssetId = useMemo(
+    () =>
+      Object.values(assets).reduce((acc, asset) => {
+        acc[asset._id] = asset;
+        return acc;
+      }, {}),
+    [assets],
+  );
 
   const groupCounts = useMemo(
     () =>
       statusGroups.map((group) => ({
         ...group,
-        count: withdrawals.filter(group.filter).length,
+        count: transactions.filter(group.filter).length,
       })),
-    [withdrawals],
+    [transactions],
   );
 
   const itemsPerPage = 5;
@@ -112,22 +130,30 @@ export function WithdrawalsTable({ withdrawals, assets }) {
 
   useEffect(() => {
     const filterData = () => {
-      const filteredLinks = withdrawals.filter((withdrawal) => {
+      const filteredLinks = transactions.filter((transaction) => {
         const matchesTab =
-          selectedTab === 'all' || withdrawal.status === selectedTab;
+          selectedTab === 'all' || transaction.status === selectedTab;
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
+        const assetName =
+          assetsByAssetId[transaction.assetId].name.toLowerCase();
+        const networkName = networks
+          .find((network) => network._id === transaction.networkId)
+          .name.toLowerCase();
         return (
           matchesTab &&
-          (withdrawal.status.toLowerCase().includes(lowercasedQuery) ||
-            formatDate(withdrawal.date).toLowerCase().includes(lowercasedQuery))
+          (assetName.includes(lowercasedQuery) ||
+            networkName.includes(lowercasedQuery) ||
+            formatDate(transaction.date)
+              .toLowerCase()
+              .includes(lowercasedQuery))
         );
       });
       setFilteredData(filteredLinks);
     };
 
     filterData();
-  }, [withdrawals, searchQuery, selectedTab]);
+  }, [transactions, searchQuery, selectedTab]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -141,10 +167,10 @@ export function WithdrawalsTable({ withdrawals, assets }) {
     <div className="flex h-full flex-col gap-2">
       <Container className="flex h-full w-full flex-col px-6 py-8">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <h1 className="text-xl font-medium">Withdrawal History</h1>
+          <h1 className="text-xl font-medium">Transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
             <Searchbar
-              placeholder="Search by Date, Time, Status"
+              placeholder="Search by Network, Asset, Date"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
               value={searchQuery}
@@ -153,9 +179,9 @@ export function WithdrawalsTable({ withdrawals, assets }) {
               <Icons.filter className="h-5 text-gray-500" />
               Filter
             </Button>
-            <Link href="/create-payment-withdrawal">
+            <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
-                Create payment withdrawal
+                Create payment link
               </Button>
             </Link>
           </div>
@@ -167,7 +193,7 @@ export function WithdrawalsTable({ withdrawals, assets }) {
         >
           <TabsList className="mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
-              <TabsTrigger value={group.value} key={group.value}>
+              <TabsTrigger value={group.value} key={group.value + 'tab'}>
                 {group.label}{' '}
                 <span className="ml-1 text-muted-foreground">
                   ({group.count})
@@ -187,6 +213,7 @@ export function WithdrawalsTable({ withdrawals, assets }) {
                 rowKey="_id"
                 cellRenderers={cellRenderers}
                 assets={assets}
+                networks={networks}
               />
             </TabsContent>
           ))}

@@ -3,7 +3,7 @@
 import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
-import SearchBar from './Searchbar';
+import Searchbar from './Searchbar';
 
 const Nav = ({ session }) => {
   return (
@@ -17,7 +17,7 @@ const Nav = ({ session }) => {
       <MobileSidebar />
       <div className="m-auto flex h-20 w-full items-center justify-between gap-4 px-4 pr-8 lg:pl-[calc(320px+2rem)]">
         <div className="hidden lg:flex">
-          <SearchBar />
+          <Searchbar />
         </div>
         <div className="ml-auto flex items-center gap-8">
           <div className="relative hidden xs:flex">

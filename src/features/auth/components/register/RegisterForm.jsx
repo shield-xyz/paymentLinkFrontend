@@ -43,10 +43,7 @@ export const RegisterSchema = z
       .regex(/[!@#$%^&*]/, {
         message: 'Password must contain at least 1 special character',
       }),
-    passwordConfirm: z
-      .string()
-      .min(3, { message: 'Password must be at least 3 characters long' })
-      .max(60, { message: 'Password must be at most 60 characters long' }),
+    passwordConfirm: z.string(),
     description: z
       .string()
       .min(10, { message: 'Description must be at least 10 characters long' })
@@ -77,7 +74,7 @@ const RegisterForm = () => {
 
   const form = useForm({
     resolver: zodResolver(RegisterSchema),
-    mode: 'onChange',
+    mode: 'onSubmit',
   });
   const { handleSubmit } = form;
 

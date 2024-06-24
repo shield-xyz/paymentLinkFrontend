@@ -100,14 +100,14 @@ export const MobileSidebar = () => {
             );
           })}
         </div>
-        <div className="mt-auto px-8">
+        {/* <div className="mt-auto px-8">
           <div className="flex w-full items-center gap-2 border-t border-gray-200 py-4">
             <Icons.help2 className="h-5 w-5 stroke-gray-300" />
             <span className="text-sm text-gray-400">
               Help & getting started
             </span>
           </div>
-        </div>
+        </div> */}
       </div>
     </>
   );
