@@ -2,57 +2,71 @@
 
 import { ErrorMessage } from '@hookform/error-message';
 import { zodResolver } from '@hookform/resolvers/zod';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+
+import { resetPassword } from '../../actions';
 
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
-export const LoginSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email' }),
-  password: z
-    .string()
-    .min(3, {
-      message: 'Password must be at least 3 characters long',
-    })
-    .max(60, {
-      message: 'Password must be at most 60 characters long',
-    }),
-});
+export const ResetSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, {
+        message: 'Password must be at least 8 characters long',
+      })
+      .max(60, {
+        message: 'Password must be at most 60 characters long',
+      })
+      .regex(/[A-Z]/, {
+        message: 'Password must contain at least 1 uppercase character',
+      })
+      .regex(/[!@#$%^&*]/, {
+        message: 'Password must contain at least 1 special character',
+      }),
+    passwordConfirm: z.string(),
+  })
+  .refine((data) => data.password === data.passwordConfirm, {
+    message: 'Passwords do not match',
+    path: ['passwordConfirm'],
+  });
 
-const LoginForm = () => {
+const ResetPasswordForm = ({ resetToken }) => {
   const router = useRouter();
 
   const form = useForm({
-    resolver: zodResolver(LoginSchema),
+    resolver: zodResolver(ResetSchema),
     mode: 'onChange',
   });
   const {
     handleSubmit,
     formState: { errors, isSubmitting },
     register,
+    getValues,
   } = form;
+
+  const { password } = getValues();
 
   const onSubmit = async (data) => {
     try {
-      const result = await signIn('credentials', {
-        ...data,
-        redirect: false,
+      const res = await resetPassword({
+        password: data.password,
+        resetToken,
       });
 
-      if (result?.error) {
-        throw new Error('Invalid credentials');
+      if (res?.error) {
+        throw new Error(res.error);
       }
 
-      handleSubmissionSuccess('Logged in successfully');
-      router.push('/payment-links');
+      handleSubmissionSuccess('Password reset successfully');
+      router.push('/login');
     } catch (error) {
-      handleSubmissionError(error, 'Could not login');
+      handleSubmissionError(error, 'Error resetting password');
     }
   };
 
@@ -64,24 +78,13 @@ const LoginForm = () => {
             <div className="rounded-lg bg-black/5 p-1">
               <Icons.logo className="scale-75" />
             </div>
-            <span className="mb-2 mt-5 text-2xl font-bold">Get started</span>
+            <span className="mb-2 mt-5 text-2xl font-bold">
+              Password Recovery
+            </span>
           </div>
           <Input
-            autoComplete="username"
-            autoFocus
-            placeholder="Enter your email address"
-            {...register('email')}
-          />
-          <ErrorMessage
-            errors={errors}
-            name="email"
-            render={({ message }) => (
-              <span className="text-sm text-destructive">{message}</span>
-            )}
-          />
-          <Input
-            autoComplete="current-password"
-            placeholder="Enter your password"
+            autoComplete="new-password"
+            placeholder="New password"
             type="password"
             {...register('password')}
           />
@@ -92,36 +95,35 @@ const LoginForm = () => {
               <span className="text-sm text-destructive">{message}</span>
             )}
           />
+          <Input
+            autoComplete="new-password"
+            placeholder="Confirm password"
+            type="password"
+            {...register('passwordConfirm', {
+              validate: (value) =>
+                value === password || 'The passwords do not match',
+            })}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="passwordConfirm"
+            render={({ message }) => (
+              <span className="text-sm text-destructive">{message}</span>
+            )}
+          />
           <Button
-            type="submit"
-            variant="default"
             className="mt-2 py-3 text-sm font-medium tracking-wider"
             isLoading={isSubmitting}
+            type="submit"
+            variant="default"
             disabled={isSubmitting}
           >
-            Login
+            Reset Password
           </Button>
-          <span className="my-2 text-center text-sm text-muted-foreground">
-            <Link
-              className="text-blue-400 duration-300 hover:text-blue-500"
-              href="/forgot-password"
-            >
-              Forgot password?
-            </Link>
-          </span>
         </div>
-        <span className="px-4 py-4 text-left text-sm text-muted-foreground">
-          Don&apos;t have an account?{' '}
-          <Link
-            className="text-blue-400 duration-300 hover:text-blue-500"
-            href="/register"
-          >
-            Sign up
-          </Link>
-        </span>
       </form>
     </div>
   );
 };
 
-export default LoginForm;
+export default ResetPasswordForm;

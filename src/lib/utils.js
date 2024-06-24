@@ -111,7 +111,7 @@ export async function validateResponse(response, defaultMessage) {
   if (!response.ok) {
     const data = await parseResponse(response);
     console.error('error data:', data);
-    const message = data?.data?.response || defaultMessage;
+    let message = data?.data?.response || data.message || defaultMessage;
     throw new Error(message);
   } else {
     const res = await parseResponse(response);

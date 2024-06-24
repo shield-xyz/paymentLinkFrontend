@@ -30,6 +30,7 @@ const ForgotPasswordForm = () => {
   const onSubmit = async (data) => {
     try {
       const res = await postForgotPassword({ email: data.email });
+
       if (res.error) {
         throw new Error(res.error);
       }
