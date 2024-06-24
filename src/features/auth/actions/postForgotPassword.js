@@ -13,11 +13,9 @@ export async function postForgotPassword({ email }) {
           'Content-Type': 'application/json',
         },
         method: 'POST',
-        body: email,
+        body: JSON.stringify({ email }),
       },
     );
-
-    console.log({ res });
 
     const data = await validateResponse(res, 'Error sending recovery email');
 

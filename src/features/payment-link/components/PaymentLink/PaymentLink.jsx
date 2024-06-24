@@ -7,8 +7,9 @@ import { LogoIcon } from '@/assets';
 import { formatCrypto, getLogoUrl } from '@/lib/utils';
 
 export const PaymentLink = ({ paymentLinkData }) => {
-  const { merchant, amount, token, name, description } = paymentLinkData;
-  const { logo, company } = merchant;
+  const { user, amount, token, name, description } = paymentLinkData;
+  console.log({ paymentLinkData });
+  const { logo, company } = user || {};
 
   const logoImage = getLogoUrl(logo);
 
