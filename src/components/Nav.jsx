@@ -21,8 +21,8 @@ const Nav = ({ session }) => {
         </div>
         <div className="ml-auto flex items-center gap-8">
           <div className="relative hidden xs:flex">
-            <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
-            <Icons.message className="h-6 text-gray-500" />
+            {/* <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
+            <Icons.message className="h-6 text-gray-500" /> */}
           </div>
           <div className="relative hidden xs:flex">
             <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
