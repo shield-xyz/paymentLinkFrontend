@@ -153,7 +153,7 @@ export function WithdrawalsTable({ withdrawals, assets }) {
               <Icons.filter className="h-5 text-gray-500" />
               Filter
             </Button>
-            <Link href="/create-payment-withdrawal">
+            <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment withdrawal
               </Button>
