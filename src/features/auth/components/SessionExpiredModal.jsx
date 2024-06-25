@@ -27,7 +27,7 @@ export const SessionExpiredModal = ({ isExpired }) => {
       className="flex max-w-[95vw] flex-col items-center justify-center rounded-3xl p-6 backdrop-blur-md sm:max-w-sm"
       withBackdrop
     >
-      <div className="text-center tracking-tighter">
+      <div className="text-center">
         <Icons.logo className="m-auto mb-6 h-12 w-12" />
         <p>Session expired due to inactivity</p>
         <p>Please log in again</p>

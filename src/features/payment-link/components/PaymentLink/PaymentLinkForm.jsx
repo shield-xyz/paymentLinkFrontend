@@ -11,7 +11,6 @@ export const PaymentLinkForm = ({ paymentLinkData }) => {
     handleSubmit,
     tronWeb,
     connectToTron,
-    handlePayment,
     isLoadingConnection,
     isLoadingPayment,
   } = usePaymentLink({ paymentLinkData });
@@ -20,14 +19,13 @@ export const PaymentLinkForm = ({ paymentLinkData }) => {
     <div className="mx-auto flex  w-full flex-col gap-4 py-24 ">
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <StepOne form={form} />
+        <StepTwo
+          tronWeb={tronWeb}
+          connectToTron={connectToTron}
+          isLoadingConnection={isLoadingConnection}
+          isLoadingPayment={isLoadingPayment}
+        />
       </form>
-      <StepTwo
-        tronWeb={tronWeb}
-        connectToTron={connectToTron}
-        handlePayment={handlePayment}
-        isLoadingConnection={isLoadingConnection}
-        isLoadingPayment={isLoadingPayment}
-      />
     </div>
   );
 };

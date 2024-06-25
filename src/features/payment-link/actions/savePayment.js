@@ -3,8 +3,21 @@
 import { env } from '@/config';
 import { handleError, validateResponse } from '@/lib/utils';
 
-export async function savePayment({ id, hash }) {
+export async function savePayment({ id, hash, assetId, email, name }) {
   try {
+    let payload = {
+      hash,
+      assetId,
+    };
+
+    if (email && name) {
+      payload = {
+        ...payload,
+        email,
+        name,
+      };
+    }
+
     const res = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/save/${id}`,
       {
@@ -12,7 +25,7 @@ export async function savePayment({ id, hash }) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ hash }),
+        body: JSON.stringify(payload),
       },
     );
 

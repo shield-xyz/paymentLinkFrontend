@@ -72,12 +72,12 @@ const PaymentLinkFooter = () => {
         <span className="mr-2 hidden font-light text-muted-foreground lg:flex">
           Powered by
         </span>
-        <div className="mr-1 flex h-11 w-11 items-center justify-center rounded-md bg-black/5">
+        <div className="mr-1.5 flex h-11 w-11 items-center justify-center rounded-md bg-black/5">
           <LogoIcon className="scale-[0.5]" />
         </div>
         <span className="font-bold tracking-tight text-primary">Shield</span>
       </div>
-      <div className="flex items-center gap-2 text-xxs font-light text-muted-foreground lg:gap-4 lg:text-sm">
+      <div className="flex items-center gap-2 text-xxs font-light text-muted-foreground sm:text-xs lg:gap-4 lg:text-sm">
         <Link href="/status">Status</Link>
         <span>&bull;</span>
         <Link href="/terms">Terms</Link>
