@@ -12,13 +12,23 @@ export const sendTRC20 = async ({
   id,
   email,
   name,
+  assetId,
 }) => {
   if (!tronWeb) {
     toast.error('TronWeb instance is required');
     return;
   }
 
-  console.log({ tronWeb, contractAddress, toAddress, amount, id, name, email });
+  console.log({
+    tronWeb,
+    contractAddress,
+    toAddress,
+    amount,
+    id,
+    name,
+    email,
+    assetId,
+  });
 
   try {
     toast.info('Waiting for the transaction...', {
@@ -33,6 +43,7 @@ export const sendTRC20 = async ({
     await savePayment({
       id,
       hash,
+      assetId,
       email,
       name,
     });

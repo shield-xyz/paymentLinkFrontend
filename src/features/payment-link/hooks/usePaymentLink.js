@@ -78,6 +78,8 @@ export const usePaymentLink = ({ paymentLinkData }) => {
 
   console.log(getValues());
 
+  console.log({ paymentLinkData });
+
   const onSubmit = async (data) => {
     try {
       setIsLoadingPayment(true);
@@ -110,6 +112,7 @@ export const usePaymentLink = ({ paymentLinkData }) => {
         id: paymentLinkData.id,
         email: data.email,
         name: data.name,
+        assetId: paymentLinkData.assetId,
       });
 
       router.refresh();
