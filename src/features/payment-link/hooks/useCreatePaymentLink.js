@@ -26,6 +26,7 @@ export const CreatePaymentLinkSchema = z.object({
   token: z
     .string({ message: 'Currency is required' })
     .min(3, { message: 'Currency must be at least 3 characters long' }),
+  assetId: z.string(),
 });
 
 export const useCreatePaymentLink = () => {
