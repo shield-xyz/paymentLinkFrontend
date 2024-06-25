@@ -42,16 +42,12 @@ export const StepOne = ({ form, networks }) => {
   };
 
   const handleSelectNetwork = (network) => {
-    if (network.name !== 'Tron') {
-      toast.error('Only Tron is supported for now');
-      return;
-    }
     setNetworkSelected(network);
   };
 
   const handleSelectAsset = (asset) => {
-    if (asset.symbol !== 'USDT') {
-      toast.error('Only USDT is supported for now');
+    if (!asset.active) {
+      toast.error('This currency is not available for payments yet');
       return;
     }
     setAssetSelected(asset);
@@ -62,7 +58,10 @@ export const StepOne = ({ form, networks }) => {
     setNetworkSelected(null);
     setAssetSelected(null);
     handleSelectToken(null);
+    setValue('amount', null);
   };
+
+  console.log({ assetSelected });
 
   return (
     <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">
@@ -110,7 +109,7 @@ export const StepOne = ({ form, networks }) => {
             Settlement networks & currencies
           </span>
         </div>
-        <div className="flex w-full flex-col gap-2 py-2">
+        <div className="flex w-full flex-col gap-1 py-2">
           {!networkSelected ? (
             networks.map((network) => (
               <Network
@@ -154,13 +153,24 @@ export const StepOne = ({ form, networks }) => {
 
       <div className="relative">
         <Input
-          placeholder="0.00"
+          placeholder={`0.${'0'.repeat(assetSelected?.decimals - 1)}0`}
           type="number"
           label="Price"
-          step="0.01"
+          step={`0.${'0'.repeat(assetSelected?.decimals - 1)}1`}
           disabled={!token}
           title={!token ? 'Please select a network and currency' : ''}
           {...register('amount')}
+          onInvalid={(e) => {
+            if (e.target.validity.stepMismatch) {
+              e.target.setCustomValidity(
+                `Please enter a value with up to ${assetSelected?.decimals} decimal places for ${assetSelected?.symbol}`,
+              );
+            }
+          }}
+          onChange={(e) => {
+            // Reset custom validity message to allow for natural form validation afterwards
+            e.target.setCustomValidity('');
+          }}
         />
         <span className="absolute bottom-[11px] right-10 text-xs font-semibold">
           {assetSelected?.symbol}
@@ -190,36 +200,46 @@ export const StepOne = ({ form, networks }) => {
 
 const Network = ({ network, handleSelectNetwork, networkSelected }) => {
   return (
-    <div
-      key={network.id}
-      className={cn(
-        'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 duration-100 hover:bg-gray-100 active:bg-gray-200',
-        {
-          'bg-gray-100': networkSelected?._id === network._id,
-        },
-      )}
-      onClick={() => handleSelectNetwork(network)}
+    <Button
+      type="button"
+      variant="ghost"
+      key={network.networkId}
+      className={cn('flex items-center justify-start gap-2', {
+        'bg-gray-100': networkSelected?._id === network._id,
+      })}
+      onClick={(e) => {
+        e.preventDefault();
+        handleSelectNetwork(network);
+      }}
     >
       <Image src={network.logo} alt={network.name} width={14} height={14} />
       <span className="text-sm">{network.name}</span>
-    </div>
+    </Button>
   );
 };
 
 const Asset = ({ asset, handleSelectAsset, token }) => {
   return (
-    <div
+    <Button
+      type="button"
+      variant="ghost"
       key={asset.assetId}
-      className={cn(
-        'flex cursor-pointer items-center gap-2 rounded-md px-2 py-1.5 duration-100 hover:bg-gray-100 active:bg-gray-200',
-        {
-          'bg-gray-100': token === asset.symbol,
-        },
-      )}
-      onClick={() => handleSelectAsset(asset)}
+      className={cn('flex items-center justify-start gap-2', {
+        'bg-gray-100': token === asset.symbol,
+      })}
+      disabled={!asset.active}
+      onClick={(e) => {
+        e.preventDefault();
+        handleSelectAsset(asset);
+      }}
     >
       <Image src={asset.logo} alt={asset.name} width={14} height={14} />
       <span className="text-sm">{asset.name}</span>
-    </div>
+      {!asset.active && (
+        <span className="ml-auto text-xs font-light tracking-tight text-muted-foreground">
+          Coming soon
+        </span>
+      )}
+    </Button>
   );
 };

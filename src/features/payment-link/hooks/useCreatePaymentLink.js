@@ -18,11 +18,9 @@ export const CreatePaymentLinkSchema = z.object({
     .string()
     .min(3, { message: 'Name must be at least 3 characters long' }),
   description: z.string().optional(),
-  amount: z.coerce
-    .number({
-      message: 'Amount is required',
-    })
-    .min(1, { message: 'Amount must be at least 1' }),
+  amount: z.coerce.number({
+    message: 'Amount is required',
+  }),
   token: z
     .string({ message: 'Currency is required' })
     .min(3, { message: 'Currency must be at least 3 characters long' }),

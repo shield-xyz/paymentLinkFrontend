@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { PaymentLinkForm } from './PaymentLinkForm';
 
 import { LogoIcon } from '@/assets';
-import { formatCrypto, getLogoUrl } from '@/lib/utils';
+import { getLogoUrl } from '@/lib/utils';
 
 export const PaymentLink = ({ paymentLinkData }) => {
   const { user, amount, token, name, description } = paymentLinkData || {};
@@ -27,7 +27,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
         </div>
         <div className="mb-10 border-b pb-5">
           <span className="min-w-fit text-5xl font-extrabold tracking-tighter lg:text-5xl">
-            {formatCrypto(amount, 2)} {token}
+            {amount} {token}
           </span>
         </div>
         <div>
@@ -40,26 +40,26 @@ export const PaymentLink = ({ paymentLinkData }) => {
                 1x {name} - {description}
               </span>
               <span className="w-fit min-w-fit tracking-tighter">
-                {formatCrypto(amount, 2)} {token}
+                {amount} {token}
               </span>
             </div>
             <div className="flex w-full items-center justify-between py-6 text-sm">
               <span className="text-sm font-semibold">Total</span>
               <span className="font-semibold tracking-tighter">
-                {formatCrypto(amount, 2)} {token}
+                {amount} {token}
               </span>
             </div>
           </div>
         </div>
         <div className="mt-auto hidden w-full lg:flex">
-          <PaymentLinkFooter />
+          <PaymentLinkFooter key="footer-1" />
         </div>
       </div>
       <div className="h-full bg-background sm:basis-1/2">
         <PaymentLinkForm paymentLinkData={paymentLinkData} />
       </div>
       <div className="w-full py-4 lg:hidden">
-        <PaymentLinkFooter />
+        <PaymentLinkFooter key="footer-2" />
       </div>
     </div>
   );
