@@ -23,7 +23,7 @@ export const PaymentLink = ({ paymentLinkData }) => {
             height={100}
             className="h-14 w-14 overflow-auto rounded-md object-cover"
           />
-          <h1>{company}</h1>``
+          <h1>{company}</h1>
         </div>
         <div className="mb-10 border-b pb-5">
           <span className="min-w-fit text-5xl font-extrabold tracking-tighter lg:text-5xl">
