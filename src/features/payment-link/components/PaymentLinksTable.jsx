@@ -14,6 +14,7 @@ import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
 import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
+import FilterDropDown from '@/components/FilterDropDown';
 
 const headers = [
   {
@@ -153,6 +154,8 @@ export function PaymentLinksTable({ paymentLinks }) {
     setSelectedTab(tab);
   };
 
+  const handleOpenFilter = () => {};
+
   return (
     <div className="flex h-full flex-col gap-2">
       <Container className="flex h-full w-full flex-col px-6 py-8">
@@ -165,10 +168,14 @@ export function PaymentLinksTable({ paymentLinks }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Button variant="outline" className="gap-2 font-light" size="sm">
+            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
               Filter
-            </Button>
+            </Button> */}
+            <FilterDropDown
+              setFilteredData={setFilteredData}
+              selectedTab={selectedTab}
+            />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment link
