@@ -26,9 +26,13 @@ export const RegisterSchema = z
   .object({
     user_name: z
       .string()
+      .min(1, { message: 'Name is required' })
       .min(3, { message: 'Name must be at least 3 characters long' })
       .max(60, { message: 'Name must be at most 60 characters long' }),
-    email: z.string().email({ message: 'Please enter a valid email' }),
+    email: z
+      .string()
+      .min(1, { message: 'Email is required' })
+      .email({ message: 'Please enter a valid email' }),
     password: z
       .string()
       .min(8, {
@@ -50,16 +54,23 @@ export const RegisterSchema = z
       .optional(),
     logo: z
       .any()
+      .optional() // Make it optional to allow checking for undefined explicitly
+      .refine((file) => file[0] !== undefined, {
+        message: 'Logo is required.',
+      })
       .refine(
-        (file) => file[0]?.size <= MAX_FILE_SIZE,
+        (file) => file && file[0]?.size <= MAX_FILE_SIZE,
         `Max image size is 5MB.`,
       )
       .refine(
-        (file) => ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-        'Only .jpg, .jpeg, .png and .webp formats are supported.',
+        (file) => file && ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+        'Only .jpg, .jpeg, .png, and .webp formats are supported.',
       ),
     company: z
-      .string()
+      .string({
+        message: 'Company name is required',
+      })
+      .min(1, { message: 'Company name is required' })
       .min(3, { message: 'Company name must be at least 3 characters long' })
       .optional(),
   })
@@ -74,7 +85,7 @@ const RegisterForm = () => {
 
   const form = useForm({
     resolver: zodResolver(RegisterSchema),
-    mode: 'onSubmit',
+    mode: 'onTouched',
   });
   const { handleSubmit } = form;
 
