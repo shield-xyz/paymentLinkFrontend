@@ -1,16 +1,18 @@
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-  DropdownMenuPortal,
-  DropdownMenuCheckboxItem,
-  DropdownMenuSeparator,
-} from './ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { Icons } from '@/components';
 import { useEffect, useState } from 'react';
 
-const FilterDropDown = ({ setFilteredData, selectedTab }) => {
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuPortal,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from './ui/dropdown-menu';
+
+import { Icons } from '@/components';
+import { Button } from '@/components/ui/button';
+
+const FilterDropDown = ({ setFilteredData }) => {
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState('');
 

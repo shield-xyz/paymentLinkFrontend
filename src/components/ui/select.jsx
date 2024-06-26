@@ -1,12 +1,18 @@
 import * as Select from '@radix-ui/react-select';
 import { forwardRef } from 'react';
+
 import { cn } from '@/lib/utils';
 
 const SelectRoot = Select.Root;
+
 const SelectPortal = Select.Portal;
+
 const SelectValue = Select.Value;
+
 const SelectGroup = Select.Group;
+
 const SelectSeparator = Select.Separator;
+
 const SelectScrollDownButton = Select.ScrollDownButton;
 
 const SelectTrigger = forwardRef(({ children, className, ...props }, ref) => {
