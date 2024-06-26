@@ -8,6 +8,7 @@ import { copyCode, getFinalPaymentLink } from '../utils';
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
+import FilterDropDown from '@/components/FilterDropDown';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
@@ -165,10 +166,14 @@ export function PaymentLinksTable({ paymentLinks }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Button variant="outline" className="gap-2 font-light" size="sm">
+            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
               Filter
-            </Button>
+            </Button> */}
+            <FilterDropDown
+              setFilteredData={setFilteredData}
+              selectedTab={selectedTab}
+            />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment link
