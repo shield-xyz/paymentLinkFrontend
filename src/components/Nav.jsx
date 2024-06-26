@@ -1,15 +1,16 @@
 'use client';
 
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
+
 import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
-import { useEffect } from 'react';
-import io from 'socket.io-client';
 
 const Nav = ({ session }) => {
   useEffect(() => {
     if (session?.user?.id) {
-      let userId =session?.user?.id;
+      let userId = session?.user?.id;
       const socket = io('http://localhost:9000');
 
       // Unirse a la sala del usuario
