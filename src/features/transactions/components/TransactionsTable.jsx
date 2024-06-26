@@ -6,7 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
-import { CustomPagination, Icons } from '@/components';
+import { CustomPagination } from '@/components';
 import CustomTable from '@/components/CustomTable';
 import FilterDropDown from '@/components/FilterDropDown';
 import Searchbar from '@/components/Searchbar';
