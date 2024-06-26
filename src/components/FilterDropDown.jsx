@@ -111,24 +111,3 @@ const FilterDropDown = ({ setFilteredData, selectedTab }) => {
 };
 
 export default FilterDropDown;
-
-{
-  /* <SelectRoot>
-<SelectTrigger aria-label="currency">
-    <SelectValue placeholder="Select currency" />
-</SelectTrigger>
-<SelectPortal>
-    <SelectContent>
-    <SelectScrollUpButton>
-    </SelectScrollUpButton>
-    <SelectViewport>
-        <SelectGroup>
-        <SelectItem value="apple">USDT</SelectItem>
-        <SelectItem value="apple">Currency 2</SelectItem>
-        <SelectItem value="apple">Currency 3</SelectItem>
-        </SelectGroup>
-    </SelectViewport>
-    </SelectContent>
-</SelectPortal>
-</SelectRoot> */
-}
