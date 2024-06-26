@@ -4,33 +4,32 @@ import {
   DropdownMenuTrigger,
   DropdownMenuPortal,
   DropdownMenuCheckboxItem,
-  DropdownMenuSeparator
+  DropdownMenuSeparator,
 } from './ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components';
 import { useEffect, useState } from 'react';
 
-
 const FilterDropDown = ({ setFilteredData, selectedTab }) => {
   const [selectedFilter, setSelectedFilter] = useState('');
-  const [selectedOrder, setSelectedOrder] = useState("")
+  const [selectedOrder, setSelectedOrder] = useState('');
 
   const handleApplyFilter = () => {
     setFilteredData((prev) => {
-      const filteredData = [...prev]
-      if (selectedFilter === "amount") {
-        if (selectedOrder === "ascending") {
-          return filteredData.sort((a, b) => a.amount - b.amount)
+      const filteredData = [...prev];
+      if (selectedFilter === 'amount') {
+        if (selectedOrder === 'ascending') {
+          return filteredData.sort((a, b) => a.amount - b.amount);
         } else {
-          return filteredData.sort((a, b) => b.amount - a.amount)
+          return filteredData.sort((a, b) => b.amount - a.amount);
         }
       }
 
-      if (selectedFilter === "date") {
-        if (selectedOrder === "ascending") {
-          return filteredData.sort((a, b) => a.date - b.date)
+      if (selectedFilter === 'date') {
+        if (selectedOrder === 'ascending') {
+          return filteredData.sort((a, b) => a.date - b.date);
         } else {
-          return filteredData.sort((a, b) => b.date - a.date)
+          return filteredData.sort((a, b) => b.date - a.date);
         }
       }
     });
@@ -42,8 +41,8 @@ const FilterDropDown = ({ setFilteredData, selectedTab }) => {
     } else {
       setSelectedFilter('');
     }
-    if (selectedOrder === "") {
-      setSelectedOrder("ascending")
+    if (selectedOrder === '') {
+      setSelectedOrder('ascending');
     }
   };
 
@@ -56,9 +55,8 @@ const FilterDropDown = ({ setFilteredData, selectedTab }) => {
   };
 
   useEffect(() => {
-    handleApplyFilter()
-  }, [selectedFilter, selectedOrder])
-
+    handleApplyFilter();
+  }, [selectedFilter, selectedOrder]);
 
   return (
     <DropdownMenu>
@@ -89,32 +87,33 @@ const FilterDropDown = ({ setFilteredData, selectedTab }) => {
           <DropdownMenuSeparator />
 
           <DropdownMenuCheckboxItem
-              className="DropdownMenuCheckboxItem"
-              checked={selectedOrder === "ascending"}
-              onCheckedChange={status => handleActivateOrderFilter(status, "ascending")}
-            >
-              Ascending
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuCheckboxItem
-              className="DropdownMenuCheckboxItem"
-              checked={selectedOrder === "descending"}
-              onCheckedChange={status => handleActivateOrderFilter(status, "descending")}
-            >
-              Descending
-            </DropdownMenuCheckboxItem>
-          
+            className="DropdownMenuCheckboxItem"
+            checked={selectedOrder === 'ascending'}
+            onCheckedChange={(status) =>
+              handleActivateOrderFilter(status, 'ascending')
+            }
+          >
+            Ascending
+          </DropdownMenuCheckboxItem>
+          <DropdownMenuCheckboxItem
+            className="DropdownMenuCheckboxItem"
+            checked={selectedOrder === 'descending'}
+            onCheckedChange={(status) =>
+              handleActivateOrderFilter(status, 'descending')
+            }
+          >
+            Descending
+          </DropdownMenuCheckboxItem>
         </DropdownMenuContent>
-        
       </DropdownMenuPortal>
-      
     </DropdownMenu>
   );
 };
 
 export default FilterDropDown;
 
-
-{/* <SelectRoot>
+{
+  /* <SelectRoot>
 <SelectTrigger aria-label="currency">
     <SelectValue placeholder="Select currency" />
 </SelectTrigger>
@@ -131,4 +130,5 @@ export default FilterDropDown;
     </SelectViewport>
     </SelectContent>
 </SelectPortal>
-</SelectRoot> */}
+</SelectRoot> */
+}
