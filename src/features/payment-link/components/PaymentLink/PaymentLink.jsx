@@ -1,19 +1,19 @@
-"use client";
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import { PaymentLinkForm } from './PaymentLinkForm';
 
 import { LogoIcon } from '@/assets';
-import { getLogoUrl } from '@/lib/utils';
 import MetaMaskConnection from '@/components/MetaMaskConnection';
+import { getLogoUrl } from '@/lib/utils';
 
 export const PaymentLink = ({ paymentLinkData }) => {
   const { user, amount, token, name, description } = paymentLinkData || {};
   const { logo, company } = user || {};
 
   const logoImage = getLogoUrl(logo);
-  console.log(paymentLinkData)
+  console.log(paymentLinkData);
   return (
     <div className="flex h-screen min-h-screen flex-col bg-background p-5 lg:flex-row">
       <div className="flex h-full flex-col bg-muted px-4 py-6 sm:basis-1/2 sm:px-20">
@@ -58,14 +58,12 @@ export const PaymentLink = ({ paymentLinkData }) => {
         </div>
       </div>
       <div className="h-full bg-background sm:basis-1/2">
-        {
-          (paymentLinkData?.assetId == "tron") &&
+        {paymentLinkData?.assetId == 'tron' && (
           <PaymentLinkForm paymentLinkData={paymentLinkData} />
-        }
-         {
-          (paymentLinkData?.assetId.includes("ethereum")) &&
+        )}
+        {paymentLinkData?.assetId.includes('ethereum') && (
           <MetaMaskConnection />
-        }
+        )}
       </div>
       <div className="w-full py-4 lg:hidden">
         <PaymentLinkFooter key="footer-2" />
