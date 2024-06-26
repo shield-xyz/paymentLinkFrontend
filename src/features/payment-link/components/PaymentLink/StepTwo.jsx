@@ -9,7 +9,6 @@ export const StepTwo = ({
   isLoadingPayment,
   tronWeb,
   connectToTron,
-  handlePayment,
 }) => {
   return (
     <div className="flex flex-col items-center">
@@ -36,8 +35,8 @@ export const StepTwo = ({
           <Button
             variant="outline"
             size="sm"
+            type="submit"
             className="flex justify-between rounded-lg px-5 py-7 text-base font-semibold text-primary"
-            onClick={handlePayment}
             disabled={!tronWeb || isLoadingPayment}
           >
             Wallet Transfer

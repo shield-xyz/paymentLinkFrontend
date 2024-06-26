@@ -4,9 +4,10 @@ import Container from './ui/container';
 
 import { Withdraw } from '@/features/withdrawals';
 
-const Balance = () => {
+const Balance = ({ balances }) => {
+  console.log({ balances });
   return (
-    <Container>
+    <Container className="p-4 xl:p-0">
       <div className="px-5 pt-5">
         <span className="mb-2 flex items-center gap-4 text-xl font-medium">
           Total Balance <Icons.chevronRight />

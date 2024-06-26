@@ -18,10 +18,13 @@ export const CreatePaymentLinkSchema = z.object({
     .string()
     .min(3, { message: 'Name must be at least 3 characters long' }),
   description: z.string().optional(),
-  amount: z.coerce.number().min(1, { message: 'Amount must be at least 1' }),
+  amount: z.coerce.number({
+    message: 'Amount is required',
+  }),
   token: z
-    .string()
-    .min(3, { message: 'Token must be at least 3 characters long' }),
+    .string({ message: 'Currency is required' })
+    .min(3, { message: 'Currency must be at least 3 characters long' }),
+  assetId: z.string(),
 });
 
 export const useCreatePaymentLink = () => {
@@ -33,7 +36,7 @@ export const useCreatePaymentLink = () => {
     resolver: zodResolver(CreatePaymentLinkSchema),
     mode: 'onChange',
     defaultValues: {
-      token: 'USDT',
+      token: null,
       id: null,
     },
   });

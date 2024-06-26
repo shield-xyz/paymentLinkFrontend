@@ -31,7 +31,7 @@ export const StepTwo = ({ link }) => {
           </div>
           <div
             className="group mt-4 flex h-12 w-full items-center rounded-md border bg-background px-4"
-            onClick={() => copyCode(link)}
+            onClick={() => copyCode(link, 'Link copied to clipboard')}
           >
             <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
               {link}

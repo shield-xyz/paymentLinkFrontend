@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  ArrowLeft,
   ArrowRight,
   BarChart2,
   Check,
@@ -11,6 +12,7 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  Link,
   Loader,
   Loader2,
   LoaderCircle,
@@ -49,6 +51,7 @@ export const Icons = {
   warning: AlertTriangle,
   user: User,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   sparkles: Sparkles,
   help: HelpCircle,
   pizza: Pizza,
@@ -57,6 +60,7 @@ export const Icons = {
   laptop: Laptop,
   search: Search,
   menu: Menu,
+  link: Link,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"

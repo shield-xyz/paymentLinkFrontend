@@ -25,12 +25,39 @@ const steps = [
   },
 ];
 
-export const PaymentSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email' }),
-  name: z
-    .string()
-    .min(3, { message: 'Name must be at least 3 characters long' }),
-});
+export const PaymentSchema = z
+  .object({
+    email: z
+      .string()
+      .optional()
+      .refine(
+        (val) => val === '' || z.string().email().safeParse(val).success,
+        {
+          message: 'Please enter a valid email',
+        },
+      ),
+    name: z
+      .string()
+      .optional()
+      .refine((val) => val === '' || z.string().min(3).safeParse(val).success, {
+        message: 'Name must be at least 3 characters long',
+      }),
+  })
+  .superRefine((data, ctx) => {
+    const hasEmail = data.email !== undefined && data.email !== '';
+    const hasName = data.name !== undefined && data.name !== '';
+    if (hasEmail && !hasName) {
+      ctx.addIssue({
+        path: ['name'],
+        message: 'Name is required',
+      });
+    } else if (hasName && !hasEmail) {
+      ctx.addIssue({
+        path: ['email'],
+        message: 'Email is required',
+      });
+    }
+  });
 
 export const usePaymentLink = ({ paymentLinkData }) => {
   const { data: session } = useSession();
@@ -47,13 +74,53 @@ export const usePaymentLink = ({ paymentLinkData }) => {
     resolver: zodResolver(PaymentSchema),
     mode: 'onChange',
   });
-  const { handleSubmit } = form;
+  const { handleSubmit, getValues } = form;
+
+  console.log(getValues());
+
+  console.log({ paymentLinkData });
 
   const onSubmit = async (data) => {
     try {
-      console.log({ data });
+      setIsLoadingPayment(true);
+      const recipient = env.NEXT_PUBLIC_WALLET;
+      const tokenID = env.NEXT_PUBLIC_TOKEN_USDT; // TODO: change by paymentLinkData.tokenAddress
+
+      const amount = paymentLinkData.amount;
+
+      let address = tronAddress;
+      let isReady = isTronReady;
+      let tronWebInstance = tronWeb;
+
+      if (!tronWebInstance || !isReady) {
+        const res = await connectToTron();
+        address = res.address;
+        tronWebInstance = res.tronWeb;
+        isReady = res.tronWeb.ready;
+      }
+
+      await addWallet({
+        id: paymentLinkData.id,
+        wallet: address,
+      });
+
+      await sendTRC20({
+        tronWeb: tronWebInstance,
+        contractAddress: tokenID,
+        toAddress: recipient,
+        amount: parseAmountToDecimals(amount, 6),
+        id: paymentLinkData.id,
+        email: data.email,
+        name: data.name,
+        assetId: paymentLinkData.assetId,
+      });
+
+      router.refresh();
     } catch (error) {
-      handleSubmissionError(error, 'Could save Personal information');
+      console.error('Transaction failed:', error);
+      toast.error('Transaction failed:', error);
+    } finally {
+      setIsLoadingPayment(false);
     }
   };
 
@@ -86,46 +153,6 @@ export const usePaymentLink = ({ paymentLinkData }) => {
     }
   };
 
-  const handlePayment = async () => {
-    try {
-      setIsLoadingPayment(true);
-      const recipient = env.NEXT_PUBLIC_WALLET;
-      const tokenID = env.NEXT_PUBLIC_TOKEN_USDT; // TODO: change by paymentLinkData.tokenAddress
-
-      const amount = paymentLinkData.amount;
-
-      let address = tronAddress;
-      let isReady = isTronReady;
-      let tronWebInstance = tronWeb;
-
-      if (!tronWebInstance || !isReady) {
-        const res = await connectToTron();
-        address = res.address;
-        tronWebInstance = res.tronWeb;
-        isReady = res.tronWeb.ready;
-      }
-
-      await addWallet({
-        id: paymentLinkData.id,
-        wallet: address,
-      });
-      await sendTRC20(
-        tronWebInstance,
-        tokenID,
-        recipient,
-        parseAmountToDecimals(amount, 6),
-        paymentLinkData.id,
-      );
-
-      router.refresh();
-    } catch (error) {
-      console.error('Transaction failed:', error);
-      toast.error('Transaction failed:', error);
-    } finally {
-      setIsLoadingPayment(false);
-    }
-  };
-
   return {
     steps,
     form,
@@ -134,7 +161,6 @@ export const usePaymentLink = ({ paymentLinkData }) => {
     fetchPaymentLinks,
     connectToTron,
     tronWeb,
-    handlePayment,
     isLoadingConnection,
     isLoadingPayment,
   };

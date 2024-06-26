@@ -1,16 +1,16 @@
 'use server';
 
 import { env } from '@/config';
+import { getServerAuthSession } from '@/lib/auth';
 import { fetchWithToken, validateResponse } from '@/lib/utils';
 
-export async function getBalance(token) {
+export async function getBalances() {
   try {
-    if (!token) {
-      throw new Error('No token provided');
-    }
+    const session = await getServerAuthSession();
+
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/balances`,
-      token,
+      session?.accessToken,
       {
         method: 'GET',
       },
