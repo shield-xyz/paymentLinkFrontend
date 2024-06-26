@@ -1,7 +1,9 @@
 // components/MetaMaskConnection.js
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useEffect, useState } from 'react';
+
 import { Web3 } from 'web3';
+
 
 const MetaMaskConnection = () => {
   const [account, setAccount] = useState(null);
@@ -62,7 +64,10 @@ const MetaMaskConnection = () => {
   };
 
   // Reload the page when the chain is changed
+
   const handleChainChanged = () => {
+
+
     window.location.reload();
   };
 
