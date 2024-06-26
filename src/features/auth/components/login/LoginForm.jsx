@@ -14,9 +14,13 @@ import { Input } from '@/components/ui/input';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
 export const LoginSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email' }),
+  email: z
+    .string()
+    .min(1, { message: 'Email is required' })
+    .email({ message: 'Please enter a valid email' }),
   password: z
     .string()
+    .min(1, { message: 'Password is required' })
     .min(3, {
       message: 'Password must be at least 3 characters long',
     })
@@ -30,7 +34,7 @@ const LoginForm = () => {
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
-    mode: 'onChange',
+    mode: 'onTouch',
   });
   const {
     handleSubmit,
