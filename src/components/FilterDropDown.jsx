@@ -1,32 +1,38 @@
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-    DropdownMenuPortal,
-    DropdownMenuCheckboxItem,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+  DropdownMenuPortal,
+  DropdownMenuCheckboxItem,
+  DropdownMenuSeparator
 } from './ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 
 const FilterDropDown = ({ setFilteredData, selectedTab }) => {
   const [selectedFilter, setSelectedFilter] = useState('');
+  const [selectedOrder, setSelectedOrder] = useState("")
 
   const handleApplyFilter = () => {
     setFilteredData((prev) => {
-      const result = prev.filter((link) => {
-        const matchesTab = selectedTab === 'all' || link.status === selectedTab;
-        if (!searchQuery && matchesTab) return true;
-        const lowercasedQuery = searchQuery.toLowerCase();
-        return (
-          matchesTab &&
-          (link.name.toLowerCase().includes(lowercasedQuery) ||
-            link.status.toLowerCase().includes(lowercasedQuery) ||
-            formatDate(link.date).toLowerCase().includes(lowercasedQuery))
-        );
-      });
+      const filteredData = [...prev]
+      if (selectedFilter === "amount") {
+        if (selectedOrder === "ascending") {
+          return filteredData.sort((a, b) => a.amount - b.amount)
+        } else {
+          return filteredData.sort((a, b) => b.amount - a.amount)
+        }
+      }
 
-      return result;
+      if (selectedFilter === "date") {
+        if (selectedOrder === "ascending") {
+          return filteredData.sort((a, b) => a.date - b.date)
+        } else {
+          return filteredData.sort((a, b) => b.date - a.date)
+        }
+      }
     });
   };
 
@@ -36,7 +42,23 @@ const FilterDropDown = ({ setFilteredData, selectedTab }) => {
     } else {
       setSelectedFilter('');
     }
+    if (selectedOrder === "") {
+      setSelectedOrder("ascending")
+    }
   };
+
+  const handleActivateOrderFilter = (status, inputName) => {
+    if (status) {
+      setSelectedOrder(inputName);
+    } else {
+      setSelectedOrder('');
+    }
+  };
+
+  useEffect(() => {
+    handleApplyFilter()
+  }, [selectedFilter, selectedOrder])
+
 
   return (
     <DropdownMenu>
@@ -63,13 +85,23 @@ const FilterDropDown = ({ setFilteredData, selectedTab }) => {
           >
             Sort by Date
           </DropdownMenuCheckboxItem>
-          {/* <DropdownMenuCheckboxItem
+
+          <DropdownMenuSeparator />
+
+          <DropdownMenuCheckboxItem
               className="DropdownMenuCheckboxItem"
-              checked={activeFilters.includes("currency")}
-              onCheckedChange={status => handleActivateFilter(status, "currency")}
+              checked={selectedOrder === "ascending"}
+              onCheckedChange={status => handleActivateOrderFilter(status, "ascending")}
             >
-              Sort by Currency
-            </DropdownMenuCheckboxItem> */}
+              Ascending
+            </DropdownMenuCheckboxItem>
+            <DropdownMenuCheckboxItem
+              className="DropdownMenuCheckboxItem"
+              checked={selectedOrder === "descending"}
+              onCheckedChange={status => handleActivateOrderFilter(status, "descending")}
+            >
+              Descending
+            </DropdownMenuCheckboxItem>
           
         </DropdownMenuContent>
         

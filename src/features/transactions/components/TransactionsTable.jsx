@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { copyCode } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
 import { formatCurrency, formatDate } from '@/lib/utils';
+import FilterDropDown from '@/components/FilterDropDown';
 
 const headers = [
   {
@@ -175,10 +176,14 @@ export function TransactionsTable({ transactions, assets, networks }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Button variant="outline" className="gap-2 font-light" size="sm">
+            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
               Filter
-            </Button>
+            </Button> */}
+            <FilterDropDown
+              setFilteredData={setFilteredData}
+              selectedTab={selectedTab}
+            />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment link
