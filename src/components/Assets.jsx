@@ -38,7 +38,10 @@ const Assets = ({ balances }) => {
               <div className="flex flex-col items-end">
                 <div className="flex items-center gap-2 text-sm font-medium">
                   <span className="text-xs text-gray-400">
-                    {asset.balanceUSD} USD
+                    {!isNaN(balance.usdValue)
+                      ? balance.amount * balance.usdValue
+                      : 0}{' '}
+                    USD
                   </span>
                   <span>
                     ${balance.amount} {asset.symbol}
