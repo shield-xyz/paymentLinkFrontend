@@ -605,12 +605,12 @@ export const Icons = {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={19}
-      height={21}
+      width={47}
+      height={53}
       fill="none"
       {...props}
     >
-      <path fill="url(#a)" d="M.232.028h18.094V20.25H.232z" />
+      <path fill="url(#a)" d="M.133.711h46.16v51.59H.133z" />
       <defs>
         <pattern
           id="a"

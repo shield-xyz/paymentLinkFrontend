@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { PaymentLinkForm } from './PaymentLinkForm';
 
 import { LogoIcon } from '@/assets';
-import { formatAmount, getLogoUrl } from '@/lib/utils';
+import { cn, formatAmount, getLogoUrl } from '@/lib/utils';
 
 export const PaymentLink = ({ paymentLinkData, userWallet }) => {
   const { user, amount, token, name, description, status, asset } =
@@ -89,7 +89,11 @@ const PaymentLinkFooter = () => {
         <span className="mr-2 hidden font-light text-muted-foreground lg:flex">
           Powered by
         </span>
-        <div className="mr-1.5 flex h-11 w-11 items-center justify-center rounded-md bg-black/5">
+        <div
+          className={cn(
+            'mr-1.5 flex h-11 w-11 items-center justify-center rounded-md bg-black/5',
+          )}
+        >
           <LogoIcon className="scale-[0.5]" />
         </div>
         <span className="font-bold tracking-tight text-primary">Shield</span>
