@@ -26,13 +26,17 @@ export const useManualPayment = () => {
     });
     if (paymentHash) {
       try {
-        await savePayment({
+        const res = await savePayment({
           id,
           hash: paymentHash,
           assetId,
           email,
           name,
         });
+
+        if (res.error) {
+          throw new Error(res.error);
+        }
 
         return paymentHash;
       } catch (error) {

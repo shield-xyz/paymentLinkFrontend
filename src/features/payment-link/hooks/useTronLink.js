@@ -1,3 +1,5 @@
+'use client';
+
 import { useState } from 'react';
 import { toast } from 'sonner';
 
@@ -94,13 +96,17 @@ export const useTronLink = () => {
       const contract = await tronWeb.contract().at(contractAddress);
       const hash = await contract.transfer(toAddress, amount).send();
 
-      await savePayment({
+      const res = await savePayment({
         id,
         hash,
         assetId,
         email,
         name,
       });
+
+      if (res.error) {
+        throw new Error(res.error);
+      }
 
       return hash;
     } catch (error) {

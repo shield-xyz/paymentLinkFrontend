@@ -1,7 +1,7 @@
 'use server';
 
 import { env } from '@/config';
-import { handleError, validateResponse } from '@/lib/utils';
+import { handleReturnError, validateResponse } from '@/lib/utils';
 
 export async function savePayment({ id, hash, assetId, email, name }) {
   try {
@@ -42,6 +42,6 @@ export async function savePayment({ id, hash, assetId, email, name }) {
 
     return data;
   } catch (error) {
-    handleError(error, 'Error saving payment');
+    handleReturnError(error, 'Error saving payment');
   }
 }

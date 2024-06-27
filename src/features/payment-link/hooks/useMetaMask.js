@@ -1,3 +1,5 @@
+'use client';
+
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useState } from 'react';
 import { toast } from 'sonner';
@@ -151,13 +153,17 @@ export const useMetaMask = () => {
 
         console.log({ result });
 
-        await savePayment({
+        const res = await savePayment({
           id,
           hash: result.transactionHash,
           assetId,
           email,
           name,
         });
+
+        if (res.error) {
+          throw new Error(res.error);
+        }
 
         console.log('Transfer successful:', result);
         return result.transactionHash;
