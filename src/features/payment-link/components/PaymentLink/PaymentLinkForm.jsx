@@ -4,26 +4,26 @@ import { StepOne } from './StepOne';
 import { StepTwo } from './StepTwo';
 import { usePaymentLink } from '../../hooks';
 
-export const PaymentLinkForm = ({ paymentLinkData }) => {
+export const PaymentLinkForm = ({ paymentLinkData, userWallet }) => {
   const {
     form,
-    onSubmit,
+    handleConnection,
     handleSubmit,
-    tronWeb,
-    connectToTron,
     isLoadingConnection,
     isLoadingPayment,
-  } = usePaymentLink({ paymentLinkData });
+    isReady,
+    onSubmit,
+  } = usePaymentLink({ paymentLinkData, userWallet });
 
   return (
     <div className="mx-auto flex w-full flex-col gap-4 py-24 ">
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
         <StepOne form={form} />
         <StepTwo
-          tronWeb={tronWeb}
-          connectToTron={connectToTron}
+          onConnectWallet={handleConnection}
           isLoadingConnection={isLoadingConnection}
           isLoadingPayment={isLoadingPayment}
+          isReady={isReady}
         />
       </form>
     </div>

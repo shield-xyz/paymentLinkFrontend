@@ -166,8 +166,7 @@ export const PAYMENT_DESCRIPTIONS = {
 };
 
 export const getLogoUrl = (url) => {
-  const now = new Date().getTime();
-  return `${env.NEXT_PUBLIC_API_URL}/${url}?now=${now}`;
+  return `${env.NEXT_PUBLIC_API_URL}/${url}`;
 };
 
 export const downloadImage = async (imageUrl, imageName = undefined) => {

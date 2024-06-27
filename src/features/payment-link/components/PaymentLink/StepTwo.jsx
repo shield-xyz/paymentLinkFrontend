@@ -5,10 +5,10 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 
 export const StepTwo = ({
+  onConnectWallet,
   isLoadingConnection,
   isLoadingPayment,
-  tronWeb,
-  connectToTron,
+  isReady,
 }) => {
   return (
     <div className="flex flex-col items-center">
@@ -19,11 +19,12 @@ export const StepTwo = ({
             <span>Payment Method</span>
           </div>
           <Button
-            variant="outline"
-            size="sm"
             className="flex justify-between rounded-lg px-5 py-7 text-base font-semibold text-primary"
-            disabled={tronWeb || isLoadingConnection}
-            onClick={connectToTron}
+            disabled={isReady || isLoadingConnection}
+            onClick={onConnectWallet}
+            size="sm"
+            type="button"
+            variant="outline"
           >
             Connect Wallet
             {isLoadingConnection ? (
@@ -33,11 +34,11 @@ export const StepTwo = ({
             )}
           </Button>
           <Button
-            variant="outline"
+            className="flex justify-between rounded-lg px-5 py-7 text-base font-semibold text-primary"
+            disabled={!isReady || isLoadingPayment}
             size="sm"
             type="submit"
-            className="flex justify-between rounded-lg px-5 py-7 text-base font-semibold text-primary"
-            disabled={!tronWeb || isLoadingPayment}
+            variant="outline"
           >
             Wallet Transfer
             {isLoadingPayment ? (

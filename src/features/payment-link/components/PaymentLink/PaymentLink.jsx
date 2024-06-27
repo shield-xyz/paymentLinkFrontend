@@ -5,15 +5,18 @@ import Link from 'next/link';
 import { PaymentLinkForm } from './PaymentLinkForm';
 
 import { LogoIcon } from '@/assets';
-import MetaMaskConnection from '@/components/MetaMaskConnection';
 import { getLogoUrl } from '@/lib/utils';
 
-export const PaymentLink = ({ paymentLinkData }) => {
-  const { user, amount, token, name, description } = paymentLinkData || {};
+export const PaymentLink = ({ paymentLinkData, userWallet }) => {
+  const { user, amount, token, name, description, status } =
+    paymentLinkData || {};
   const { logo, company } = user || {};
+
+  const isPaid = status === 'paid';
 
   const logoImage = getLogoUrl(logo);
   console.log(paymentLinkData);
+
   return (
     <div className="flex h-screen min-h-screen flex-col bg-background p-5 lg:flex-row">
       <div className="flex h-full flex-col bg-muted px-4 py-6 sm:basis-1/2 sm:px-20">
@@ -58,11 +61,17 @@ export const PaymentLink = ({ paymentLinkData }) => {
         </div>
       </div>
       <div className="h-full bg-background sm:basis-1/2">
-        {paymentLinkData?.assetId == 'tron' && (
-          <PaymentLinkForm paymentLinkData={paymentLinkData} />
-        )}
-        {paymentLinkData?.assetId.includes('ethereum') && (
-          <MetaMaskConnection />
+        {isPaid ? (
+          <div className="flex h-full flex-col items-center justify-center">
+            <span className="text-3xl font-bold text-primary">
+              Payment successful
+            </span>
+          </div>
+        ) : (
+          <PaymentLinkForm
+            paymentLinkData={paymentLinkData}
+            userWallet={userWallet}
+          />
         )}
       </div>
       <div className="w-full py-4 lg:hidden">

@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
 
 const variants = {
-  primary: 'bg-primary/10 text-primary-foreground',
+  primary: 'bg-success/10 text-success',
   secondary: 'bg-secondary/10 text-secondary-foreground',
   success: 'bg-success/10 text-success',
   danger: 'bg-danger/10 text-danger-foreground',
@@ -10,7 +10,7 @@ const variants = {
 };
 
 const inverseVariants = {
-  primary: 'bg-primary-foreground text-primary',
+  primary: 'bg-success text-success',
   secondary: 'bg-secondary-foreground text-secondary',
   success: 'bg-success text-success',
   danger: 'bg-danger-foreground text-danger',

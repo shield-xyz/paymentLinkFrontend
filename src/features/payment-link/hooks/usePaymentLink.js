@@ -2,16 +2,14 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { addWallet, fetchLinks } from '../actions';
-import { connectToTronLink, sendTRC20 } from '../services';
+import { useMetaMask } from './useMetaMask';
+import { useTronLink } from './useTronLink';
+import { addWallet } from '../actions';
 
-import { env } from '@/config';
 import { handleSubmissionError, parseAmountToDecimals } from '@/lib/utils';
 
 const steps = [
@@ -59,109 +57,119 @@ export const PaymentSchema = z
     }
   });
 
-export const usePaymentLink = ({ paymentLinkData }) => {
-  const { data: session } = useSession();
-
-  const [tronWeb, setTronWeb] = useState(null);
-  const [tronAddress, setTronAddress] = useState(null);
-  const [isTronReady, setIsTronReady] = useState(false);
-  const [isLoadingConnection, setIsLoadingConnection] = useState(false);
+export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
-
   const router = useRouter();
+
+  console.log({ userWallet });
+
+  const {
+    address: tronAddress,
+    connectToTron,
+    isReady: isTronReady,
+    isTronLinkLoading,
+    tronWeb,
+    handleTronLinkTransfer,
+  } = useTronLink();
+
+  const {
+    account: metaMaskAccount,
+    connectToMetaMask,
+    handleMetaMaskTransfer,
+    isMetaMaskConnected,
+    isMetaMaskLoading,
+  } = useMetaMask();
+
+  const isEthereum = paymentLinkData?.assetId.includes('ethereum');
+  const isTron = paymentLinkData?.assetId == 'usdt-tron';
+
+  console.log({ isEthereum, isTron });
 
   const form = useForm({
     resolver: zodResolver(PaymentSchema),
-    mode: 'onChange',
+    mode: 'onTouch',
   });
-  const { handleSubmit, getValues } = form;
-
-  console.log(getValues());
+  const { handleSubmit } = form;
 
   console.log({ paymentLinkData });
 
   const onSubmit = async (data) => {
     try {
+      console.log('submiting', data);
       setIsLoadingPayment(true);
-      const recipient = env.NEXT_PUBLIC_WALLET;
-      const tokenID = env.NEXT_PUBLIC_TOKEN_USDT; // TODO: change by paymentLinkData.tokenAddress
 
       const amount = paymentLinkData.amount;
 
-      let address = tronAddress;
-      let isReady = isTronReady;
-      let tronWebInstance = tronWeb;
+      if (isTron) {
+        await addWallet({
+          id: paymentLinkData.id,
+          wallet: tronAddress,
+        });
 
-      if (!tronWebInstance || !isReady) {
-        const res = await connectToTron();
-        address = res.address;
-        tronWebInstance = res.tronWeb;
-        isReady = res.tronWeb.ready;
+        await handleTronLinkTransfer({
+          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
+          assetId: paymentLinkData.assetId,
+          contractAddress: paymentLinkData.asset.address,
+          email: data.email,
+          id: paymentLinkData.id,
+          name: data.name,
+          toAddress: userWallet.address,
+          tronWeb: tronWeb,
+        });
+      } else if (isEthereum) {
+        await addWallet({
+          id: paymentLinkData.id,
+          wallet: metaMaskAccount,
+        });
+
+        await handleMetaMaskTransfer({
+          account: metaMaskAccount,
+          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
+          assetId: paymentLinkData.assetId,
+          email: data.email,
+          id: paymentLinkData.id,
+          name: data.name,
+          toAddress: userWallet.address,
+          tokenAddress: paymentLinkData.asset.address,
+        });
+      } else {
+        throw new Error('Invalid asset');
       }
-
-      await addWallet({
-        id: paymentLinkData.id,
-        wallet: address,
-      });
-
-      await sendTRC20({
-        tronWeb: tronWebInstance,
-        contractAddress: tokenID,
-        toAddress: recipient,
-        amount: parseAmountToDecimals(amount, 6),
-        id: paymentLinkData.id,
-        email: data.email,
-        name: data.name,
-        assetId: paymentLinkData.assetId,
-      });
-
-      router.refresh();
     } catch (error) {
       console.error('Transaction failed:', error);
-      toast.error('Transaction failed:', error);
+      handleSubmissionError(error, 'Transaction failed');
     } finally {
-      setIsLoadingPayment(false);
+      router.refresh();
+      setTimeout(() => {
+        setIsLoadingPayment(false);
+      }, 1000);
     }
   };
 
-  const fetchPaymentLinks = async () => {
-    if (session?.accessToken) {
-      const data = await fetchLinks(session.accessToken);
-      return data;
-    }
-    return [];
-  };
-
-  const connectToTron = async () => {
+  const handleConnection = async () => {
     try {
-      setIsLoadingConnection(true);
-      const res = await connectToTronLink();
-      console.log({ res });
-      if (res?.tronWeb) {
-        setTronWeb(res.tronWeb);
-        setTronAddress(res.address);
-        setIsTronReady(res.tronWeb.ready);
-        toast.success('Connected to TronLink');
-        return res;
-      } else {
-        throw new Error('Error connecting to TronLink');
+      if (isEthereum) {
+        await connectToMetaMask();
+      } else if (isTron) {
+        await connectToTron();
       }
     } catch (error) {
-      handleSubmissionError(error, 'Error connecting to TronLink');
-    } finally {
-      setIsLoadingConnection(false);
+      console.log({ error });
+      handleSubmissionError(error, 'Error connecting wallet');
     }
   };
 
+  const isLoadingConnection = isTronLinkLoading || isMetaMaskLoading;
+  const isReady = isTronReady || isMetaMaskConnected;
+
   return {
-    steps,
     form,
-    onSubmit,
+    handleConnection,
     handleSubmit,
-    fetchPaymentLinks,
-    connectToTron,
-    tronWeb,
     isLoadingConnection,
     isLoadingPayment,
+    isReady,
+    onSubmit,
+    steps,
   };
 };

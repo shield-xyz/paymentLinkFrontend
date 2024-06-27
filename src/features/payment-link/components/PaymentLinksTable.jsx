@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
-import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
+import { PAYMENT_STATUSES, formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -80,9 +80,7 @@ const cellRenderers = {
     </div>
   ),
   amount: ({ row }) => {
-    return (
-      <span className="font-light">{formatCurrency(row.amount || 0)}</span>
-    );
+    return <span className="font-light">{row.amount || 0}</span>;
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
   status: ({ row }) => <Badge variant={row.status}>{row.status}</Badge>,
