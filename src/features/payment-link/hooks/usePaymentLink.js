@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { useManualPayment } from './useManualPayment';
 import { useMetaMask } from './useMetaMask';
 import { useTronLink } from './useTronLink';
 import { addWallet } from '../actions';
@@ -40,10 +41,13 @@ export const PaymentSchema = z
       .refine((val) => val === '' || z.string().min(3).safeParse(val).success, {
         message: 'Name must be at least 3 characters long',
       }),
+    paymentHash: z.string().optional(),
+    isManualPayment: z.boolean().optional(),
   })
   .superRefine((data, ctx) => {
     const hasEmail = data.email !== undefined && data.email !== '';
     const hasName = data.name !== undefined && data.name !== '';
+    const isManual = data.isManualPayment;
     if (hasEmail && !hasName) {
       ctx.addIssue({
         path: ['name'],
@@ -54,6 +58,11 @@ export const PaymentSchema = z
         path: ['email'],
         message: 'Email is required',
       });
+    } else if (isManual && (!data.paymentHash || data.paymentHash === '')) {
+      ctx.addIssue({
+        path: ['paymentHash'],
+        message: 'Payment hash is required',
+      });
     }
   });
 
@@ -62,6 +71,7 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const router = useRouter();
 
   console.log({ userWallet });
+  console.log({ paymentLinkData });
 
   const {
     address: tronAddress,
@@ -80,22 +90,39 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
     isMetaMaskLoading,
   } = useMetaMask();
 
+  const { handleManualTransfer } = useManualPayment();
+
   const isEthereum = paymentLinkData?.assetId.includes('ethereum');
+  const isReady = isTronReady || isMetaMaskConnected;
   const isTron = paymentLinkData?.assetId == 'usdt-tron';
+
+  const isManualPayment = !isEthereum && !isTron;
+  const isLoadingConnection = isTronLinkLoading || isMetaMaskLoading;
 
   console.log({ isEthereum, isTron });
 
   const form = useForm({
     resolver: zodResolver(PaymentSchema),
     mode: 'onTouch',
+    defaultValues: {
+      email: '',
+      name: '',
+      paymentHash: '',
+      isManualPayment,
+    },
   });
-  const { handleSubmit } = form;
+  const {
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = form;
 
-  console.log({ paymentLinkData });
+  const values = getValues();
+  console.log({ values });
+  console.log({ errors });
 
   const onSubmit = async (data) => {
     try {
-      console.log('submiting', data);
       setIsLoadingPayment(true);
 
       const amount = paymentLinkData.amount;
@@ -132,6 +159,23 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
           toAddress: userWallet.address,
           tokenAddress: paymentLinkData.asset.address,
         });
+      } else if (isManualPayment) {
+        // await addWallet({
+        //   id: paymentLinkData.id,
+        //   wallet: '', // TODO: Complete
+        // });
+
+        await handleManualTransfer({
+          account: userWallet.address,
+          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
+          assetId: paymentLinkData.assetId,
+          email: data.email,
+          id: paymentLinkData.id,
+          name: data.name,
+          paymentHash: data.paymentHash,
+          toAddress: userWallet.address,
+          tokenAddress: paymentLinkData.asset.address,
+        });
       } else {
         throw new Error('Invalid asset');
       }
@@ -159,15 +203,13 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
     }
   };
 
-  const isLoadingConnection = isTronLinkLoading || isMetaMaskLoading;
-  const isReady = isTronReady || isMetaMaskConnected;
-
   return {
     form,
     handleConnection,
     handleSubmit,
     isLoadingConnection,
     isLoadingPayment,
+    isManualPayment,
     isReady,
     onSubmit,
     steps,

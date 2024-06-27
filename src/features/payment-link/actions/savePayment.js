@@ -33,6 +33,8 @@ export async function savePayment({ id, hash, assetId, email, name }) {
       },
     );
 
+    console.log({ res });
+
     const { response: data } = await validateResponse(
       res,
       'Error saving payment',

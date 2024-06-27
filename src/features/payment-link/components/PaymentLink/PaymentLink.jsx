@@ -5,21 +5,22 @@ import Link from 'next/link';
 import { PaymentLinkForm } from './PaymentLinkForm';
 
 import { LogoIcon } from '@/assets';
-import { getLogoUrl } from '@/lib/utils';
+import { formatAmount, getLogoUrl } from '@/lib/utils';
 
 export const PaymentLink = ({ paymentLinkData, userWallet }) => {
-  const { user, amount, token, name, description, status } =
+  const { user, amount, token, name, description, status, asset } =
     paymentLinkData || {};
   const { logo, company } = user || {};
 
   const isPaid = status === 'paid';
 
   const logoImage = getLogoUrl(logo);
-  console.log(paymentLinkData);
+
+  const formattedAmount = formatAmount(amount, asset.decimals);
 
   return (
-    <div className="flex h-screen min-h-screen flex-col bg-background p-5 lg:flex-row">
-      <div className="flex h-full flex-col bg-muted px-4 py-6 sm:basis-1/2 sm:px-20">
+    <div className="flex min-h-screen flex-col bg-background p-5 lg:flex-row">
+      <div className="flex h-auto flex-col bg-muted px-4 py-6 sm:basis-1/2 sm:px-20">
         <div className="mb-10 flex items-center gap-4">
           <Image
             src={logoImage}
@@ -32,7 +33,7 @@ export const PaymentLink = ({ paymentLinkData, userWallet }) => {
         </div>
         <div className="mb-10 border-b pb-5">
           <span className="min-w-fit text-5xl font-extrabold tracking-tighter lg:text-5xl">
-            {amount} {token}
+            {formattedAmount} {token}
           </span>
         </div>
         <div>
@@ -45,13 +46,13 @@ export const PaymentLink = ({ paymentLinkData, userWallet }) => {
                 1x {name} - {description}
               </span>
               <span className="w-fit min-w-fit tracking-tighter">
-                {amount} {token}
+                {formattedAmount} {token}
               </span>
             </div>
             <div className="flex w-full items-center justify-between py-6 text-sm">
               <span className="text-sm font-semibold">Total</span>
               <span className="font-semibold tracking-tighter">
-                {amount} {token}
+                {formattedAmount} {token}
               </span>
             </div>
           </div>
@@ -60,9 +61,9 @@ export const PaymentLink = ({ paymentLinkData, userWallet }) => {
           <PaymentLinkFooter key="footer-1" />
         </div>
       </div>
-      <div className="h-full bg-background sm:basis-1/2">
+      <div className="m-auto h-full bg-background sm:basis-1/2">
         {isPaid ? (
-          <div className="flex h-full flex-col items-center justify-center">
+          <div className="m-auto flex h-full flex-col items-center justify-center">
             <span className="text-3xl font-bold text-primary">
               Payment successful
             </span>

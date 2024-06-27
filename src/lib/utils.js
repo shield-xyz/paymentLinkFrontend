@@ -185,3 +185,11 @@ export const downloadImage = async (imageUrl, imageName = undefined) => {
     handleError(error, 'Error downloading or setting image');
   }
 };
+
+export function formatAmount(amount, decimals) {
+  return amount.toFixed(decimals);
+}
+
+export function formatCryptoHash(hash) {
+  return `${hash.slice(0, 4)}...${hash.slice(-6)}`;
+}
