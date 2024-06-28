@@ -23,8 +23,6 @@ export const StepOne = ({ form, networks }) => {
     watch,
   } = form;
 
-  console.log({ networks });
-
   const { getValues, setValue } = form;
   const values = getValues();
 
@@ -60,8 +58,6 @@ export const StepOne = ({ form, networks }) => {
     handleSelectToken(null);
     setValue('amount', null);
   };
-
-  console.log({ assetSelected });
 
   return (
     <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4 sm:w-[450px]">

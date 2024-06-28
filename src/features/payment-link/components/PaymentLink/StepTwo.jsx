@@ -25,7 +25,7 @@ export const StepTwo = ({
     formState: { errors },
   } = form;
 
-  const { address } = userWallet;
+  const { address } = userWallet || {};
 
   return (
     <div className="flex flex-col items-center">

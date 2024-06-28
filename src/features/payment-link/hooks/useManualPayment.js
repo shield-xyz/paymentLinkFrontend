@@ -7,23 +7,7 @@ import { savePayment } from '../actions';
 import { handleError } from '@/lib/utils';
 
 export const useManualPayment = () => {
-  const manualTransfer = async ({
-    account,
-    amount,
-    toAddress,
-    tokenAddress,
-    id,
-    assetId,
-    name,
-    email,
-    paymentHash,
-  }) => {
-    console.log({
-      account,
-      amount,
-      toAddress,
-      tokenAddress,
-    });
+  const manualTransfer = async ({ id, assetId, name, email, paymentHash }) => {
     if (paymentHash) {
       try {
         const res = await savePayment({
@@ -47,28 +31,14 @@ export const useManualPayment = () => {
     }
   };
 
-  const handleManualTransfer = ({
-    account,
-    amount,
-    toAddress,
-    tokenAddress,
-    id,
-    assetId,
-    name,
-    email,
-    paymentHash,
-  }) => {
+  const handleManualTransfer = ({ id, assetId, name, email, paymentHash }) => {
     return new Promise((resolve) => {
       toast.promise(
         manualTransfer({
-          account,
-          amount,
-          toAddress,
-          tokenAddress,
-          id,
           assetId,
-          name,
           email,
+          id,
+          name,
           paymentHash,
         }),
         {

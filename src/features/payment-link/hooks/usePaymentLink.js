@@ -70,9 +70,6 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
   const router = useRouter();
 
-  console.log({ userWallet });
-  console.log({ paymentLinkData });
-
   const {
     address: tronAddress,
     connectToTron,
@@ -99,8 +96,6 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const isManualPayment = !isEthereum && !isTron;
   const isLoadingConnection = isTronLinkLoading || isMetaMaskLoading;
 
-  console.log({ isEthereum, isTron });
-
   const form = useForm({
     resolver: zodResolver(PaymentSchema),
     mode: 'onTouch',
@@ -111,15 +106,7 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
       isManualPayment,
     },
   });
-  const {
-    handleSubmit,
-    formState: { errors },
-    getValues,
-  } = form;
-
-  const values = getValues();
-  console.log({ values });
-  console.log({ errors });
+  const { handleSubmit } = form;
 
   const onSubmit = async (data) => {
     try {
@@ -166,15 +153,11 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
         // });
 
         await handleManualTransfer({
-          account: userWallet.address,
-          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
           assetId: paymentLinkData.assetId,
           email: data.email,
           id: paymentLinkData.id,
           name: data.name,
           paymentHash: data.paymentHash,
-          toAddress: userWallet.address,
-          tokenAddress: paymentLinkData.asset.address,
         });
       } else {
         throw new Error('Invalid asset');
