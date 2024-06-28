@@ -29,9 +29,13 @@ const FilterDropDown = ({ setFilteredData }) => {
 
       if (selectedFilter === 'date') {
         if (selectedOrder === 'ascending') {
-          return filteredData.sort((a, b) => a.date - b.date);
+          return filteredData.sort(
+            (a, b) => new Date(a.date) - new Date(b.date),
+          );
         } else {
-          return filteredData.sort((a, b) => b.date - a.date);
+          return filteredData.sort(
+            (a, b) => new Date(b.date) - new Date(a.date),
+          );
         }
       }
     });
