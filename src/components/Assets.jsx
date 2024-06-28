@@ -33,7 +33,9 @@ const Assets = ({ balances }) => {
                   </div>
                   <div className="ml-4">
                     <h4 className="text-sm font-medium">{network.name}</h4>
-                    <span className="text-xs text-gray-400">{asset.symbol}</span>
+                    <span className="text-xs text-gray-400">
+                      {asset.symbol}
+                    </span>
                   </div>
                 </div>
                 <div className="flex flex-col items-end">
@@ -59,7 +61,6 @@ const Assets = ({ balances }) => {
               </div>
             );
           }
-          
         })}
       </div>
     </Container>
