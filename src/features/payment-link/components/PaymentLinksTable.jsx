@@ -8,12 +8,13 @@ import { copyCode, getFinalPaymentLink } from '../utils';
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
+import FilterDropDown from '@/components/FilterDropDown';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
-import { PAYMENT_STATUSES, formatCurrency, formatDate } from '@/lib/utils';
+import { PAYMENT_STATUSES, formatAmount, formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -79,8 +80,13 @@ const cellRenderers = {
     </div>
   ),
   amount: ({ row }) => {
+    console.log({ row });
     return (
-      <span className="font-light">{formatCurrency(row.amount || 0)}</span>
+      <span className="font-light">
+        {row.asset?.decimals
+          ? formatAmount(row.amount, row.asset?.decimals)
+          : row.amount}
+      </span>
     );
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
@@ -96,7 +102,7 @@ const cellRenderers = {
         <Button
           variant="ghost"
           className="px-2 py-2 font-light"
-          onClick={() => copyCode(link)}
+          onClick={() => copyCode(link, 'Link copied to clipboard')}
         >
           <Icons.share className="h-5 text-gray-500" />
         </Button>
@@ -165,10 +171,14 @@ export function PaymentLinksTable({ paymentLinks }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Button variant="outline" className="gap-2 font-light" size="sm">
+            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
               Filter
-            </Button>
+            </Button> */}
+            <FilterDropDown
+              setFilteredData={setFilteredData}
+              selectedTab={selectedTab}
+            />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment link

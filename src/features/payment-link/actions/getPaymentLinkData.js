@@ -1,7 +1,7 @@
 'use server';
 
 import { env } from '@/config';
-import { handleError, validateResponse } from '@/lib/utils';
+import { validateResponse } from '@/lib/utils';
 
 export async function getPaymentLinkData(id) {
   try {
@@ -20,8 +20,10 @@ export async function getPaymentLinkData(id) {
       'Error getting payment Link',
     );
 
+    console.log({ data });
+
     return data;
   } catch (error) {
-    handleError(error, 'Could not get payment link');
+    console.error(error);
   }
 }

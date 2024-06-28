@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  ArrowLeft,
   ArrowRight,
   BarChart2,
   Check,
@@ -11,6 +12,7 @@ import {
   HelpCircle,
   Image,
   Laptop,
+  Link,
   Loader,
   Loader2,
   LoaderCircle,
@@ -49,6 +51,7 @@ export const Icons = {
   warning: AlertTriangle,
   user: User,
   arrowRight: ArrowRight,
+  arrowLeft: ArrowLeft,
   sparkles: Sparkles,
   help: HelpCircle,
   pizza: Pizza,
@@ -57,6 +60,7 @@ export const Icons = {
   laptop: Laptop,
   search: Search,
   menu: Menu,
+  link: Link,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"
@@ -601,12 +605,12 @@ export const Icons = {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
-      width={19}
-      height={21}
+      width={47}
+      height={53}
       fill="none"
       {...props}
     >
-      <path fill="url(#a)" d="M.232.028h18.094V20.25H.232z" />
+      <path fill="url(#a)" d="M.133.711h46.16v51.59H.133z" />
       <defs>
         <pattern
           id="a"

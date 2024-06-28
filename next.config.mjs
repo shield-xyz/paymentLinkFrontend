@@ -3,8 +3,20 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '9000',
+        pathname: '/**',
+      },
+      {
         protocol: 'https',
         hostname: 'paybackend.getshield.xyz',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'test.pay.getshield.xyz',
         port: '',
         pathname: '/**',
       },

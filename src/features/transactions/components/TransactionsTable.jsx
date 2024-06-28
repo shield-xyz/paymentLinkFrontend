@@ -2,18 +2,19 @@
 
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
-import { CustomPagination, Icons } from '@/components';
+import { CustomPagination } from '@/components';
 import CustomTable from '@/components/CustomTable';
+import FilterDropDown from '@/components/FilterDropDown';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { copyCode } from '@/features/payment-link';
 import { usePagination } from '@/hooks';
-import { formatCurrency, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -22,14 +23,9 @@ const headers = [
     className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
-    key: 'asset',
-    title: 'Asset',
-    className: 'px-2 min-w-[150px] font-light font-semibold',
-  },
-  {
     key: 'hash',
     title: 'Hash',
-    className: 'px-2 min-w-[220px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
     key: 'amount',
@@ -51,42 +47,35 @@ const headers = [
 const statusGroups = [{ label: 'All', value: 'all', filter: () => true }];
 
 const cellRenderers = {
-  network: ({ row, networks }) => {
-    const network = networks.find((network) => network._id === row.networkId);
-    return <span className="font-light">{network.name}</span>;
-  },
-  asset: ({ row, assets }) => {
-    const asset = Object.values(assets).find(
-      (asset) => asset._id === row.assetId,
-    );
-    let logoSrc = asset.logo;
+  network: ({ row }) => {
+    const network = row.network;
     return (
       <div className="flex w-full items-center gap-5">
-        <img
-          key={asset.assetId}
-          src={logoSrc}
-          alt={asset.assetId}
+        <Image
+          key={network.assetId}
+          src={network.logo}
+          alt={network.name}
           width={14}
           height={14}
         />
-        <span className="text-sm">{asset.name}</span>
+        <span className="text-sm">{network.name}</span>
       </div>
     );
   },
   hash: ({ row }) => (
-    <span
-      className="flex max-w-[200px] items-center gap-1 font-light"
-      onClick={() => copyCode(row.hash)}
-    >
-      <span className="line-clamp-1 w-full cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
-        {row.hash}
+    <Link href={`${row.network.txView}${row.hash}`} target="_blank">
+      <span className="flex max-w-[150px] items-center gap-1 font-light">
+        <span className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
+          {`${row.hash.slice(0, 4)}...${row.hash.slice(-6)}`}
+        </span>
       </span>
-      <Icons.copy className="h-10 w-10 cursor-pointer rounded-md p-2 hover:bg-muted" />
-    </span>
+    </Link>
   ),
   amount: ({ row }) => {
     return (
-      <span className="font-light">{formatCurrency(row.amount || 0)}</span>
+      <span className="font-light">
+        {row.amount || 0} {row.asset.symbol}
+      </span>
     );
   },
   currency: ({ row }) => <span className="font-light">{row.token}</span>,
@@ -96,21 +85,21 @@ const cellRenderers = {
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
 };
 
-export function TransactionsTable({ transactions, assets, networks }) {
+export function TransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
 
-  console.log({ transactions, assets, networks });
+  console.log({ transactions });
 
-  const assetsByAssetId = useMemo(
-    () =>
-      Object.values(assets).reduce((acc, asset) => {
-        acc[asset._id] = asset;
-        return acc;
-      }, {}),
-    [assets],
-  );
+  // const assetsByAssetId = useMemo(
+  //   () =>
+  //     Object.values(assets).reduce((acc, asset) => {
+  //       acc[asset._id] = asset;
+  //       return acc;
+  //     }, {}),
+  //   [assets],
+  // );
 
   const groupCounts = useMemo(
     () =>
@@ -135,18 +124,14 @@ export function TransactionsTable({ transactions, assets, networks }) {
           selectedTab === 'all' || transaction.status === selectedTab;
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
-        const assetName =
-          assetsByAssetId[transaction.assetId].name.toLowerCase();
-        const networkName = networks
-          .find((network) => network._id === transaction.networkId)
-          .name.toLowerCase();
+        // const assetName =
+        //   assetsByAssetId[transaction.assetId].name.toLowerCase();
+        // const networkName = networks
+        //   .find((network) => network._id === transaction.networkId)
+        //   .name.toLowerCase();
         return (
           matchesTab &&
-          (assetName.includes(lowercasedQuery) ||
-            networkName.includes(lowercasedQuery) ||
-            formatDate(transaction.date)
-              .toLowerCase()
-              .includes(lowercasedQuery))
+          formatDate(transaction.date).toLowerCase().includes(lowercasedQuery)
         );
       });
       setFilteredData(filteredLinks);
@@ -175,10 +160,14 @@ export function TransactionsTable({ transactions, assets, networks }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Button variant="outline" className="gap-2 font-light" size="sm">
+            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
               <Icons.filter className="h-5 text-gray-500" />
               Filter
-            </Button>
+            </Button> */}
+            <FilterDropDown
+              setFilteredData={setFilteredData}
+              selectedTab={selectedTab}
+            />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment link
@@ -212,8 +201,6 @@ export function TransactionsTable({ transactions, assets, networks }) {
                 rows={currentData}
                 rowKey="_id"
                 cellRenderers={cellRenderers}
-                assets={assets}
-                networks={networks}
               />
             </TabsContent>
           ))}

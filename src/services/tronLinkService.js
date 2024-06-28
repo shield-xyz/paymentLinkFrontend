@@ -20,42 +20,6 @@ export const showAlert = (title, text = '', icon = 'info') => {
   });
 };
 
-export const connectToTronLink = async () => {
-  try {
-    if (!window.tronWeb) {
-      showAlert('Error', 'TronLink is not installed', 'error');
-      return null;
-    }
-
-    let user = await window.tronLink.request({
-      method: 'tron_requestAccounts',
-    });
-
-    while (!window.tronWeb.ready) {
-      await new Promise((resolve) => setTimeout(resolve, 100));
-    }
-
-    if (user.code == 200) {
-      const tronWebInstance = window.tronWeb;
-      const address = tronWebInstance.defaultAddress.base58;
-      const nodeInfo = await tronWebInstance.trx.getNodeInfo();
-      const network = nodeInfo.configNodeInfo.network_id;
-      console.log(network, nodeInfo, 'network nodeinfo');
-      return {
-        tronWeb: tronWebInstance,
-        address,
-        network,
-      };
-    } else {
-      return { tronWeb: null, address: null };
-    }
-  } catch (error) {
-    console.log(error);
-    showAlert('Error', error.message ? error.message : error, 'error');
-    return { tronWeb: null, address: null };
-  }
-};
-
 export const sendTRX = async (tronWeb, toAddress, amount) => {
   if (!tronWeb) {
     showAlert('Error', 'TronWeb instance is required', 'error');
@@ -70,39 +34,6 @@ export const sendTRX = async (tronWeb, toAddress, amount) => {
     return transaction;
   } catch (error) {
     showAlert('Error sending token', error.message, 'error');
-  }
-};
-
-export const sendTRC20 = async (
-  tronWeb,
-  contractAddress,
-  toAddress,
-  amount,
-  // id, not used
-) => {
-  if (!tronWeb) {
-    showAlert('Error', 'TronWeb instance is required', 'error');
-    return;
-  }
-
-  try {
-    showAlert('Info', 'Waiting for the transaction.');
-    const contract = await tronWeb.contract().at(contractAddress);
-    const transaction = await contract.transfer(toAddress, amount).send();
-    console.log('TRC20 Token transfer successful:', transaction);
-    showAlert(
-      'Token transfer successful',
-      'Please save the next code: ' + transaction,
-      'success',
-    );
-    return transaction;
-  } catch (error) {
-    console.log(error);
-    showAlert(
-      'Error sending TRC20 token',
-      'Remember to use the mainnet network',
-      'error',
-    );
   }
 };
 

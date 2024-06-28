@@ -2,16 +2,15 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
 import { z } from 'zod';
 
-import { addWallet, fetchLinks } from '../actions';
-import { connectToTronLink, sendTRC20 } from '../services';
+import { useManualPayment } from './useManualPayment';
+import { useMetaMask } from './useMetaMask';
+import { useTronLink } from './useTronLink';
+import { addWallet } from '../actions';
 
-import { env } from '@/config';
 import { handleSubmissionError, parseAmountToDecimals } from '@/lib/utils';
 
 const steps = [
@@ -25,117 +24,194 @@ const steps = [
   },
 ];
 
-export const PaymentSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email' }),
-  name: z
-    .string()
-    .min(3, { message: 'Name must be at least 3 characters long' }),
-});
+export const PaymentSchema = z
+  .object({
+    email: z
+      .string()
+      .optional()
+      .refine(
+        (val) => val === '' || z.string().email().safeParse(val).success,
+        {
+          message: 'Please enter a valid email',
+        },
+      ),
+    name: z
+      .string()
+      .optional()
+      .refine((val) => val === '' || z.string().min(3).safeParse(val).success, {
+        message: 'Name must be at least 3 characters long',
+      }),
+    paymentHash: z.string().optional(),
+    isManualPayment: z.boolean().optional(),
+  })
+  .superRefine((data, ctx) => {
+    const hasEmail = data.email !== undefined && data.email !== '';
+    const hasName = data.name !== undefined && data.name !== '';
+    const isManual = data.isManualPayment;
+    if (hasEmail && !hasName) {
+      ctx.addIssue({
+        path: ['name'],
+        message: 'Name is required',
+      });
+    } else if (hasName && !hasEmail) {
+      ctx.addIssue({
+        path: ['email'],
+        message: 'Email is required',
+      });
+    } else if (isManual && (!data.paymentHash || data.paymentHash === '')) {
+      ctx.addIssue({
+        path: ['paymentHash'],
+        message: 'Payment hash is required',
+      });
+    }
+  });
 
-export const usePaymentLink = ({ paymentLinkData }) => {
-  const { data: session } = useSession();
-
-  const [tronWeb, setTronWeb] = useState(null);
-  const [tronAddress, setTronAddress] = useState(null);
-  const [isTronReady, setIsTronReady] = useState(false);
-  const [isLoadingConnection, setIsLoadingConnection] = useState(false);
+export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
-
   const router = useRouter();
+
+  console.log({ userWallet });
+  console.log({ paymentLinkData });
+
+  const {
+    address: tronAddress,
+    connectToTron,
+    isReady: isTronReady,
+    isTronLinkLoading,
+    tronWeb,
+    handleTronLinkTransfer,
+  } = useTronLink();
+
+  const {
+    account: metaMaskAccount,
+    connectToMetaMask,
+    handleMetaMaskTransfer,
+    isMetaMaskConnected,
+    isMetaMaskLoading,
+  } = useMetaMask();
+
+  const { handleManualTransfer } = useManualPayment();
+
+  const isEthereum = paymentLinkData?.assetId.includes('ethereum');
+  const isReady = isTronReady || isMetaMaskConnected;
+  const isTron = paymentLinkData?.assetId == 'usdt-tron';
+
+  const isManualPayment = !isEthereum && !isTron;
+  const isLoadingConnection = isTronLinkLoading || isMetaMaskLoading;
+
+  console.log({ isEthereum, isTron });
 
   const form = useForm({
     resolver: zodResolver(PaymentSchema),
-    mode: 'onChange',
+    mode: 'onTouch',
+    defaultValues: {
+      email: '',
+      name: '',
+      paymentHash: '',
+      isManualPayment,
+    },
   });
-  const { handleSubmit } = form;
+  const {
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = form;
+
+  const values = getValues();
+  console.log({ values });
+  console.log({ errors });
 
   const onSubmit = async (data) => {
     try {
-      console.log({ data });
-    } catch (error) {
-      handleSubmissionError(error, 'Could save Personal information');
-    }
-  };
-
-  const fetchPaymentLinks = async () => {
-    if (session?.accessToken) {
-      const data = await fetchLinks(session.accessToken);
-      return data;
-    }
-    return [];
-  };
-
-  const connectToTron = async () => {
-    try {
-      setIsLoadingConnection(true);
-      const res = await connectToTronLink();
-      console.log({ res });
-      if (res?.tronWeb) {
-        setTronWeb(res.tronWeb);
-        setTronAddress(res.address);
-        setIsTronReady(res.tronWeb.ready);
-        toast.success('Connected to TronLink');
-        return res;
-      } else {
-        throw new Error('Error connecting to TronLink');
-      }
-    } catch (error) {
-      handleSubmissionError(error, 'Error connecting to TronLink');
-    } finally {
-      setIsLoadingConnection(false);
-    }
-  };
-
-  const handlePayment = async () => {
-    try {
       setIsLoadingPayment(true);
-      const recipient = env.NEXT_PUBLIC_WALLET;
-      const tokenID = env.NEXT_PUBLIC_TOKEN_USDT; // TODO: change by paymentLinkData.tokenAddress
 
       const amount = paymentLinkData.amount;
 
-      let address = tronAddress;
-      let isReady = isTronReady;
-      let tronWebInstance = tronWeb;
+      if (isTron) {
+        await addWallet({
+          id: paymentLinkData.id,
+          wallet: tronAddress,
+        });
 
-      if (!tronWebInstance || !isReady) {
-        const res = await connectToTron();
-        address = res.address;
-        tronWebInstance = res.tronWeb;
-        isReady = res.tronWeb.ready;
+        await handleTronLinkTransfer({
+          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
+          assetId: paymentLinkData.assetId,
+          contractAddress: paymentLinkData.asset.address,
+          email: data.email,
+          id: paymentLinkData.id,
+          name: data.name,
+          toAddress: userWallet.address,
+          tronWeb: tronWeb,
+        });
+      } else if (isEthereum) {
+        await addWallet({
+          id: paymentLinkData.id,
+          wallet: metaMaskAccount,
+        });
+
+        await handleMetaMaskTransfer({
+          account: metaMaskAccount,
+          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
+          assetId: paymentLinkData.assetId,
+          email: data.email,
+          id: paymentLinkData.id,
+          name: data.name,
+          toAddress: userWallet.address,
+          tokenAddress: paymentLinkData.asset.address,
+        });
+      } else if (isManualPayment) {
+        // await addWallet({
+        //   id: paymentLinkData.id,
+        //   wallet: '', // TODO: Complete
+        // });
+
+        await handleManualTransfer({
+          account: userWallet.address,
+          amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
+          assetId: paymentLinkData.assetId,
+          email: data.email,
+          id: paymentLinkData.id,
+          name: data.name,
+          paymentHash: data.paymentHash,
+          toAddress: userWallet.address,
+          tokenAddress: paymentLinkData.asset.address,
+        });
+      } else {
+        throw new Error('Invalid asset');
       }
-
-      await addWallet({
-        id: paymentLinkData.id,
-        wallet: address,
-      });
-      await sendTRC20(
-        tronWebInstance,
-        tokenID,
-        recipient,
-        parseAmountToDecimals(amount, 6),
-        paymentLinkData.id,
-      );
-
-      router.refresh();
     } catch (error) {
       console.error('Transaction failed:', error);
-      toast.error('Transaction failed:', error);
+      handleSubmissionError(error, 'Transaction failed');
     } finally {
-      setIsLoadingPayment(false);
+      router.refresh();
+      setTimeout(() => {
+        setIsLoadingPayment(false);
+      }, 1000);
+    }
+  };
+
+  const handleConnection = async () => {
+    try {
+      if (isEthereum) {
+        await connectToMetaMask();
+      } else if (isTron) {
+        await connectToTron();
+      }
+    } catch (error) {
+      console.log({ error });
+      handleSubmissionError(error, 'Error connecting wallet');
     }
   };
 
   return {
-    steps,
     form,
-    onSubmit,
+    handleConnection,
     handleSubmit,
-    fetchPaymentLinks,
-    connectToTron,
-    tronWeb,
-    handlePayment,
     isLoadingConnection,
     isLoadingPayment,
+    isManualPayment,
+    isReady,
+    onSubmit,
+    steps,
   };
 };

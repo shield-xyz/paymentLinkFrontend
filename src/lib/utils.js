@@ -96,6 +96,10 @@ export function handleSubmissionSuccess(successMessage) {
   toast.success(successMessage);
 }
 
+function getStringValue(value) {
+  return typeof value === 'string' ? value : null;
+}
+
 async function parseResponse(response) {
   try {
     const data = await response.json();
@@ -111,7 +115,11 @@ export async function validateResponse(response, defaultMessage) {
   if (!response.ok) {
     const data = await parseResponse(response);
     console.error('error data:', data);
-    const message = data?.data?.response || defaultMessage;
+    let message =
+      getStringValue(data?.data?.response) ||
+      getStringValue(data.response) ||
+      getStringValue(data.message) ||
+      defaultMessage;
     throw new Error(message);
   } else {
     const res = await parseResponse(response);
@@ -158,8 +166,7 @@ export const PAYMENT_DESCRIPTIONS = {
 };
 
 export const getLogoUrl = (url) => {
-  const now = new Date().getTime();
-  return `${env.NEXT_PUBLIC_API_URL}/${url}?now=${now}`;
+  return `${env.NEXT_PUBLIC_API_URL}/${url}`;
 };
 
 export const downloadImage = async (imageUrl, imageName = undefined) => {
@@ -178,3 +185,11 @@ export const downloadImage = async (imageUrl, imageName = undefined) => {
     handleError(error, 'Error downloading or setting image');
   }
 };
+
+export function formatAmount(amount, decimals) {
+  return amount.toFixed(decimals);
+}
+
+export function formatCryptoHash(hash) {
+  return `${hash.slice(0, 4)}...${hash.slice(-6)}`;
+}

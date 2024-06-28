@@ -1,10 +1,32 @@
 'use client';
 
+import { useEffect } from 'react';
+import { io } from 'socket.io-client';
+
 import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
 
 const Nav = ({ session }) => {
+  useEffect(() => {
+    if (session?.user?.id) {
+      let userId = session?.user?.id;
+      const socket = io('http://localhost:9000');
+
+      // Unirse a la sala del usuario
+      socket.emit('join', userId);
+
+      // Manejar las notificaciones
+      socket.on('notification', (message) => {
+        console.log(message); // Puedes reemplazar esto con tu propio sistema de notificaciones
+      });
+
+      return () => {
+        socket.disconnect();
+      };
+    }
+  }, [session?.user?.id]);
+
   return (
     <nav className="fixed z-20 flex h-[var(--nav-height)] w-full items-center border-b border-gray-200 bg-background/70 backdrop-blur-sm">
       <div className="ml-14 flex w-fit items-center gap-3 pl-6 lg:absolute lg:ml-0">
@@ -23,10 +45,10 @@ const Nav = ({ session }) => {
             {/* <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
             <Icons.message className="h-6 text-gray-500" /> */}
           </div>
-          <div className="relative hidden xs:flex">
+          {/* <div className="relative hidden xs:flex">
             <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
             <Icons.notification className="h-6 text-gray-500" />
-          </div>
+          </div> */}
           <AvatarDropDown session={session} />
         </div>
       </div>

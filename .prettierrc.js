@@ -7,4 +7,4 @@ module.exports = {
   trailingComma: 'all',
   endOfLine: 'auto',
   plugins: ['prettier-plugin-tailwindcss'],
-};      
+};

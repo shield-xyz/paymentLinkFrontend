@@ -6,5 +6,5 @@
     "source.removeUnusedImports": "always",
     "source.removeUnusedVariables": "always"
   },
-  "cSpell.enabled": true,
+  "cSpell.enabled": true
 }
