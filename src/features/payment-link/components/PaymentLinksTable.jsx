@@ -80,7 +80,6 @@ const cellRenderers = {
     </div>
   ),
   amount: ({ row }) => {
-    console.log({ row });
     return (
       <span className="font-light">
         {row.asset?.decimals
