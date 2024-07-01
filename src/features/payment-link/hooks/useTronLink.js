@@ -7,6 +7,8 @@ import { savePayment } from '../actions';
 
 import { handleError, handleSubmissionError } from '@/lib/utils';
 
+// evento para cuando cambia de red
+
 export const useTronLink = () => {
   const [tronWeb, setTronWeb] = useState(null);
   const [address, setAddress] = useState(null);
@@ -41,6 +43,10 @@ export const useTronLink = () => {
       }
 
       if (user.code === 200) {
+        // esto da un id distinto segun que red este conectada.
+        // cuando estamos en dev apunte a Sashta, y cuando este en prod apunte a mainet.
+        // Lo mismo con MetaMask (Sepolia testing) y Ethereum mainet
+        // Si no esta en la red adecuado, pedirle que cambie al cliente por favor.
         const tronWebInstance = window.tronWeb;
         const address = tronWebInstance.defaultAddress.base58;
         const nodeInfo = await tronWebInstance.trx.getNodeInfo();
@@ -103,6 +109,8 @@ export const useTronLink = () => {
         email,
         name,
       });
+
+      console.log({ res });
 
       if (res.error) {
         throw new Error(res.error);

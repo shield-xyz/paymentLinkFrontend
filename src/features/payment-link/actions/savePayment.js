@@ -42,6 +42,6 @@ export async function savePayment({ id, hash, assetId, email, name }) {
 
     return data;
   } catch (error) {
-    handleReturnError(error, 'Error saving payment');
+    return handleReturnError(error, 'Error saving payment');
   }
 }

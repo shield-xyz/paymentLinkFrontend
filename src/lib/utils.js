@@ -79,7 +79,7 @@ export function handleReturnError(error, defaultMessage) {
   if (error instanceof Error) {
     message = error.message;
   }
-  console.error(error);
+  console.error({ error, defaultMessage, message });
   return { error: message };
 }
 
