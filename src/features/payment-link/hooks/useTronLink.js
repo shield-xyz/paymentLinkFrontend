@@ -105,11 +105,13 @@ export const useTronLink = () => {
       });
 
       if (res.error) {
+        console.error("Error: ", res.error)
         throw new Error(res.error);
       }
 
       return hash;
     } catch (error) {
+      console.error("Error: ", error)
       handleError(error, 'Transfer failed');
     }
   };
@@ -153,6 +155,7 @@ export const useTronLink = () => {
             return `Token transfer success: ${result}`;
           },
           error: (error) => {
+            console.error("Error: ", error)
             resolve(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },
