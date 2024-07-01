@@ -94,7 +94,7 @@ const StepOne = ({ form, setStep }) => {
         type="file"
         labelClassName="mt-2"
         placeholder="Upload your company logo"
-        label="Upload your company logo"
+        label="Upload your company logo (optional)"
         title="Upload your company logo"
         {...register('logo')}
       />
