@@ -43,9 +43,6 @@ export const RegisterSchema = z
       })
       .regex(/[A-Z]/, {
         message: 'Password must contain at least 1 uppercase character',
-      })
-      .regex(/[!@#$%^&*]/, {
-        message: 'Password must contain at least 1 special character',
       }),
     passwordConfirm: z.string(),
     description: z
