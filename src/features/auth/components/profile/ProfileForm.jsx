@@ -52,9 +52,6 @@ export const ProfileSchema = z.object({
           })
           .regex(/[A-Z]/, {
             message: 'Password must contain at least 1 uppercase character',
-          })
-          .regex(/[!@#$%^&*]/, {
-            message: 'Password must contain at least 1 special character',
           }),
         z.literal(null),
       ]),

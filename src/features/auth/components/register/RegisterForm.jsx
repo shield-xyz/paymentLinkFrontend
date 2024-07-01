@@ -43,9 +43,6 @@ export const RegisterSchema = z
       })
       .regex(/[A-Z]/, {
         message: 'Password must contain at least 1 uppercase character',
-      })
-      .regex(/[!@#$%^&*]/, {
-        message: 'Password must contain at least 1 special character',
       }),
     passwordConfirm: z.string(),
     description: z
@@ -54,16 +51,17 @@ export const RegisterSchema = z
       .optional(),
     logo: z
       .any()
-      .optional() // Make it optional to allow checking for undefined explicitly
-      .refine((file) => file[0] !== undefined, {
-        message: 'Logo is required.',
-      })
+      .optional() // Keep it optional
       .refine(
-        (file) => file && file[0]?.size <= MAX_FILE_SIZE,
+        (file) =>
+          !file || file[0] === undefined || file[0]?.size <= MAX_FILE_SIZE,
         `Max image size is 5MB.`,
       )
       .refine(
-        (file) => file && ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+        (file) =>
+          !file ||
+          file[0] === undefined ||
+          ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
         'Only .jpg, .jpeg, .png, and .webp formats are supported.',
       ),
     company: z
