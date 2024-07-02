@@ -11,7 +11,6 @@ import { z } from 'zod';
 
 import { Alert } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { updateUser } from '@/features/auth';
 import {
@@ -189,147 +188,145 @@ export const ProfileForm = ({ session, userData }) => {
   };
 
   return (
-    <Container className="flex h-full w-full flex-col px-6 py-8">
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="col-md-4 col-md-offset-4 section-title row"
-        encType="multipart/form-data"
-      >
-        <div className="flex flex-wrap items-center gap-4">
-          <div className="relative">
-            {!fileUrl && !values.logo ? (
-              <div className="flex h-32 w-32 items-center justify-center overflow-auto rounded-full border border-input object-cover">
-                <span className="absolute">No image</span>
-              </div>
-            ) : (
-              <Image
-                src={fileUrl || values.logo || ''}
-                alt="logo"
-                width={100}
-                height={100}
-                className="flex h-32 w-32 items-center justify-center overflow-auto rounded-full border border-input object-cover"
-              />
-            )}
-          </div>
-          <Input
-            ref={fileInputRef}
-            type="file"
-            className="hidden"
-            onChange={(e) => {
-              const file = e.target.files[0];
-              if (file) {
-                form.setValue('logo', [file]);
-              }
-            }}
-          />
-          <div className="flex items-center gap-4">
-            <Button
-              className="mt-2 bg-muted"
-              as="label"
-              htmlFor="logo"
-              variant="outline"
-              size="sm"
-              onClick={handleUploadClick}
-            >
-              Upload New Picture
-            </Button>
-            <Button className="mt-2" size="sm" onClick={handleRemoveImage}>
-              Remove
-            </Button>
-          </div>
-        </div>
-        <ErrorMessage
-          errors={errors}
-          name="logo"
-          render={({ message }) => (
-            <span className="text-sm text-destructive">{message}</span>
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="col-md-4 col-md-offset-4 section-title row"
+      encType="multipart/form-data"
+    >
+      <div className="flex flex-wrap items-center gap-4">
+        <div className="relative">
+          {!fileUrl && !values.logo ? (
+            <div className="flex h-32 w-32 items-center justify-center overflow-auto rounded-full border border-input object-cover">
+              <span className="absolute">No image</span>
+            </div>
+          ) : (
+            <Image
+              src={fileUrl || values.logo || ''}
+              alt="logo"
+              width={100}
+              height={100}
+              className="flex h-32 w-32 items-center justify-center overflow-auto rounded-full border border-input object-cover"
+            />
           )}
-        />
-
-        <div className="mt-4 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2 sm:gap-y-8">
-          <div>
-            <Input
-              label="Name"
-              labelClassName="mb-1"
-              placeholder="Enter your name"
-              autoFocus
-              {...register('user_name')}
-              onKeyDown={handleKeyDown}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="user_name"
-              render={({ message }) => (
-                <span className="text-sm text-destructive">{message}</span>
-              )}
-            />
-          </div>
-          <div>
-            <Input
-              label="Email"
-              labelClassName="mb-1"
-              placeholder="Enter your email address"
-              {...register('email')}
-              onKeyDown={handleKeyDown}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="email"
-              render={({ message }) => (
-                <span className="text-sm text-destructive">{message}</span>
-              )}
-            />
-          </div>
-          <div>
-            <Input
-              label="Company Name"
-              labelClassName="mb-1"
-              placeholder="Enter your company name"
-              {...register('company')}
-              onKeyDown={handleKeyDown}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="company"
-              render={({ message }) => (
-                <span className="text-sm text-destructive">{message}</span>
-              )}
-            />
-          </div>
-          <div>
-            <Input
-              label="Password"
-              labelClassName="mb-1"
-              autoComplete="new-password"
-              placeholder="Choose a password"
-              type="password"
-              {...register('password')}
-              onKeyDown={handleKeyDown}
-            />
-            <ErrorMessage
-              errors={errors}
-              name="password"
-              render={({ message }) => (
-                <span className="text-sm text-destructive">{message}</span>
-              )}
-            />
-          </div>
         </div>
-
-        <Button
-          className="mb-2 ml-auto mt-4 flex"
-          isLoading={isSubmitting}
-          disabled={isSubmitting}
-          type="submit"
-        >
-          Update
-        </Button>
-        {error && (
-          <Alert className="mt-4" type="danger">
-            <strong>{error}</strong>
-          </Alert>
+        <Input
+          ref={fileInputRef}
+          type="file"
+          className="hidden"
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              form.setValue('logo', [file]);
+            }
+          }}
+        />
+        <div className="flex items-center gap-4">
+          <Button
+            className="mt-2 bg-muted"
+            as="label"
+            htmlFor="logo"
+            variant="outline"
+            size="sm"
+            onClick={handleUploadClick}
+          >
+            Upload New Picture
+          </Button>
+          <Button className="mt-2" size="sm" onClick={handleRemoveImage}>
+            Remove
+          </Button>
+        </div>
+      </div>
+      <ErrorMessage
+        errors={errors}
+        name="logo"
+        render={({ message }) => (
+          <span className="text-sm text-destructive">{message}</span>
         )}
-      </form>
-    </Container>
+      />
+
+      <div className="mt-4 grid grid-cols-1 gap-x-10 gap-y-4 sm:grid-cols-2 sm:gap-y-8">
+        <div>
+          <Input
+            label="Name"
+            labelClassName="mb-1"
+            placeholder="Enter your name"
+            autoFocus
+            {...register('user_name')}
+            onKeyDown={handleKeyDown}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="user_name"
+            render={({ message }) => (
+              <span className="text-sm text-destructive">{message}</span>
+            )}
+          />
+        </div>
+        <div>
+          <Input
+            label="Email"
+            labelClassName="mb-1"
+            placeholder="Enter your email address"
+            {...register('email')}
+            onKeyDown={handleKeyDown}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="email"
+            render={({ message }) => (
+              <span className="text-sm text-destructive">{message}</span>
+            )}
+          />
+        </div>
+        <div>
+          <Input
+            label="Company Name"
+            labelClassName="mb-1"
+            placeholder="Enter your company name"
+            {...register('company')}
+            onKeyDown={handleKeyDown}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="company"
+            render={({ message }) => (
+              <span className="text-sm text-destructive">{message}</span>
+            )}
+          />
+        </div>
+        <div>
+          <Input
+            label="Password"
+            labelClassName="mb-1"
+            autoComplete="new-password"
+            placeholder="Choose a password"
+            type="password"
+            {...register('password')}
+            onKeyDown={handleKeyDown}
+          />
+          <ErrorMessage
+            errors={errors}
+            name="password"
+            render={({ message }) => (
+              <span className="text-sm text-destructive">{message}</span>
+            )}
+          />
+        </div>
+      </div>
+
+      <Button
+        className="mb-2 ml-auto mt-4 flex"
+        isLoading={isSubmitting}
+        disabled={isSubmitting}
+        type="submit"
+      >
+        Update
+      </Button>
+      {error && (
+        <Alert className="mt-4" type="danger">
+          <strong>{error}</strong>
+        </Alert>
+      )}
+    </form>
   );
 };

@@ -131,7 +131,7 @@ export const StepOne = ({ form, networks }) => {
         <span className="text-xxs leading-[0.1rem]">
           You can update your accepted networks and currencies in{' '}
           <Link
-            href="/profile"
+            href="/settings"
             className="text-primary underline"
             tabIndex="-1"
           >

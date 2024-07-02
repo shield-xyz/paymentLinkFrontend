@@ -21,7 +21,7 @@ export async function updateUser(token, formData) {
       'Error updating user data',
     );
 
-    revalidatePath('/profile');
+    revalidatePath('/settings');
 
     return data;
   } catch (error) {
