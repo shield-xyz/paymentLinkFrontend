@@ -1,4 +1,3 @@
-import { Icons } from './Icons';
 import Container from './ui/container';
 
 import { WithdrawTypeIcon } from '@/features/withdrawals';
@@ -47,9 +46,9 @@ const RecentActivities = () => {
     <Container className="w-full px-5 py-6">
       <div className="flex items-center justify-between">
         <h3 className="font-medium">Recent activities</h3>
-        <span className="flex items-center text-sm tracking-tight text-primary">
+        {/* <span className="flex items-center text-sm tracking-tight text-primary">
           See all <Icons.chevronRight className="h-4" />
-        </span>
+        </span> */}
       </div>
       <div className="mt-8 flex flex-col gap-8">
         {ACTIVITIES.map((activity, index) => (

@@ -1,1 +1,3 @@
-export * from './KYCVerification';
+import KYCVerification from './KYCVerification';
+
+export { KYCVerification };

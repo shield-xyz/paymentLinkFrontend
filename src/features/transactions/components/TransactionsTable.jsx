@@ -52,13 +52,13 @@ const cellRenderers = {
     return (
       <div className="flex w-full items-center gap-5">
         <Image
-          key={network.assetId}
-          src={network.logo}
-          alt={network.name}
+          key={network?.assetId}
+          src={network?.logo}
+          alt={network?.name}
           width={14}
           height={14}
         />
-        <span className="text-sm">{network.name}</span>
+        <span className="text-sm">{network?.name}</span>
       </div>
     );
   },
