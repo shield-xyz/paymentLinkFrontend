@@ -1,5 +1,4 @@
-import { LoginForm } from '@/features/auth';
-import { SessionExpiredModal } from '@/features/auth/components/SessionExpiredModal';
+import { LoginForm, SessionExpiredModal } from '@/features/auth';
 
 export default async function Page({ searchParams: { sessionExpired } }) {
   return (

@@ -1,5 +1,4 @@
-import { PaymentLinksTable } from '@/features/payment-link';
-import { fetchLinks } from '@/features/payment-link/actions';
+import { PaymentLinksTable, fetchLinks } from '@/features/payment-link';
 import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
