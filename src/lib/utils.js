@@ -193,3 +193,8 @@ export function formatAmount(amount, decimals) {
 export function formatCryptoHash(hash) {
   return `${hash.slice(0, 4)}...${hash.slice(-6)}`;
 }
+
+export const NOTIFICATION_STATUS = {
+  SEEN: 'seen',
+  NOT_SEEN: 'not seen',
+};

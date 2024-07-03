@@ -7,7 +7,9 @@ import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
 
-const Nav = ({ session }) => {
+import { Notifications } from '@/features/notifications';
+
+const Nav = ({ session, notifications }) => {
   useEffect(() => {
     if (session?.user?.id) {
       let userId = session?.user?.id;
@@ -45,10 +47,9 @@ const Nav = ({ session }) => {
             {/* <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
             <Icons.message className="h-6 text-gray-500" /> */}
           </div>
-          {/* <div className="relative hidden xs:flex">
-            <Icons.notificationFrame className="absolute right-[-2px] top-[-3px]" />
-            <Icons.notification className="h-6 text-gray-500" />
-          </div> */}
+
+          <Notifications notifications={notifications} />
+
           <AvatarDropDown session={session} />
         </div>
       </div>
