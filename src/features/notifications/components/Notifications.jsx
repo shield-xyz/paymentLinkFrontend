@@ -44,10 +44,12 @@ export const Notifications = ({ notifications, session }) => {
       // Listen for notifications
       socket.on('notification', (message) => {
         // Add the new notification to the top of the list
-        setLocalNotifications((prevNotifications) => [
-          message,
-          ...prevNotifications,
-        ]);
+        console.log(message,"message notifcations")
+        setLocalNotifications(message);
+        // setLocalNotifications((prevNotifications) => [
+        //   message,
+        //   ...prevNotifications,
+        // ]);
       });
 
       return () => {
