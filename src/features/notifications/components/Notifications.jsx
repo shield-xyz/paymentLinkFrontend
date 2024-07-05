@@ -1,11 +1,7 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-
 import { Notification } from './Notification';
-import { putNotificationSeen } from '../actions';
+import { useNotifications } from '../hooks/useNotifications';
 
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
@@ -13,118 +9,31 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { env } from '@/config';
-import {
-  NOTIFICATION_STATUS,
-  handleSubmissionError,
-  handleSubmissionSuccess,
-} from '@/lib/utils';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { NOTIFICATION_STATUS } from '@/lib/utils';
 
 export const Notifications = ({ notifications, session }) => {
-  const [localNotifications, setLocalNotifications] = useState(notifications);
-  const [loadingStates] = useState({}); // We can use loadingState instead of optimistically updating the notification
-
-  const router = useRouter();
-
-  const hasOneUnseen = localNotifications?.some(
-    (n) => n.status === NOTIFICATION_STATUS.NOT_SEEN,
-  );
-
-  useEffect(() => {
-    if (session?.user?.id) {
-      let userId = session?.user?.id;
-      const socket = io(env.NEXT_PUBLIC_API_URL);
-
-      // Join the user's room
-      socket.emit('join', userId);
-
-      // Listen for notifications
-      socket.on('notification', (message) => {
-        // Add the new notification to the top of the list
-        console.log(message,"message notifcations")
-        setLocalNotifications(message);
-        // setLocalNotifications((prevNotifications) => [
-        //   message,
-        //   ...prevNotifications,
-        // ]);
-      });
-
-      return () => {
-        socket.disconnect();
-      };
-    }
-  }, [session?.user?.id]);
-
-  // Update the status of the notification
-  const handlePutSeen = useCallback(
-    async ({ notification }) => {
-      const { _id: notificationId, status } = notification;
-      const newStatus =
-        status === NOTIFICATION_STATUS.NOT_SEEN ? 'seen' : 'not seen';
-      const optimisticUpdatedNotifications = localNotifications.map((n) =>
-        n._id === notificationId ? { ...n, status: newStatus } : n,
-      );
-
-      // Optimistically update the notification
-      setLocalNotifications(optimisticUpdatedNotifications);
-
-      try {
-        // Update the notification
-        await putNotificationSeen({ notificationId, status: newStatus });
-        handleSubmissionSuccess(`Notification updated to ${newStatus}`);
-        router.refresh();
-      } catch (error) {
-        // Revert the changes if there is an error
-        handleSubmissionError(error, 'Error updating notification');
-        setLocalNotifications(notifications);
-      }
-    },
-    [localNotifications, notifications],
-  );
-
-  // Mark all notifications as seen
-  const markAllAsSeen = async () => {
-    const unseenNotifications = localNotifications.filter(
-      (n) => n.status === NOTIFICATION_STATUS.NOT_SEEN,
-    );
-
-    if (unseenNotifications.length === 0) {
-      return;
-    }
-
-    // Optimistically update all notifications
-    setLocalNotifications(
-      localNotifications.map((n) =>
-        n.status === NOTIFICATION_STATUS.NOT_SEEN
-          ? { ...n, status: 'seen' }
-          : n,
-      ),
-    );
-
-    try {
-      // Update all notifications
-      await Promise.all(
-        unseenNotifications.map((n) =>
-          putNotificationSeen({ notificationId: n._id, status: 'seen' }),
-        ),
-      );
-      handleSubmissionSuccess('All notifications marked as seen');
-      router.refresh();
-    } catch (error) {
-      // Revert the changes if there is an error
-      handleSubmissionError(error, 'Error updating notifications');
-      setLocalNotifications(notifications);
-    }
-  };
+  const {
+    localNotifications,
+    selectedTab,
+    setSelectedTab,
+    notSeenNotifications,
+    seenNotifications,
+    markAllAsSeen,
+    markAllAsArchived,
+    handlePutSeen,
+    handlePutArchive,
+    tabs,
+    TABS,
+  } = useNotifications({ notifications, session });
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <div className="relative hidden cursor-pointer xs:flex">
-          {hasOneUnseen && (
+          {notSeenNotifications?.length > 0 && (
             <div className="absolute right-[-2px] top-[-3px]">
               <Icons.notificationFrame className="" />
             </div>
@@ -133,29 +42,75 @@ export const Notifications = ({ notifications, session }) => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="lg:max-w-auto max-w-96  rounded-xl bg-white shadow-lg">
-        <DropdownMenuLabel className="flex items-center justify-between px-4 py-2 text-sm text-gray-500">
-          <span>Notifications</span>
-          <Button
-            variant="ghost"
-            className="text-xs"
-            onClick={markAllAsSeen}
-            disabled={!hasOneUnseen}
-          >
-            Mark all as seen
-          </Button>
-        </DropdownMenuLabel>
+        <Tabs
+          defaultValue={TABS.Inbox}
+          className="w-full overflow-auto"
+          onValueChange={(tab) => setSelectedTab(tab)}
+        >
+          <TabsList className="mt-2 w-full min-w-fit justify-start px-4">
+            {tabs.map((tab) => (
+              <TabsTrigger value={tab} key={tab} className="capitalize">
+                {tab}
+              </TabsTrigger>
+            ))}
+          </TabsList>
 
-        <DropdownMenuSeparator />
-        <div className="max-h-[500px] overflow-auto">
-          {localNotifications?.map((notification) => (
-            <Notification
-              key={notification._id}
-              notification={notification}
-              handlePutSeen={handlePutSeen}
-              isLoading={loadingStates[notification._id] || false}
-            />
+          {tabs.map((tab) => (
+            <TabsContent className="w-full" value={tab} key={tab}>
+              <div className="max-h-[500px] w-full max-w-[98vw] overflow-auto overflow-x-hidden sm:max-w-[500px]">
+                <div className="w-[500px]"></div>
+                {localNotifications
+                  ?.filter((notification) => {
+                    // Filter notifications based on the selected tab
+                    if (selectedTab === TABS.Archive) {
+                      return (
+                        notification.status === NOTIFICATION_STATUS.ARCHIVED
+                      );
+                    } else {
+                      return (
+                        notification.status !== NOTIFICATION_STATUS.ARCHIVED
+                      );
+                    }
+                  })
+                  .map((notification) => (
+                    <Notification
+                      key={notification._id}
+                      notification={notification}
+                      handlePutSeen={handlePutSeen}
+                      handlePutArchive={handlePutArchive}
+                    />
+                  ))}
+              </div>
+            </TabsContent>
           ))}
-        </div>
+        </Tabs>
+
+        {((selectedTab === TABS.Inbox && notSeenNotifications?.length > 0) ||
+          (selectedTab === TABS.Inbox && seenNotifications?.length > 0)) && (
+          <DropdownMenuLabel className="flex items-center justify-center border-t px-4 text-sm text-gray-500">
+            {localNotifications.find(
+              (n) => n.status === NOTIFICATION_STATUS.NOT_SEEN,
+            ) ? (
+              <Button
+                variant="ghost"
+                className="text-xs"
+                onClick={markAllAsSeen}
+                size="sm"
+              >
+                Mark all as seen
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                className="text-xs"
+                onClick={markAllAsArchived}
+                size="sm"
+              >
+                Archive all
+              </Button>
+            )}
+          </DropdownMenuLabel>
+        )}
       </DropdownMenuContent>
     </DropdownMenu>
   );

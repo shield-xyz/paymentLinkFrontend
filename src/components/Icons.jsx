@@ -1,5 +1,6 @@
 import {
   AlertTriangle,
+  Archive,
   ArrowLeft,
   ArrowRight,
   BarChart2,
@@ -61,6 +62,7 @@ export const Icons = {
   search: Search,
   menu: Menu,
   link: Link,
+  archive: Archive,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"

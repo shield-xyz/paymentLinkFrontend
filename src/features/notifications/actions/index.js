@@ -1,2 +1,2 @@
 export * from './getNotifications';
-export * from './putNotificationStatus';
+export * from './updateNotificationStatus';

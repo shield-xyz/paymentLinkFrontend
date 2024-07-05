@@ -29,6 +29,18 @@ export function formatDateShort(date) {
   return formattedDate;
 }
 
+export function formatDateTime(date) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+  const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+  return formattedDate;
+}
+
 export function formatCurrency(amount, digits = 2) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
@@ -191,10 +203,13 @@ export function formatAmount(amount, decimals) {
 }
 
 export function formatCryptoHash(hash) {
+  if (!hash) return '';
   return `${hash.slice(0, 4)}...${hash.slice(-6)}`;
 }
 
 export const NOTIFICATION_STATUS = {
   SEEN: 'seen',
   NOT_SEEN: 'not seen',
+  ARCHIVED: 'archived',
+  DELETED: 'deleted',
 };

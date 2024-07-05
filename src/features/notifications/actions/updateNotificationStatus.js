@@ -9,7 +9,7 @@ import {
   validateResponse,
 } from '@/lib/utils';
 
-export async function putNotificationSeen({ notificationId, status }) {
+export async function updateNotificationStatus({ notificationId, status }) {
   try {
     const session = await getServerAuthSession();
     const token = session.accessToken;

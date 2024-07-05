@@ -48,9 +48,20 @@ export const useTronLink = () => {
         // Lo mismo con MetaMask (Sepolia testing) y Ethereum mainet
         // Si no esta en la red adecuado, pedirle que cambie al cliente por favor.
         const tronWebInstance = window.tronWeb;
+        console.log({ tronWebInstance });
+        console.log(window.tronWeb.fullNode);
         const address = tronWebInstance.defaultAddress.base58;
         const nodeInfo = await tronWebInstance.trx.getNodeInfo();
+        console.log({ nodeInfo });
+        console.log('nodeInfo: ', nodeInfo.configNodeInfo);
         const network = nodeInfo.configNodeInfo.network_id;
+        // const host = window.tronWeb.fullNode.host;
+
+        // si host !==  https://api.trongrid.io entonces...
+        // network debe elegir
+        // crear un .env para sashta y otro para mainet
+
+        // https://api.trongrid.io para mainet
 
         setTronWeb(tronWebInstance);
         setAddress(address);

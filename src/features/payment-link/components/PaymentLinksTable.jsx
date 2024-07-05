@@ -74,11 +74,24 @@ const statusGroups = [
 ];
 
 const cellRenderers = {
-  name: ({ row }) => (
-    <div className="flex w-full items-center gap-5">
-      <span className="font-medium">{row.name}</span>
-    </div>
-  ),
+  name: ({ row }) => {
+    // const network = row.network;
+    return (
+      // <div className="flex w-full items-center gap-5">
+      //   <Image
+      //     key={network?.assetId}
+      //     src={network?.logo}
+      //     alt={network?.name}
+      //     width={14}
+      //     height={14}
+      //   />
+      //   <span className="text-sm">{network?.name}</span>
+      // </div>
+      <div className="flex w-full items-center gap-5">
+        <span className="font-medium">{row.name}</span>
+      </div>
+    );
+  },
   amount: ({ row }) => {
     return (
       <span className="font-light">
