@@ -20,6 +20,7 @@ import {
   Menu,
   Moon,
   MoreVertical,
+  PackageOpen,
   Pizza,
   Plus,
   Search,
@@ -63,6 +64,7 @@ export const Icons = {
   menu: Menu,
   link: Link,
   archive: Archive,
+  packageOpen: PackageOpen,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"

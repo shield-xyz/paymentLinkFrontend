@@ -189,16 +189,17 @@ export const useNotifications = ({ notifications, session }) => {
     }
   };
 
+  console.log({ localNotifications });
   return {
+    handlePutArchive,
+    handlePutSeen,
     localNotifications,
-    selectedTab,
-    setSelectedTab,
+    markAllAsArchived,
+    markAllAsSeen,
     notSeenNotifications,
     seenNotifications,
-    markAllAsSeen,
-    markAllAsArchived,
-    handlePutSeen,
-    handlePutArchive,
+    selectedTab,
+    setSelectedTab,
     tabs,
     TABS,
   };

@@ -59,27 +59,37 @@ export const Notifications = ({ notifications, session }) => {
             <TabsContent className="w-full" value={tab} key={tab}>
               <div className="max-h-[500px] w-full max-w-[98vw] overflow-auto overflow-x-hidden sm:max-w-[500px]">
                 <div className="w-[500px]"></div>
-                {localNotifications
-                  ?.filter((notification) => {
-                    // Filter notifications based on the selected tab
-                    if (selectedTab === TABS.Archive) {
-                      return (
-                        notification.status === NOTIFICATION_STATUS.ARCHIVED
-                      );
-                    } else {
-                      return (
-                        notification.status !== NOTIFICATION_STATUS.ARCHIVED
-                      );
-                    }
-                  })
-                  .map((notification) => (
+                {localNotifications?.filter((notification) => {
+                  // Filter notifications based on the selected tab
+                  if (selectedTab === TABS.Archive) {
+                    return notification.status === NOTIFICATION_STATUS.ARCHIVED;
+                  } else {
+                    return notification.status !== NOTIFICATION_STATUS.ARCHIVED;
+                  }
+                }).length > 0 ? (
+                  localNotifications.map((notification) => (
                     <Notification
                       key={notification._id}
                       notification={notification}
                       handlePutSeen={handlePutSeen}
                       handlePutArchive={handlePutArchive}
                     />
-                  ))}
+                  ))
+                ) : (
+                  <div className="flex flex-col items-center justify-center gap-1 py-10 text-center">
+                    <Button
+                      variant="ghost"
+                      className="h-12 w-12 rounded-full border bg-muted p-2 text-xs"
+                      size="iconSm"
+                      disabled
+                    >
+                      <Icons.packageOpen />
+                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      No notifications to show
+                    </span>
+                  </div>
+                )}
               </div>
             </TabsContent>
           ))}
