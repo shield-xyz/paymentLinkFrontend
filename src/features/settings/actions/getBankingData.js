@@ -1,23 +1,30 @@
-// https://hub.getshield.xyz/banking?id%5B%5D=66846a9197fc06b5a4188b99
-
 'use server';
 
-import { validateResponse } from '@/lib/utils';
+import { env } from '@/config';
+import { getServerAuthSession } from '@/lib/auth';
+import { fetchWithToken, validateResponse } from '@/lib/utils';
 
 export async function getBankingData() {
   try {
-    const res = await fetch(
-      `https://hub.getshield.xyz/banking?id%5B%5D=66846a9197fc06b5a4188b99`,
+    const session = await getServerAuthSession();
+    const token = session?.accessToken;
+
+    const res = await fetchWithToken(
+      `${env.NEXT_PUBLIC_API_URL}/api/banks`,
+      token,
       {
         method: 'GET',
       },
     );
 
-    const { data } = await validateResponse(res, 'Error fetching banking data');
+    const { response: data } = await validateResponse(
+      res,
+      'Error fetching banking data',
+    );
 
     return data;
   } catch (error) {
     console.error('Error fetching banking data', error);
-    return null;
+    return [];
   }
 }

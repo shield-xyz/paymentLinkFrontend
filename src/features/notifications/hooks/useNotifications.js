@@ -189,7 +189,6 @@ export const useNotifications = ({ notifications, session }) => {
     }
   };
 
-  console.log({ localNotifications });
   return {
     handlePutArchive,
     handlePutSeen,

@@ -1,8 +1,11 @@
+import { NoData } from '@/components';
 import Container from '@/components/ui/container';
 import { BankData, SettingsNav, getBankingData } from '@/features/settings';
 
 export default async function Page() {
-  const bankData = await getBankingData();
+  const bankingData = await getBankingData();
+
+  console.log({ bankingData });
 
   return (
     <div>
@@ -14,7 +17,13 @@ export default async function Page() {
           your details.
         </p>
         <SettingsNav />
-        <BankData bankData={bankData[0]} />
+        {bankingData?.length > 0 ? (
+          bankingData.map((bankData) => (
+            <BankData key={bankData._id} bankData={bankData} />
+          ))
+        ) : (
+          <NoData text="No bank data available" />
+        )}
       </Container>
     </div>
   );
