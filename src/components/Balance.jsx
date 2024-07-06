@@ -2,10 +2,20 @@ import { Icons } from './Icons';
 import Chart from './Recharts/Chart';
 import Container from './ui/container';
 
+
 import { Withdraw } from '@/features/withdrawals';
 
-const Balance = ({ balances }) => {
+const Balance = async ({ balances, totalAmount }) => {
   console.log({ balances });
+  console.log("initialized balance")
+
+
+  const sortedTotalAmount = convertToUSD(totalAmount)
+
+  const [whole, cent] = sortedTotalAmount.split(".")
+
+  
+
   return (
     <Container className="p-4 xl:p-0">
       <div className="px-5 pt-5">
@@ -14,8 +24,8 @@ const Balance = ({ balances }) => {
         </span>
         <div className="flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl font-semibold">$3,200</span>
-            <span className="text-5xl font-semibold text-gray-400">.80</span>
+            <span className="text-5xl font-semibold">{whole}</span>
+            <span className="text-5xl font-semibold text-gray-400">.{cent}</span>
             <div className="flex items-baseline gap-1 text-success">
               <Icons.arrowUpCompressed className="" />
               <span>85.66%</span>
@@ -32,5 +42,14 @@ const Balance = ({ balances }) => {
     </Container>
   );
 };
+
+function convertToUSD(amount) {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+    currencyDisplay: "narrowSymbol",
+  }).format(amount);
+}
+
 
 export default Balance;
