@@ -3,16 +3,12 @@ import { getBalances } from '@/features/balance';
 import { getTotalTransactionsAmount } from '@/features/transactions';
 import { getServerAuthSession } from '@/lib/auth';
 
-
-
-
 export default async function Page() {
   const [balances] = await Promise.all([getBalances()]);
   const session = await getServerAuthSession();
   const [totalAmountTransactions] = await Promise.all([
     getTotalTransactionsAmount(session.accessToken),
   ]);
-
 
   return (
     <div className="flex flex-col gap-2">

@@ -1,2 +1,2 @@
 export * from './getTransactions';
-export * from './getTotalTransactionsAmount'
+export * from './getTotalTransactionsAmount';

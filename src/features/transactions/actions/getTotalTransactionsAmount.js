@@ -22,10 +22,10 @@ export async function getTotalTransactionsAmount(token) {
     );
 
     console.log({
-      fromTotalTransaction: data
-    })
+      fromTotalTransaction: data,
+    });
 
-    const totalAmount = data.reduce((prev, item) => prev + item.amount, 0)
+    const totalAmount = data.reduce((prev, item) => prev + item.amount, 0);
 
     // const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
 
