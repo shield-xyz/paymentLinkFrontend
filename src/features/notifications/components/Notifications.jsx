@@ -16,15 +16,16 @@ import { NOTIFICATION_STATUS } from '@/lib/utils';
 
 export const Notifications = ({ notifications, session }) => {
   const {
+    filteredNotifications,
+    handlePutArchive,
+    handlePutSeen,
     localNotifications,
-    selectedTab,
-    setSelectedTab,
+    markAllAsArchived,
+    markAllAsSeen,
     notSeenNotifications,
     seenNotifications,
-    markAllAsSeen,
-    markAllAsArchived,
-    handlePutSeen,
-    handlePutArchive,
+    selectedTab,
+    setSelectedTab,
     tabs,
     TABS,
   } = useNotifications({ notifications, session });
@@ -57,17 +58,10 @@ export const Notifications = ({ notifications, session }) => {
 
           {tabs.map((tab) => (
             <TabsContent className="w-full" value={tab} key={tab}>
-              <div className="max-h-[500px] w-full max-w-[98vw] overflow-auto overflow-x-hidden sm:max-w-[500px]">
+              <div className="max-h-[500px] min-h-[155px] w-full max-w-[98vw] overflow-auto overflow-x-hidden sm:max-w-[500px]">
                 <div className="w-[500px]"></div>
-                {localNotifications?.filter((notification) => {
-                  // Filter notifications based on the selected tab
-                  if (selectedTab === TABS.Archive) {
-                    return notification.status === NOTIFICATION_STATUS.ARCHIVED;
-                  } else {
-                    return notification.status !== NOTIFICATION_STATUS.ARCHIVED;
-                  }
-                }).length > 0 ? (
-                  localNotifications.map((notification) => (
+                {filteredNotifications.length > 0 ? (
+                  filteredNotifications.map((notification) => (
                     <Notification
                       key={notification._id}
                       notification={notification}
@@ -76,7 +70,7 @@ export const Notifications = ({ notifications, session }) => {
                     />
                   ))
                 ) : (
-                  <div className="flex flex-col items-center justify-center gap-1 py-10 text-center">
+                  <div className="m-auto flex flex-col items-center justify-center gap-1 py-10 text-center">
                     <Button
                       variant="ghost"
                       className="h-12 w-12 rounded-full border bg-muted p-2 text-xs"

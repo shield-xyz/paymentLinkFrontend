@@ -5,9 +5,8 @@ import { toast } from 'sonner';
 
 import { savePayment } from '../actions';
 
+import { NODE_ENV } from '@/config';
 import { handleError, handleSubmissionError } from '@/lib/utils';
-
-// evento para cuando cambia de red
 
 export const useTronLink = () => {
   const [tronWeb, setTronWeb] = useState(null);
@@ -43,25 +42,32 @@ export const useTronLink = () => {
       }
 
       if (user.code === 200) {
-        // esto da un id distinto segun que red este conectada.
-        // cuando estamos en dev apunte a Sashta, y cuando este en prod apunte a mainet.
-        // Lo mismo con MetaMask (Sepolia testing) y Ethereum mainet
-        // Si no esta en la red adecuado, pedirle que cambie al cliente por favor.
         const tronWebInstance = window.tronWeb;
-        console.log({ tronWebInstance });
-        console.log(window.tronWeb.fullNode);
         const address = tronWebInstance.defaultAddress.base58;
         const nodeInfo = await tronWebInstance.trx.getNodeInfo();
-        console.log({ nodeInfo });
-        console.log('nodeInfo: ', nodeInfo.configNodeInfo);
         const network = nodeInfo.configNodeInfo.network_id;
-        // const host = window.tronWeb.fullNode.host;
+        const host = window.tronWeb.fullNode.host;
 
-        // si host !==  https://api.trongrid.io entonces...
-        // network debe elegir
-        // crear un .env para sashta y otro para mainet
-
-        // https://api.trongrid.io para mainet
+        switch (NODE_ENV) {
+          case 'development':
+            if (host !== 'https://api.shasta.trongrid.io') {
+              toast.error('Please switch to TRON Shasta Testnet network');
+              setIsTronLinkLoading(false);
+              return null;
+            }
+            break;
+          case 'production':
+            if (host !== 'https://api.trongrid.io') {
+              toast.error('Please switch to TRON Mainnet (TronGrid) network');
+              setIsTronLinkLoading(false);
+              return null;
+            }
+            break;
+          default:
+            toast.error('Please switch to the correct network');
+            setIsTronLinkLoading(false);
+            return null;
+        }
 
         setTronWeb(tronWebInstance);
         setAddress(address);
@@ -111,8 +117,9 @@ export const useTronLink = () => {
 
     try {
       const contract = await tronWeb.contract().at(contractAddress);
+      console.log(contract);
       const hash = await contract.transfer(toAddress, amount).send();
-
+      console.log({ hash });
       const res = await savePayment({
         id,
         hash,
@@ -120,8 +127,6 @@ export const useTronLink = () => {
         email,
         name,
       });
-
-      console.log({ res });
 
       if (res.error) {
         throw new Error(res.error);

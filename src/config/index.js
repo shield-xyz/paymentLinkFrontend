@@ -5,7 +5,10 @@ export const env = {
   NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
   NEXT_PUBLIC_WALLET: process.env.NEXT_PUBLIC_WALLET,
   NEXT_PUBLIC_TOKEN_USDT: process.env.NEXT_PUBLIC_TOKEN_USDT,
+  NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
 };
+
+export const NODE_ENV = env.NEXT_PUBLIC_ENV; // 'development' or 'production'
 
 export const SIDEBAR_PAGES = [
   {

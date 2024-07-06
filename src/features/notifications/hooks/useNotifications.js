@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
 import { toast } from 'sonner';
 
@@ -189,7 +189,18 @@ export const useNotifications = ({ notifications, session }) => {
     }
   };
 
+  const filteredNotifications = useMemo(() => {
+    return localNotifications?.filter((notification) => {
+      if (selectedTab === TABS.Archive) {
+        return notification.status === NOTIFICATION_STATUS.ARCHIVED;
+      } else {
+        return notification.status !== NOTIFICATION_STATUS.ARCHIVED;
+      }
+    });
+  }, [localNotifications, selectedTab]);
+
   return {
+    filteredNotifications,
     handlePutArchive,
     handlePutSeen,
     localNotifications,
