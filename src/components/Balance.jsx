@@ -5,10 +5,13 @@ import Container from './ui/container';
 import { Withdraw } from '@/features/withdrawals';
 import { formatCurrency } from '@/lib/utils';
 
-const Balance = async ({ balances, totalAmount }) => {
+const Balance = async ({ balances, transactions }) => {
   console.log({ balances });
 
+  const totalAmount = transactions.reduce((prev, item) => prev + item.amount, 0);
+
   const sortedTotalAmount = formatCurrency(totalAmount);
+  
   const [whole, cent] = sortedTotalAmount.split('.');
 
   return (

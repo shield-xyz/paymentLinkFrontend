@@ -5,14 +5,14 @@ import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  const [balances, { totalAmount }] = await Promise.all([
+  const [balances, transactions] = await Promise.all([
     getBalances(),
     getTransactions(session.accessToken),
   ]);
 
   return (
     <div className="flex flex-col gap-2">
-      <Balance balances={balances} totalAmount={totalAmount} />
+      <Balance balances={balances} transactions={transactions} />
       <div className="flex w-full flex-col gap-2 xl:flex-row">
         <Assets balances={balances} />
         <RecentActivities />
