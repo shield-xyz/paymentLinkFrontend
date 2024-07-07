@@ -3,13 +3,12 @@ import Chart from './Recharts/Chart';
 import Container from './ui/container';
 
 import { Withdraw } from '@/features/withdrawals';
+import { formatCurrency } from '@/lib/utils';
 
 const Balance = async ({ balances, totalAmount }) => {
   console.log({ balances });
-  console.log('initialized balance');
 
-  const sortedTotalAmount = convertToUSD(totalAmount);
-
+  const sortedTotalAmount = formatCurrency(totalAmount);
   const [whole, cent] = sortedTotalAmount.split('.');
 
   return (
@@ -40,13 +39,5 @@ const Balance = async ({ balances, totalAmount }) => {
     </Container>
   );
 };
-
-function convertToUSD(amount) {
-  return new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-    currencyDisplay: 'narrowSymbol',
-  }).format(amount);
-}
 
 export default Balance;

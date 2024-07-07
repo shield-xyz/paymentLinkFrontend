@@ -3,7 +3,7 @@ import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  const [transactions] = await Promise.all([
+  const [{ transactions }] = await Promise.all([
     getTransactions(session.accessToken),
   ]);
 
