@@ -3,9 +3,20 @@ import Chart from './Recharts/Chart';
 import Container from './ui/container';
 
 import { Withdraw } from '@/features/withdrawals';
+import { formatCurrency } from '@/lib/utils';
 
-const Balance = ({ balances }) => {
+const Balance = async ({ balances, transactions }) => {
   console.log({ balances });
+
+  const totalAmount = transactions.reduce(
+    (prev, item) => prev + item.amount,
+    0,
+  );
+
+  const sortedTotalAmount = formatCurrency(totalAmount);
+
+  const [whole, cent] = sortedTotalAmount.split('.');
+
   return (
     <Container className="p-4 xl:p-0">
       <div className="px-5 pt-5">
@@ -14,8 +25,10 @@ const Balance = ({ balances }) => {
         </span>
         <div className="flex items-center justify-between">
           <div className="flex items-baseline gap-2">
-            <span className="text-5xl font-semibold">$3,200</span>
-            <span className="text-5xl font-semibold text-gray-400">.80</span>
+            <span className="text-5xl font-semibold">{whole}</span>
+            <span className="text-5xl font-semibold text-gray-400">
+              .{cent}
+            </span>
             <div className="flex items-baseline gap-1 text-success">
               <Icons.arrowUpCompressed className="" />
               <span>85.66%</span>
