@@ -4,9 +4,9 @@ import Image from 'next/image';
 
 import Container from './ui/container';
 
-const Assets = ({ balances }) => {
-  console.log({ balances });
+import { formatAmount, formatCurrency } from '@/lib/utils';
 
+const Assets = ({ balances }) => {
   return (
     <Container className="w-full px-5 py-6">
       <div className="flex items-center justify-between">
@@ -41,12 +41,13 @@ const Assets = ({ balances }) => {
                   <div className="flex items-center gap-2 text-sm font-medium">
                     <span className="text-xs text-gray-400">
                       {!isNaN(balance.usdValue)
-                        ? balance.amount * balance.usdValue
+                        ? formatCurrency(balance.amount * balance.usdValue, 2)
                         : 0}{' '}
                       USD
                     </span>
                     <span>
-                      ${balance.amount} {asset.symbol}
+                      ${formatAmount(balance.amount, asset.decimals)}{' '}
+                      {asset.symbol}
                     </span>
                   </div>
                   <span

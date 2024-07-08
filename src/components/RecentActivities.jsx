@@ -1,47 +1,11 @@
 import Container from './ui/container';
 
 import { WithdrawTypeIcon } from '@/features/withdrawals';
-import { STATUSES, TYPES } from '@/lib/utils';
+import { TYPES } from '@/lib/utils';
 
-const ACTIVITIES = [
-  {
-    name: 'EZE LLC',
-    status: STATUSES.Completed,
-    symbol: 'USD',
-    amount: 1000,
-    type: TYPES.Deposit,
-  },
-  {
-    name: 'EZE LLC',
-    status: STATUSES.Completed,
-    symbol: 'USDT',
-    amount: 1.32,
-    type: TYPES.Deposit,
-  },
-  {
-    name: 'EZE LLC',
-    status: STATUSES.Completed,
-    symbol: 'USD',
-    amount: -10288.96,
-    type: TYPES.Deposit,
-  },
-  {
-    name: 'EZE LLC',
-    status: STATUSES.Completed,
-    symbol: 'USD',
-    amount: -10288.96,
-    type: TYPES.Deposit,
-  },
-  {
-    name: 'EZE LLC',
-    status: STATUSES.Completed,
-    symbol: 'USD',
-    amount: -10288.96,
-    type: TYPES.Deposit,
-  },
-];
+const RecentActivities = ({ transactions, withdrawals }) => {
+  console.log({ transactions, withdrawals });
 
-const RecentActivities = () => {
   return (
     <Container className="w-full px-5 py-6">
       <div className="flex items-center justify-between">
@@ -51,7 +15,7 @@ const RecentActivities = () => {
         </span> */}
       </div>
       <div className="mt-8 flex flex-col gap-8">
-        {ACTIVITIES.map((activity, index) => (
+        {transactions.slice(0, 5).map((activity, index) => (
           <div key={index} className="flex items-center justify-between">
             <div className="flex items-center">
               <WithdrawTypeIcon
@@ -60,16 +24,14 @@ const RecentActivities = () => {
               <div className="ml-4">
                 <h4 className="text-sm font-medium">{activity.name}</h4>
                 <span className="text-xs text-gray-400">
-                  {activity.type === TYPES.Deposit ? (
-                    <span className="text-green-500">{activity.status}</span>
-                  ) : null}
+                  <span className="text-green-500">{'completed'}</span>
                 </span>
               </div>
             </div>
             <div className="flex flex-col items-end">
               <span className={`text-xs`}>
                 {activity.amount > 0 ? '+' : ''}
-                {activity.amount} {activity.symbol}
+                {activity.amount} {activity.asset.symbol}
               </span>
             </div>
           </div>

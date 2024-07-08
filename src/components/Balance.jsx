@@ -1,3 +1,5 @@
+import { useMemo } from 'react';
+
 import { Icons } from './Icons';
 import Chart from './Recharts/Chart';
 import Container from './ui/container';
@@ -8,14 +10,20 @@ import { formatCurrency } from '@/lib/utils';
 const Balance = async ({ balances, transactions }) => {
   console.log({ balances });
 
-  const totalAmount = transactions.reduce(
-    (prev, item) => prev + item.amount,
-    0,
+  const totalAmount = useMemo(
+    () =>
+      balances.reduce((acc, balance) => {
+        return acc + balance.amount * balance.usdValue;
+      }, 0),
+    [balances],
   );
 
-  const sortedTotalAmount = formatCurrency(totalAmount);
+  const formattedAmount = useMemo(
+    () => formatCurrency(totalAmount),
+    [totalAmount],
+  );
 
-  const [whole, cent] = sortedTotalAmount.split('.');
+  const [whole, cent] = formattedAmount.split('.');
 
   return (
     <Container className="p-4 xl:p-0">
@@ -24,12 +32,12 @@ const Balance = async ({ balances, transactions }) => {
           Total Balance <Icons.chevronRight />
         </span>
         <div className="flex items-center justify-between">
-          <div className="flex items-baseline gap-2">
+          <div className="flex items-baseline gap-0">
             <span className="text-5xl font-semibold">{whole}</span>
             <span className="text-5xl font-semibold text-gray-400">
               .{cent}
             </span>
-            <div className="flex items-baseline gap-1 text-success">
+            <div className="ml-2 flex items-baseline gap-1 text-success">
               <Icons.arrowUpCompressed className="" />
               <span>85.66%</span>
             </div>
@@ -40,7 +48,7 @@ const Balance = async ({ balances, transactions }) => {
 
       {/* Graphic */}
       <div className="h-96">
-        <Chart />
+        <Chart transactions={transactions} />
       </div>
     </Container>
   );

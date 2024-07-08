@@ -1,55 +1,33 @@
 'use client';
 
+import { format, parseISO } from 'date-fns';
+import { useMemo } from 'react';
 import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
 
 import CustomTooltip from './CustomTooltip';
 
-const data = [
-  {
-    name: 'Oct',
-    uv: 1700,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Nov',
-    uv: 1800,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Dec',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Jan',
-    uv: 600,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Feb',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Mar',
-    uv: 2100,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Apr',
-    uv: 1800,
-    pv: 3800,
-    amt: 2500,
-  },
-];
+const Chart = ({ transactions }) => {
+  const processData = (transactions) => {
+    const groupedByDay = {};
 
-const Chart = () => {
+    transactions.forEach((transaction) => {
+      const day = format(parseISO(transaction.date), 'yyyy-MM-dd');
+      if (!groupedByDay[day]) {
+        groupedByDay[day] = 0;
+      }
+      groupedByDay[day] += transaction.amount * transaction.usdValue;
+    });
+
+    return Object.entries(groupedByDay).map(([name, amt]) => ({
+      name,
+      amt,
+    }));
+  };
+
+  const data = useMemo(() => processData(transactions), [transactions]);
+
+  console.log({ data });
+  console.log({ transactions });
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart

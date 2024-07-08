@@ -60,7 +60,7 @@ export const Notifications = ({ notifications, session }) => {
             <TabsContent className="w-full" value={tab} key={tab}>
               <div className="max-h-[500px] min-h-[155px] w-full max-w-[98vw] overflow-auto overflow-x-hidden sm:max-w-[500px]">
                 <div className="w-[500px]"></div>
-                {filteredNotifications.length > 0 ? (
+                {filteredNotifications?.length > 0 ? (
                   filteredNotifications.map((notification) => (
                     <Notification
                       key={notification._id}

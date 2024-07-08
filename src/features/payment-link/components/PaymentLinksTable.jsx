@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -75,20 +76,17 @@ const statusGroups = [
 
 const cellRenderers = {
   name: ({ row }) => {
-    // const network = row.network;
+    const network = row.network || {};
     return (
-      // <div className="flex w-full items-center gap-5">
-      //   <Image
-      //     key={network?.assetId}
-      //     src={network?.logo}
-      //     alt={network?.name}
-      //     width={14}
-      //     height={14}
-      //   />
-      //   <span className="text-sm">{network?.name}</span>
-      // </div>
       <div className="flex w-full items-center gap-5">
-        <span className="font-medium">{row.name}</span>
+        <Image
+          key={network?.id}
+          src={network?.logo}
+          alt={network?.name}
+          width={14}
+          height={14}
+        />
+        <span className="text-sm">{network?.name}</span>
       </div>
     );
   },

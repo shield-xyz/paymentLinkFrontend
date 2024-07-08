@@ -1,13 +1,15 @@
 import { Assets, Balance, RecentActivities } from '@/components';
 import { getBalances } from '@/features/balance';
 import { getTransactions } from '@/features/transactions';
+import { getWithdrawals } from '@/features/withdrawals';
 import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  const [balances, transactions] = await Promise.all([
-    getBalances(),
+  const [balances, transactions, withdrawals] = await Promise.all([
+    getBalances(session.accessToken),
     getTransactions(session.accessToken),
+    getWithdrawals(session.accessToken),
   ]);
 
   return (
@@ -15,7 +17,10 @@ export default async function Page() {
       <Balance balances={balances} transactions={transactions} />
       <div className="flex w-full flex-col gap-2 xl:flex-row">
         <Assets balances={balances} />
-        <RecentActivities />
+        <RecentActivities
+          withdrawals={withdrawals}
+          transactions={transactions}
+        />
       </div>
     </div>
   );
