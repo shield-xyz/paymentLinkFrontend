@@ -18,7 +18,9 @@ export const useTronLink = () => {
     setIsTronLinkLoading(true);
     try {
       if (!window.tronWeb) {
-        toast.error('TronLink is ready. Please check your TronLink extension.');
+        toast.error(
+          'TronLink is not ready. Please check your TronLink extension.',
+        );
         setIsTronLinkLoading(false);
         return null;
       }
@@ -134,6 +136,7 @@ export const useTronLink = () => {
 
       return hash;
     } catch (error) {
+      console.log({ error });
       handleError(error, 'Transfer failed');
     }
   };
@@ -177,6 +180,7 @@ export const useTronLink = () => {
             return `Token transfer success: ${result}`;
           },
           error: (error) => {
+            console.log({ error });
             resolve(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },

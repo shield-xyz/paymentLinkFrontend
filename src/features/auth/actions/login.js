@@ -20,15 +20,18 @@ export async function login(credentials) {
       'Error authenticating user',
     );
 
+    console.log({ data });
+
     const logo = getLogoUrl(data.logo);
 
     return {
-      email: data.email,
-      name: data.user_name,
-      id: data._id,
-      accessToken: data.token,
-      logo,
       ...credentials,
+      accessToken: data.token,
+      email: data.email,
+      id: data._id,
+      logo,
+      name: data.user_name,
+      verify: data.verify,
     };
   } catch (error) {
     handleError(error, 'Could not login');
