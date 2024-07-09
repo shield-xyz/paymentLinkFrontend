@@ -2,20 +2,32 @@
 
 import { format, parseISO } from 'date-fns';
 import { useMemo } from 'react';
-import { Area, AreaChart, ResponsiveContainer, XAxis, YAxis } from 'recharts';
+import {
+  Area,
+  AreaChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from 'recharts';
 
 import CustomTooltip from './CustomTooltip';
 
 const Chart = ({ transactions }) => {
   const processData = (transactions) => {
+    const sortedTransactions = transactions.sort((a, b) =>
+      a.date.localeCompare(b.date),
+    );
     const groupedByDay = {};
+    let cumulativeSum = 0; // Initialize a variable to keep track of the cumulative sum
 
-    transactions.forEach((transaction) => {
+    sortedTransactions.forEach((transaction) => {
       const day = format(parseISO(transaction.date), 'yyyy-MM-dd');
       if (!groupedByDay[day]) {
-        groupedByDay[day] = 0;
+        groupedByDay[day] = cumulativeSum; // Start with the current cumulative sum
       }
-      groupedByDay[day] += transaction.amount * transaction.usdValue;
+      cumulativeSum += transaction.usdValue; // Add the current transaction's value to the cumulative sum
+      groupedByDay[day] += transaction.usdValue; // Add to the day's sum
     });
 
     return Object.entries(groupedByDay).map(([name, amt]) => ({
@@ -46,9 +58,10 @@ const Chart = ({ transactions }) => {
           color="#6F767E"
           stroke="#6F767E"
           tickLine={false}
+          type="category"
         />
-        <YAxis hide={true} />
-        <CustomTooltip
+        <YAxis type="number" hide={false} />
+        <Tooltip
           content={(props) => (
             <CustomTooltip
               active={props.active}
@@ -60,7 +73,7 @@ const Chart = ({ transactions }) => {
         />
         <Area
           type="monotone"
-          dataKey="uv"
+          dataKey="amt"
           stroke="#0C68E9"
           fill="rgba(12, 104, 233, 0.1)"
         />
