@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-
 import { NODE_ENV } from '@/config';
 import { handleError, handleSubmissionError } from '@/lib/utils';
 
@@ -117,26 +116,19 @@ export const useTronLink = () => {
     });
 
     try {
-
-
-
-
       const transaction = await tronWeb.transactionBuilder.sendToken(
         toAddress, // recipient address
         amount, // amount of tokens to send
         contractAddress, // token ID
-        tronWeb.defaultAddress.base58 // sender address
+        tronWeb.defaultAddress.base58, // sender address
       );
 
       const signedTransaction = await tronWeb.trx.sign(transaction);
-      console.log({ signedTransaction })
+      console.log({ signedTransaction });
       const broadcast = await tronWeb.trx.sendRawTransaction(signedTransaction);
-      console.log({ broadcast })
+      console.log({ broadcast });
 
-      return broadcast
-
-
-
+      return broadcast;
 
       // const contract = await tronWeb.contract().at(contractAddress);
       // console.log({ toAddress });
