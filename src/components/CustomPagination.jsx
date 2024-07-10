@@ -16,11 +16,16 @@ export const CustomPagination = ({
   jump,
   prev,
   next,
+  isShort = false,
 }) => {
   if (maxPage <= 1) {
     return (
       <Pagination className="mt-5 flex items-center justify-between">
-        <PaginationPrevious onClick={prev} className="cursor-pointer" />
+        <PaginationPrevious
+          isShort={isShort}
+          onClick={prev}
+          className="cursor-pointer"
+        />
         <PaginationContent>
           <PaginationItem className="cursor-pointer">
             <PaginationLink size="icon" isActive>
@@ -28,14 +33,22 @@ export const CustomPagination = ({
             </PaginationLink>
           </PaginationItem>
         </PaginationContent>
-        <PaginationNext onClick={next} className="cursor-pointer" />
+        <PaginationNext
+          isShort={isShort}
+          onClick={next}
+          className="cursor-pointer"
+        />
       </Pagination>
     );
   }
 
   return (
     <Pagination className="mt-5 flex items-center justify-between">
-      <PaginationPrevious onClick={prev} className="cursor-pointer" />
+      <PaginationPrevious
+        isShort={isShort}
+        onClick={prev}
+        className="cursor-pointer"
+      />
       <PaginationContent>
         <PaginationItem onClick={() => jump(1)} className="cursor-pointer">
           <PaginationLink size="icon" isActive={1 === currentPage}>
@@ -87,7 +100,11 @@ export const CustomPagination = ({
           </PaginationLink>
         </PaginationItem>
       </PaginationContent>
-      <PaginationNext onClick={next} className="cursor-pointer" />
+      <PaginationNext
+        isShort={isShort}
+        onClick={next}
+        className="cursor-pointer"
+      />
     </Pagination>
   );
 };

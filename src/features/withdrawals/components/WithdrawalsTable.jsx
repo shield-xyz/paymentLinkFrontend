@@ -150,10 +150,6 @@ export function WithdrawalsTable({ withdrawals, assets }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
-              <Icons.filter className="h-5 text-gray-500" />
-              Filter
-            </Button> */}
             <FilterDropDown
               setFilteredData={setFilteredData}
               selectedTab={selectedTab}

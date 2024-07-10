@@ -161,6 +161,10 @@ export const parseAmountToDecimals = (amount, decimals) => {
 };
 
 export const TYPES = { Deposit: 'Deposit', Withdrawal: 'Withdrawal' };
+export const ACTIVITY_TYPES = {
+  Transaction: 'Transaction',
+  Withdrawal: 'Withdrawal',
+};
 export const STATUSES = { Completed: 'completed', Pending: 'pending' };
 export const PAYMENT_STATUSES = {
   Pending: 'pending',
