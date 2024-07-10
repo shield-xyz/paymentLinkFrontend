@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { savePayment } from '../actions';
 
 import { NODE_ENV } from '@/config';
 import { handleError, handleSubmissionError } from '@/lib/utils';
@@ -118,23 +117,44 @@ export const useTronLink = () => {
     });
 
     try {
-      const contract = await tronWeb.contract().at(contractAddress);
-      console.log(contract);
-      const hash = await contract.transfer(toAddress, amount).send();
-      console.log({ hash });
-      const res = await savePayment({
-        id,
-        hash,
-        assetId,
-        email,
-        name,
-      });
 
-      if (res.error) {
-        throw new Error(res.error);
-      }
 
-      return hash;
+
+
+      const transaction = await tronWeb.transactionBuilder.sendToken(
+        toAddress, // recipient address
+        amount, // amount of tokens to send
+        contractAddress, // token ID
+        tronWeb.defaultAddress.base58 // sender address
+      );
+
+      const signedTransaction = await tronWeb.trx.sign(transaction);
+      console.log({ signedTransaction })
+      const broadcast = await tronWeb.trx.sendRawTransaction(signedTransaction);
+      console.log({ broadcast })
+
+      return broadcast
+
+
+
+
+      // const contract = await tronWeb.contract().at(contractAddress);
+      // console.log({ toAddress });
+      // const hash = await contract.transfer(toAddress, amount).send();
+      // console.log({ hash });
+      // const res = await savePayment({
+      //   id,
+      //   hash,
+      //   assetId,
+      //   email,
+      //   name,
+      // });
+
+      // if (res.error) {
+      //   throw new Error(res.error);
+      // }
+
+      // return hash;
     } catch (error) {
       console.log({ error });
       handleError(error, 'Transfer failed');
