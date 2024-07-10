@@ -1,9 +1,8 @@
-import Container from './ui/container';
-
+import Container from '@/components/ui/container';
 import { WithdrawTypeIcon } from '@/features/withdrawals';
 import { TYPES } from '@/lib/utils';
 
-const RecentActivities = ({ transactions, withdrawals }) => {
+export const RecentActivities = ({ transactions, withdrawals }) => {
   console.log({ transactions, withdrawals });
 
   return (
@@ -40,5 +39,3 @@ const RecentActivities = ({ transactions, withdrawals }) => {
     </Container>
   );
 };
-
-export default RecentActivities;

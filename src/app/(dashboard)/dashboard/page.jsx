@@ -1,5 +1,9 @@
-import { Assets, Balance, RecentActivities } from '@/components';
-import { getBalances } from '@/features/balance';
+import {
+  Assets,
+  Balance,
+  RecentActivities,
+  getBalances,
+} from '@/features/dashboard';
 import { getTransactions } from '@/features/transactions';
 import { getWithdrawals } from '@/features/withdrawals';
 import { getServerAuthSession } from '@/lib/auth';
