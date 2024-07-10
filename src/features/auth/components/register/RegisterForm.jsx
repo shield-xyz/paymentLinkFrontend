@@ -92,7 +92,7 @@ const RegisterForm = () => {
       const { email, password, user_name, description, logo, company } = data;
 
       const formData = new FormData();
-      formData.append('email', email);
+      formData.append('email', email.toLowerCase());
       formData.append('password', password);
       formData.append('user_name', user_name);
       formData.append('description', description);
@@ -106,7 +106,7 @@ const RegisterForm = () => {
       }
 
       const loginCredentials = {
-        email,
+        email: email.toLowerCase(),
         password,
       };
 

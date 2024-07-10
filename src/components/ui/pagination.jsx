@@ -47,27 +47,39 @@ const PaginationLink = ({ className, isActive, size = 'icon', ...props }) => (
 );
 PaginationLink.displayName = 'PaginationLink';
 
-const PaginationPrevious = ({ className, ...props }) => (
+const PaginationPrevious = ({ isShort = false, className, ...props }) => (
   <PaginationLink
     aria-label="Go to previous page"
     size="default"
-    className={cn('gap-1 pl-2.5', className)}
+    className={cn(
+      'gap-1 pl-2.5',
+      {
+        'px-2.5': isShort,
+      },
+      className,
+    )}
     {...props}
   >
     <ArrowLeft className="h-5 w-5" />
-    <span className="hidden lg:flex">Previous</span>
+    {!isShort && <span className="hidden lg:flex">Previous</span>}
   </PaginationLink>
 );
 PaginationPrevious.displayName = 'PaginationPrevious';
 
-const PaginationNext = ({ className, ...props }) => (
+const PaginationNext = ({ isShort = false, className, ...props }) => (
   <PaginationLink
     aria-label="Go to next page"
     size="default"
-    className={cn('gap-1 pr-2.5', className)}
+    className={cn(
+      'gap-1 pr-2.5',
+      {
+        'px-2.5': isShort,
+      },
+      className,
+    )}
     {...props}
   >
-    <span className="hidden lg:flex">Next</span>
+    {!isShort && <span className="hidden lg:flex">Next</span>}
     <ArrowRight className="h-5 w-5" />
   </PaginationLink>
 );

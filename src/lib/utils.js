@@ -29,6 +29,18 @@ export function formatDateShort(date) {
   return formattedDate;
 }
 
+export function formatDateTime(date) {
+  const options = {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+  const formattedDate = new Date(date).toLocaleDateString('en-US', options);
+  return formattedDate;
+}
+
 export function formatCurrency(amount, digits = 2) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
@@ -79,7 +91,7 @@ export function handleReturnError(error, defaultMessage) {
   if (error instanceof Error) {
     message = error.message;
   }
-  console.error(error);
+  console.error({ error, defaultMessage, message });
   return { error: message };
 }
 
@@ -149,6 +161,10 @@ export const parseAmountToDecimals = (amount, decimals) => {
 };
 
 export const TYPES = { Deposit: 'Deposit', Withdrawal: 'Withdrawal' };
+export const ACTIVITY_TYPES = {
+  Transaction: 'Transaction',
+  Withdrawal: 'Withdrawal',
+};
 export const STATUSES = { Completed: 'completed', Pending: 'pending' };
 export const PAYMENT_STATUSES = {
   Pending: 'pending',
@@ -191,5 +207,13 @@ export function formatAmount(amount, decimals) {
 }
 
 export function formatCryptoHash(hash) {
+  if (!hash) return '';
   return `${hash.slice(0, 4)}...${hash.slice(-6)}`;
 }
+
+export const NOTIFICATION_STATUS = {
+  SEEN: 'seen',
+  NOT_SEEN: 'not seen',
+  ARCHIVED: 'archived',
+  DELETED: 'deleted',
+};

@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} bg-muted text-foreground`}>
         <Provider>{children}</Provider>
-        <Analytics mode={'production'} />
+        <Analytics />
       </body>
     </html>
   );

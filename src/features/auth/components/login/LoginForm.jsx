@@ -45,7 +45,8 @@ const LoginForm = () => {
   const onSubmit = async (data) => {
     try {
       const result = await signIn('credentials', {
-        ...data,
+        email: data.email.toLowerCase(),
+        password: data.password,
         redirect: false,
       });
 
@@ -53,8 +54,8 @@ const LoginForm = () => {
         throw new Error('Invalid credentials');
       }
 
-      handleSubmissionSuccess('Logged in successfully');
       router.push('/payment-links');
+      handleSubmissionSuccess('Logged in successfully');
     } catch (error) {
       handleSubmissionError(error, 'Could not login');
     }

@@ -7,12 +7,12 @@ import { Web3 } from 'web3';
 
 import { savePayment } from '../actions';
 
+import { NODE_ENV } from '@/config';
 import { handleError } from '@/lib/utils';
 
 export const useMetaMask = () => {
   const [web3, setWeb3] = useState(null);
   const [account, setAccount] = useState(null);
-  const [network, setNetwork] = useState(null);
   const [isMetaMaskLoading, setIsMetaMaskLoading] = useState(false);
   const [isMetaMaskConnected, setIsMetaMaskConnected] = useState(false);
 
@@ -27,15 +27,34 @@ export const useMetaMask = () => {
         // Request account access if needed
         await provider.request({ method: 'eth_requestAccounts' });
         // Get the connected accounts
+        const networkId = await web3Instance.eth.net.getId();
+
+        switch (NODE_ENV) {
+          case 'development':
+            if (networkId !== 11155111n) {
+              toast.error('Please switch to Sepolia Testnet network');
+              setIsMetaMaskLoading(false);
+              return null;
+            }
+            break;
+          case 'production':
+            if (networkId !== 1n) {
+              toast.error('Please switch to Ethereum Mainnet network');
+              setIsMetaMaskLoading(false);
+              return null;
+            }
+            break;
+          default:
+            toast.error('Please switch to the correct network');
+            setIsMetaMaskLoading(false);
+            return null;
+        }
+
         const accounts = await web3Instance.eth.getAccounts();
         if (accounts.length > 0) {
           setIsMetaMaskConnected(true);
         }
         setAccount(accounts[0]);
-
-        // Get the network ID
-        const networkId = await web3Instance.eth.net.getId();
-        handleNetworkChange(networkId);
 
         // Listen for network and account changes
         provider.on('chainChanged', handleChainChanged);
@@ -59,16 +78,6 @@ export const useMetaMask = () => {
     }
   };
 
-  const handleNetworkChange = (networkId) => {
-    if (networkId === 1) {
-      setNetwork('Ethereum Mainnet');
-    } else if (networkId === 11155111) {
-      setNetwork('Sepolia Testnet');
-    } else {
-      setNetwork('Other network');
-    }
-  };
-
   const handleChainChanged = () => {
     window.location.reload();
   };
@@ -80,25 +89,6 @@ export const useMetaMask = () => {
     } else {
       setAccount(accounts[0]);
       setIsMetaMaskConnected(true);
-    }
-  };
-
-  const switchToSepolia = async () => {
-    if (web3 && web3.currentProvider) {
-      try {
-        await web3.currentProvider.request({
-          method: 'wallet_switchEthereumChain',
-          params: [{ chainId: Web3.utils.toHex(11155111) }],
-        });
-      } catch (error) {
-        if (error.code === 4902) {
-          console.error(
-            'This network is not available in your MetaMask, please add it manually',
-          );
-        } else {
-          console.error('Failed to switch network', error);
-        }
-      }
     }
   };
 
@@ -213,8 +203,6 @@ export const useMetaMask = () => {
   return {
     connectToMetaMask,
     account,
-    network,
-    switchToSepolia,
     handleMetaMaskTransfer,
     isMetaMaskLoading,
     isMetaMaskConnected,

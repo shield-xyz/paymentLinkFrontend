@@ -25,7 +25,7 @@ const AvatarDropDown = ({ session }) => {
     {
       type: 'link',
       name: 'View Profile',
-      path: '/profile',
+      path: '/settings',
     },
     // {
     //   type: 'link',

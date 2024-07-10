@@ -18,10 +18,6 @@ export async function savePayment({ id, hash, assetId, email, name }) {
       };
     }
 
-    console.log({
-      payload,
-    });
-
     const res = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/save/${id}`,
       {
@@ -33,8 +29,6 @@ export async function savePayment({ id, hash, assetId, email, name }) {
       },
     );
 
-    console.log({ res });
-
     const { response: data } = await validateResponse(
       res,
       'Error saving payment',
@@ -42,6 +36,6 @@ export async function savePayment({ id, hash, assetId, email, name }) {
 
     return data;
   } catch (error) {
-    handleReturnError(error, 'Error saving payment');
+    return handleReturnError(error, 'Error saving payment');
   }
 }

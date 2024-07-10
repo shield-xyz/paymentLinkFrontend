@@ -52,13 +52,13 @@ const cellRenderers = {
     return (
       <div className="flex w-full items-center gap-5">
         <Image
-          key={network.assetId}
-          src={network.logo}
-          alt={network.name}
+          key={network?.assetId}
+          src={network?.logo}
+          alt={network?.name}
           width={14}
           height={14}
         />
-        <span className="text-sm">{network.name}</span>
+        <span className="text-sm">{network?.name}</span>
       </div>
     );
   },
@@ -66,7 +66,7 @@ const cellRenderers = {
     <Link href={`${row.network.txView}${row.hash}`} target="_blank">
       <span className="flex max-w-[150px] items-center gap-1 font-light">
         <span className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
-          {`${row.hash.slice(0, 4)}...${row.hash.slice(-6)}`}
+          {`${row.hash?.slice(0, 4)}...${row.hash?.slice(-6)}`}
         </span>
       </span>
     </Link>
@@ -160,10 +160,6 @@ export function TransactionsTable({ transactions }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            {/* <Button variant="outline" className="gap-2 font-light" size="sm">
-              <Icons.filter className="h-5 text-gray-500" />
-              Filter
-            </Button> */}
             <FilterDropDown
               setFilteredData={setFilteredData}
               selectedTab={selectedTab}

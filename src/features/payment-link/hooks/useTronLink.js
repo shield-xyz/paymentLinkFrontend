@@ -5,6 +5,7 @@ import { toast } from 'sonner';
 
 import { savePayment } from '../actions';
 
+import { NODE_ENV } from '@/config';
 import { handleError, handleSubmissionError } from '@/lib/utils';
 
 export const useTronLink = () => {
@@ -17,7 +18,9 @@ export const useTronLink = () => {
     setIsTronLinkLoading(true);
     try {
       if (!window.tronWeb) {
-        toast.error('TronLink is ready. Please check your TronLink extension.');
+        toast.error(
+          'TronLink is not ready. Please check your TronLink extension.',
+        );
         setIsTronLinkLoading(false);
         return null;
       }
@@ -45,6 +48,28 @@ export const useTronLink = () => {
         const address = tronWebInstance.defaultAddress.base58;
         const nodeInfo = await tronWebInstance.trx.getNodeInfo();
         const network = nodeInfo.configNodeInfo.network_id;
+        const host = window.tronWeb.fullNode.host;
+
+        switch (NODE_ENV) {
+          case 'development':
+            if (host !== 'https://api.shasta.trongrid.io') {
+              toast.error('Please switch to TRON Shasta Testnet network');
+              setIsTronLinkLoading(false);
+              return null;
+            }
+            break;
+          case 'production':
+            if (host !== 'https://api.trongrid.io') {
+              toast.error('Please switch to TRON Mainnet (TronGrid) network');
+              setIsTronLinkLoading(false);
+              return null;
+            }
+            break;
+          default:
+            toast.error('Please switch to the correct network');
+            setIsTronLinkLoading(false);
+            return null;
+        }
 
         setTronWeb(tronWebInstance);
         setAddress(address);
@@ -94,8 +119,9 @@ export const useTronLink = () => {
 
     try {
       const contract = await tronWeb.contract().at(contractAddress);
+      console.log(contract);
       const hash = await contract.transfer(toAddress, amount).send();
-
+      console.log({ hash });
       const res = await savePayment({
         id,
         hash,
@@ -110,6 +136,7 @@ export const useTronLink = () => {
 
       return hash;
     } catch (error) {
+      console.log({ error });
       handleError(error, 'Transfer failed');
     }
   };
@@ -153,6 +180,7 @@ export const useTronLink = () => {
             return `Token transfer success: ${result}`;
           },
           error: (error) => {
+            console.log({ error });
             resolve(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },
