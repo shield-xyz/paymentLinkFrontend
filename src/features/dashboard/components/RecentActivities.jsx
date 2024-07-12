@@ -26,6 +26,7 @@ const useProcessedData = (transactions, withdrawals) =>
   }, [transactions, withdrawals]);
 
 export const RecentActivities = ({ transactions, withdrawals }) => {
+  console.log({ transactions, withdrawals });
   const processedData = useProcessedData(transactions, withdrawals) || [];
   const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
     processedData,

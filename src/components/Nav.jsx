@@ -1,6 +1,9 @@
+import Link from 'next/link';
+
 import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
+import { Button } from './ui/button';
 
 import { Notifications } from '@/features/notifications';
 
@@ -15,6 +18,13 @@ const Nav = ({ session, notifications }) => {
       </div>
       <MobileSidebar />
       <div className="m-auto flex h-20 w-full items-center justify-between gap-4 px-4 pr-8 lg:pl-[calc(320px+2rem)]">
+        {!session.user?.verify && (
+          <Link href={'/settings/verification'}>
+            <Button title="Please verify to use the platform">
+              Complete verification
+            </Button>
+          </Link>
+        )}
         <div className="ml-auto flex items-center gap-8">
           <Notifications notifications={notifications} session={session} />
           <AvatarDropDown session={session} />

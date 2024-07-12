@@ -62,19 +62,22 @@ const cellRenderers = {
       </div>
     );
   },
-  hash: ({ row }) => (
-    <Link href={`${row.network.txView}${row.hash}`} target="_blank">
-      <span className="flex max-w-[150px] items-center gap-1 font-light">
-        <span className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
-          {`${row.hash?.slice(0, 4)}...${row.hash?.slice(-6)}`}
+  hash: ({ row }) => {
+    console.log({ row });
+    return (
+      <Link href={`${row.network?.txView}${row.hash}`} target="_blank">
+        <span className="flex max-w-[150px] items-center gap-1 font-light">
+          <span className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
+            {`${row.hash?.slice(0, 4)}...${row.hash?.slice(-6)}`}
+          </span>
         </span>
-      </span>
-    </Link>
-  ),
+      </Link>
+    );
+  },
   amount: ({ row }) => {
     return (
       <span className="font-light">
-        {row.amount || 0} {row.asset.symbol}
+        {row.amount || 0} {row.asset?.symbol}
       </span>
     );
   },
