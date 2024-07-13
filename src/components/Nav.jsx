@@ -10,7 +10,7 @@ import { Notifications } from '@/features/notifications';
 const Nav = ({ session, notifications }) => {
   return (
     <nav className="fixed z-50 flex h-[var(--nav-height)] w-full items-center border-b border-gray-200 bg-background/90 backdrop-blur-sm">
-      <div className="ml-14 flex w-fit items-center gap-3 pl-6 lg:absolute lg:ml-0">
+      <div className="ml-12 flex w-fit items-center gap-3 pl-6 lg:absolute">
         <div className="flex items-center justify-center rounded-lg bg-black/5">
           <Icons.logo2 className="scale-[0.65]" />
         </div>

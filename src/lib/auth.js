@@ -1,12 +1,34 @@
-import { getServerSession } from 'next-auth';
+import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
+import { z } from 'zod';
 
 import { getLogoUrl } from './utils';
 
 import { env } from '@/config';
 import { login } from '@/features/auth';
 
-export const authOptions = {
+const SignInSchema = z.object({
+  validationToken: z.string().startsWith('vtok_').length(39),
+});
+
+const ValidationResponseSchema = z.object({
+  user_auth: z.object({
+    fp_id: z.string(),
+    auth_events: z.array(
+      z.object({
+        kind: z.string(),
+        timestamp: z.string(),
+      }),
+    ),
+  }),
+});
+
+export const {
+  handlers,
+  signIn,
+  signOut,
+  auth: getServerAuthSession,
+} = NextAuth({
   secret: env.NEXTAUTH_SECRET,
   session: {
     maxAge: 36000,
@@ -73,7 +95,43 @@ export const authOptions = {
         }
       },
     }),
-  ],
-};
+    Credentials({
+      id: 'footprint',
+      name: 'Footprint',
+      credentials: {
+        validationToken: { type: 'text' },
+      },
+      authorize: async (credentials) => {
+        try {
+          console.log({ credentials });
+          const { validationToken } =
+            await SignInSchema.parseAsync(credentials);
 
-export const getServerAuthSession = () => getServerSession(authOptions);
+          console.log('authorize', { validationToken });
+          console.log('FOOTPRINT_API_KEY', process.env.FOOTPRINT_API_KEY);
+
+          const res = await fetch(
+            'https://api.onefootprint.com/onboarding/session/validate',
+            {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'X-Footprint-Secret-Key': process.env.FOOTPRINT_API_KEY || '',
+              },
+              body: JSON.stringify({ validation_token: validationToken }),
+            },
+          );
+
+          const json = await res.json();
+
+          console.log({ json });
+          await ValidationResponseSchema.parseAsync(json);
+
+          return { validationToken };
+        } catch (error) {
+          return null;
+        }
+      },
+    }),
+  ],
+});
