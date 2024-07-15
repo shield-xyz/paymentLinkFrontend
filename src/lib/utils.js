@@ -123,7 +123,7 @@ async function parseResponse(response) {
 }
 
 export async function validateResponse(response, defaultMessage) {
-  console.log({ response });
+  // console.log({ response });
   if (!response.ok) {
     const data = await parseResponse(response);
     console.error('error data:', data);

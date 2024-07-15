@@ -20,8 +20,6 @@ export async function login(credentials) {
       'Error authenticating user',
     );
 
-    console.log({ data });
-
     const logo = getLogoUrl(data.logo);
 
     return {

@@ -47,7 +47,6 @@ export const authOptions = {
         session.user.verify = token.verify;
         session.accessToken = token.accessToken;
       }
-      console.log({ session });
       return session;
     },
   },

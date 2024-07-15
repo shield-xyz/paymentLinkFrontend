@@ -10,8 +10,6 @@ export default async function Page({ searchParams }) {
   const { id } = searchParams;
   const paymentLinkData = await getPaymentLinkData(id);
 
-  console.log({ paymentLinkData });
-
   if (!paymentLinkData) {
     notFound();
   }

@@ -5,7 +5,6 @@ import { validateResponse } from '@/lib/utils';
 
 export async function getUserWallet({ userId, networkId }) {
   try {
-    console.log({ userId, networkId });
     if (!userId || !networkId) {
       throw new Error('No userId or networkId provided');
     }
@@ -16,8 +15,6 @@ export async function getUserWallet({ userId, networkId }) {
         method: 'GET',
       },
     );
-
-    console.log({ res });
 
     const { response: data } = await validateResponse(
       res,

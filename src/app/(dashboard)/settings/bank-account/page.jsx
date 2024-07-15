@@ -5,8 +5,6 @@ import { BankData, SettingsNav, getBankingData } from '@/features/settings';
 export default async function Page() {
   const bankingData = await getBankingData();
 
-  console.log({ bankingData });
-
   return (
     <div>
       <Container className="flex h-full w-full flex-col px-8 py-8">

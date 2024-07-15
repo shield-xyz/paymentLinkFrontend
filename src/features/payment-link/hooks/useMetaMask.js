@@ -141,8 +141,6 @@ export const useMetaMask = () => {
           .transfer(toAddress, amount)
           .send({ from: account });
 
-        console.log({ result });
-
         const res = await savePayment({
           id,
           hash: result.transactionHash,

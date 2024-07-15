@@ -63,7 +63,6 @@ const cellRenderers = {
     );
   },
   hash: ({ row }) => {
-    console.log({ row });
     return (
       <Link href={`${row.network?.txView}${row.hash}`} target="_blank">
         <span className="flex max-w-[150px] items-center gap-1 font-light">
@@ -92,8 +91,6 @@ export function TransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
-
-  console.log({ transactions });
 
   // const assetsByAssetId = useMemo(
   //   () =>

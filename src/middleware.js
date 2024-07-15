@@ -26,7 +26,7 @@ export default withAuth(
   {
     callbacks: {
       authorized: ({ token, req }) => {
-        console.log(req.nextUrl.pathname);
+        // console.log(req.nextUrl.pathname);
         const isMiddlewareAllowed = isPathAllowed(req.nextUrl.pathname);
 
         if (isMiddlewareAllowed) {

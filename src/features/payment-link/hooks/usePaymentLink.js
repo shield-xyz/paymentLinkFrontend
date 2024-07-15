@@ -70,6 +70,8 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
   const router = useRouter();
 
+  console.log({ userWallet });
+
   const {
     address: tronAddress,
     connectToTron,
@@ -181,7 +183,6 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
         await connectToTron();
       }
     } catch (error) {
-      console.log({ error });
       handleSubmissionError(error, 'Error connecting wallet');
     }
   };

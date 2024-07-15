@@ -119,9 +119,7 @@ export const useTronLink = () => {
 
     try {
       const contract = await tronWeb.contract().at(contractAddress);
-      console.log(contract);
       const hash = await contract.transfer(toAddress, amount).send();
-      console.log({ hash });
       const res = await savePayment({
         id,
         hash,
@@ -136,7 +134,6 @@ export const useTronLink = () => {
 
       return hash;
     } catch (error) {
-      console.log({ error });
       handleError(error, 'Transfer failed');
     }
   };
@@ -180,7 +177,7 @@ export const useTronLink = () => {
             return `Token transfer success: ${result}`;
           },
           error: (error) => {
-            console.log({ error });
+            console.error({ error });
             resolve(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },

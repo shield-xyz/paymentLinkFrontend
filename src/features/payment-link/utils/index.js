@@ -11,9 +11,9 @@ export const copyCode = async (link, message) => {
     // eslint-disable-next-line no-undef
     await navigator.clipboard.writeText(link);
     toast.success(message);
-  } catch (err) {
-    if (err instanceof Error) {
-      console.log(err.message);
+  } catch (error) {
+    if (error instanceof Error) {
+      console.error(error.message);
     }
   }
 };

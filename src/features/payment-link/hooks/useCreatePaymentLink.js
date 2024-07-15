@@ -44,7 +44,6 @@ export const useCreatePaymentLink = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log({ data });
       const res = await createPaymentLink(data, session.accessToken);
       const finalLink = getFinalPaymentLink(res.id);
       setLink(finalLink);
