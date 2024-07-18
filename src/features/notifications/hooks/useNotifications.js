@@ -5,10 +5,10 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { io } from 'socket.io-client';
 import { toast } from 'sonner';
 
-import { updateNotificationStatus } from '../actions';
-
 import { env } from '@/config';
 import { NOTIFICATION_STATUS, handleSubmissionError } from '@/lib/utils';
+
+import { updateNotificationStatus } from '../actions';
 
 const TABS = {
   Inbox: 'inbox',
@@ -83,7 +83,7 @@ export const useNotifications = ({ notifications, session }) => {
         setLocalNotifications(notifications);
       }
     },
-    [localNotifications, notifications],
+    [localNotifications, notifications, router],
   );
 
   const handlePutArchive = useCallback(
@@ -113,7 +113,7 @@ export const useNotifications = ({ notifications, session }) => {
         setLocalNotifications(notifications);
       }
     },
-    [localNotifications, notifications],
+    [localNotifications, notifications, router],
   );
 
   // Mark all notifications as seen

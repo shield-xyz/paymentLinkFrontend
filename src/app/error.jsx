@@ -2,9 +2,7 @@
 
 import { useEffect } from 'react';
 
-import Nav from '../components/Nav';
-
-import { Sidebar } from '@/components';
+import { Nav, Sidebar } from '@/components';
 import { Button } from '@/components/ui/button';
 
 export default function Error({ error, statusCode, session }) {

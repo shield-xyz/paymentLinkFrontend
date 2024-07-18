@@ -10,6 +10,7 @@ import { Button } from './ui/button';
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
+
 export const MobileSidebar = ({ session }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);

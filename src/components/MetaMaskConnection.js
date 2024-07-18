@@ -48,7 +48,7 @@ const MetaMaskConnection = () => {
         web3.currentProvider.off('accountsChanged', handleAccountsChanged);
       }
     };
-  }, []);
+  }, [web3]);
 
   // Handle network change
   const handleNetworkChange = (networkId) => {

@@ -3,10 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { PaymentLinkForm } from './PaymentLinkForm';
-
 import { LogoIcon } from '@/assets';
 import { cn, formatAmount, getLogoUrl } from '@/lib/utils';
+
+import { PaymentLinkForm } from './PaymentLinkForm';
 
 export const PaymentLink = ({ paymentLinkData, userWallet }) => {
   const { user, amount, token, name, description, status, asset } =

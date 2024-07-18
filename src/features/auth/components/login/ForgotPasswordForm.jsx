@@ -5,12 +5,12 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { postForgotPassword } from '../../actions';
-
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
+
+import { postForgotPassword } from '../../actions';
 
 export const ForgotPasswordSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email' }),

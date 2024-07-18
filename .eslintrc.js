@@ -4,24 +4,31 @@ module.exports = {
     node: true,
     es6: true,
   },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+      'eslint-import-resolver-custom-alias': {
+        alias: {
+          '@': './src',
+        },
+        extensions: ['.js', '.jsx'],
+        packages: ['packages/*'],
+      },
+    },
+  },
   extends: [
     'eslint:recommended',
     'plugin:@next/next/recommended',
     'plugin:import/recommended',
     'plugin:prettier/recommended',
     'plugin:import/react',
+    'next',
+    'prettier',
+    'next/core-web-vitals',
   ],
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx'],
-        alias: {
-          map: [['@', './src']],
-          extensions: ['.ts', '.js', '.jsx', '.json'],
-        },
-      },
-    },
-  },
+
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
@@ -31,7 +38,6 @@ module.exports = {
   },
   plugins: ['prettier', 'import', 'react'],
   rules: {
-    'import/no-unresolved': 'off',
     'import/order': [
       'error',
       {

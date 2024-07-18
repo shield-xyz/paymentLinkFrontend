@@ -28,7 +28,7 @@ const Steps = ({ step, setStep }) => {
               }`}
             ></div>
             <div
-              className={`flex w-full flex-col ${
+              className={`flex w-full flex-col pt-1 ${
                 index < step ? 'text-primary' : ''
               }`}
             >

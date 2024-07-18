@@ -1,6 +1,8 @@
 'use client';
 
 import footprint from '@onefootprint/footprint-js';
+
+import { Button } from '@/components/ui/button';
 import '@onefootprint/footprint-js/dist/footprint-js.css';
 
 export const LoginFormFootPrint = ({ onCancel, onComplete }) => {
@@ -9,9 +11,9 @@ export const LoginFormFootPrint = ({ onCancel, onComplete }) => {
       kind: 'auth',
       publicKey: 'pb_test_OC1PnSJcbWNYLTCKAQpouc',
       onCancel,
-      onComplete: (data) => {
-        const { validationToken } = data;
-        onComplete?.(validationToken);
+      onComplete: async (validationToken) => {
+        console.log({ validationToken });
+        onComplete(validationToken);
       },
     });
 
@@ -20,5 +22,9 @@ export const LoginFormFootPrint = ({ onCancel, onComplete }) => {
     return null;
   };
 
-  return <button onClick={handleOpen}>Launch Auth</button>;
+  return (
+    <Button size="lg" className="w-full px-14" onClick={handleOpen}>
+      Log in
+    </Button>
+  );
 };

@@ -7,12 +7,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
+
 import StepOne from './StepOne';
 import Steps from './Steps';
 import StepTwo from './StepTwo';
 import { register } from '../..';
-
-import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',

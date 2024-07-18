@@ -1,7 +1,8 @@
+import { cn } from '@/lib/utils';
+
 import { Icons } from './Icons';
 import { Input } from './ui/input';
 
-import { cn } from '@/lib/utils';
 
 const Searchbar = ({ placeholder = 'Search', value, onChange, className }) => {
   return (

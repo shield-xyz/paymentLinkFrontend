@@ -9,7 +9,7 @@ export default async function DashboardLayout({ children }) {
   const session = await getServerAuthSession();
   const notifications = await getNotifications();
 
-  if (session.isExpired) {
+  if (session?.isExpired) {
     redirect('/login?sessionExpired=true');
   }
 

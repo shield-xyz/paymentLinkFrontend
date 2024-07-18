@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 
+import { Icons } from '@/components';
+import { Button } from '@/components/ui/button';
+
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
@@ -9,37 +12,9 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 
-import { Icons } from '@/components';
-import { Button } from '@/components/ui/button';
-
 const FilterDropDown = ({ setFilteredData }) => {
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState('');
-
-  const handleApplyFilter = () => {
-    setFilteredData((prev) => {
-      const filteredData = [...prev];
-      if (selectedFilter === 'amount') {
-        if (selectedOrder === 'ascending') {
-          return filteredData.sort((a, b) => a.amount - b.amount);
-        } else {
-          return filteredData.sort((a, b) => b.amount - a.amount);
-        }
-      }
-
-      if (selectedFilter === 'date') {
-        if (selectedOrder === 'ascending') {
-          return filteredData.sort(
-            (a, b) => new Date(a.date) - new Date(b.date),
-          );
-        } else {
-          return filteredData.sort(
-            (a, b) => new Date(b.date) - new Date(a.date),
-          );
-        }
-      }
-    });
-  };
 
   const handleActivateFilter = (status, inputName) => {
     if (status) {
@@ -61,8 +36,33 @@ const FilterDropDown = ({ setFilteredData }) => {
   };
 
   useEffect(() => {
+    const handleApplyFilter = () => {
+      setFilteredData((prev) => {
+        const filteredData = [...prev];
+        if (selectedFilter === 'amount') {
+          if (selectedOrder === 'ascending') {
+            return filteredData.sort((a, b) => a.amount - b.amount);
+          } else {
+            return filteredData.sort((a, b) => b.amount - a.amount);
+          }
+        }
+
+        if (selectedFilter === 'date') {
+          if (selectedOrder === 'ascending') {
+            return filteredData.sort(
+              (a, b) => new Date(a.date) - new Date(b.date),
+            );
+          } else {
+            return filteredData.sort(
+              (a, b) => new Date(b.date) - new Date(a.date),
+            );
+          }
+        }
+      });
+    };
+
     handleApplyFilter();
-  }, [selectedFilter, selectedOrder]);
+  }, [selectedFilter, selectedOrder, setFilteredData]);
 
   return (
     <DropdownMenu>

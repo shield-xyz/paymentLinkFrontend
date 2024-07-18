@@ -5,10 +5,10 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { Web3 } from 'web3';
 
-import { savePayment } from '../actions';
-
 import { NODE_ENV } from '@/config';
 import { handleError } from '@/lib/utils';
+
+import { savePayment } from '../actions';
 
 export const useMetaMask = () => {
   const [web3, setWeb3] = useState(null);

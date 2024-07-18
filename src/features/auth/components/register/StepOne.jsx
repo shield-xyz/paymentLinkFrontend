@@ -43,7 +43,7 @@ const StepOne = ({ form, setStep }) => {
         setFileUrl(fileUrl);
       }
     }
-  }, [watch('logo')]);
+  }, [watch]);
 
   return (
     <div className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4">
