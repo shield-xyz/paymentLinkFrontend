@@ -45,10 +45,6 @@ export const RegisterSchema = z
         message: 'Password must contain at least 1 uppercase character',
       }),
     passwordConfirm: z.string(),
-    description: z
-      .string()
-      .min(10, { message: 'Description must be at least 10 characters long' })
-      .optional(),
     logo: z
       .any()
       .optional() // Keep it optional
@@ -64,28 +60,28 @@ export const RegisterSchema = z
           ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
         'Only .jpg, .jpeg, .png, and .webp formats are supported.',
       ),
-    company: z
-      .string({
-        message: 'Company name is required',
-      })
-      .min(1, { message: 'Company name is required' })
-      .min(3, { message: 'Company name must be at least 3 characters long' })
-      .optional(),
+    company: z.string().optional(),
+    validationToken: z.string(),
   })
   .refine((data) => data.password === data.passwordConfirm, {
     message: 'Passwords do not match',
     path: ['passwordConfirm'],
   });
 
-const RegisterForm = () => {
+const RegisterForm = ({ validationToken }) => {
   const [step, setStep] = useState(1);
   const router = useRouter();
 
   const form = useForm({
     resolver: zodResolver(RegisterSchema),
     mode: 'onTouched',
+    defaultValues: {
+      validationToken,
+    },
   });
-  const { handleSubmit } = form;
+  const { handleSubmit, watch } = form;
+
+  watch();
 
   const onSubmit = async (data) => {
     try {
@@ -98,6 +94,7 @@ const RegisterForm = () => {
       formData.append('description', description);
       formData.append('logo', logo[0]);
       formData.append('company', company);
+      formData.append('validation_token', validationToken);
 
       const res = await register(formData);
 

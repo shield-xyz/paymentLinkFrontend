@@ -14,9 +14,9 @@ const StepOne = ({ form, setStep }) => {
     formState: { errors },
     trigger,
     watch,
+    getValues,
   } = form;
 
-  const { getValues } = form;
   const { user_name, email } = getValues();
 
   const handleContinue = async () => {
@@ -115,7 +115,7 @@ const StepOne = ({ form, setStep }) => {
         )}
       />
       <Input
-        placeholder="Enter your company name"
+        placeholder="Enter your company name (optional)"
         {...register('company')}
         onKeyDown={(event) => {
           if (event.key === 'Enter') {

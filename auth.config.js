@@ -31,12 +31,12 @@ export const authConfig = {
   },
   callbacks: {
     async signIn({ user }) {
-      console.log('signIn callback', { user });
-      const isAllowedToSignIn = user.isRegistered;
-      if (isAllowedToSignIn) {
+      console.log('signIn CallBack: ', user);
+      const { isRegistered, validationToken } = user;
+      if (isRegistered) {
         return true;
       } else {
-        return '/register';
+        return `/register?validationToken=${validationToken}`;
       }
     },
     authorized({ auth, request: { nextUrl } }) {

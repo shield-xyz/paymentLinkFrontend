@@ -54,13 +54,26 @@ export const {
       authorize: async (credentials) => {
         try {
           console.log({ credentials });
-          const res = await loginWithFootprint(credentials);
-          console.log({ res });
+          const data = await loginWithFootprint({
+            validationToken: credentials.validationToken,
+          });
 
-          // return the user
-          return {
-            isRegistered: false,
-          };
+          console.log('authorize', { data });
+
+          // If the data.response is 'user not found', the user is not registered
+          // and should be redirected to the registration page
+          if (data.response === 'user not found') {
+            return {
+              isRegistered: false,
+              validationToken: credentials.validationToken,
+            };
+          } else {
+            return {
+              ...data,
+              isRegistered: true,
+              validationToken: credentials.validationToken,
+            };
+          }
         } catch (error) {
           return null;
         }
