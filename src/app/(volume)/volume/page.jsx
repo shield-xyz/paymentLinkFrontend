@@ -7,8 +7,8 @@ export default async function Page() {
   const [transactions] = await Promise.all([getVolumeTransactionsPerDay()]);
 
   return (
-    <div className="flex flex-col gap-2">
+    <html className="bg-black">
       <Volume transactions={transactions} />
-    </div>
+    </html>
   );
 }
