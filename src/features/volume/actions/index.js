@@ -1,1 +1,1 @@
-export * from './getTronTransactions';
+export * from './getVolumeTransactionsPerDay';
