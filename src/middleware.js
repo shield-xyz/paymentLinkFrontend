@@ -6,6 +6,7 @@ const allowedPaths = [
   '/forgot-password',
   '/paylink',
   '/reset-password/**',
+  '/volume',
 ];
 
 function isPathAllowed(pathname) {
