@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
+import { knownErrorsMessages } from './knownErrors';
+
 import { env } from '@/config';
 
 export function cn(...inputs) {
@@ -98,7 +100,7 @@ export function handleReturnError(error, defaultMessage) {
 export function handleSubmissionError(error, defaultMessage) {
   let message = defaultMessage;
   if (error instanceof Error) {
-    message = error.message;
+    message = knownErrorsMessages[error.message] || error.message;
   }
   console.error(error);
   toast.error(message);
@@ -131,6 +133,7 @@ export async function validateResponse(response, defaultMessage) {
       getStringValue(data?.data?.response) ||
       getStringValue(data.response) ||
       getStringValue(data.message) ||
+      getStringValue(data.msg) ||
       defaultMessage;
     throw new Error(message);
   } else {

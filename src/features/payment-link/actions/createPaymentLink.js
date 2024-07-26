@@ -3,7 +3,11 @@
 import { revalidatePath } from 'next/cache';
 
 import { env } from '@/config';
-import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
+import {
+  fetchWithToken,
+  handleReturnError,
+  validateResponse,
+} from '@/lib/utils';
 
 export async function createPaymentLink(linkData, token) {
   try {
@@ -19,15 +23,13 @@ export async function createPaymentLink(linkData, token) {
       },
     );
 
-    const { response: data } = await validateResponse(
-      res,
-      'Error creating Link',
-    );
+    const data = await validateResponse(res, 'Error creating Link');
 
     revalidatePath('/payment-links');
 
-    return data;
+    return { data };
   } catch (error) {
-    handleError(error, 'Error payment link');
+    console.log({ error });
+    return handleReturnError(error, 'Error creating Link');
   }
 }
