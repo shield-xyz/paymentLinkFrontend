@@ -6,14 +6,14 @@ import Container from '@/components/ui/container';
 
 export const Volume = ({ transactions }) => {
   return (
-    <Container className="flex h-auto flex-col items-center justify-center border-none bg-black p-4 text-white lg:rounded-none xl:p-0">
+    <Container className="flex h-full flex-col items-center justify-center border-none bg-black text-white lg:rounded-none lg:p-4">
       <div className="w-full px-10 pb-4 pt-5 text-left">
         <span className="text-left font-medium sm:text-xl">
           Post-compliance transaction volume
         </span>
       </div>
 
-      <div className="flex h-96 w-full px-4">
+      <div className="flex h-[80dvh] w-full px-4 lg:h-[70dvh]">
         <VolumeChart transactions={transactions} />
       </div>
     </Container>
