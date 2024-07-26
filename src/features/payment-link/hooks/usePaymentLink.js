@@ -47,7 +47,6 @@ export const PaymentSchema = z
   .superRefine((data, ctx) => {
     const hasEmail = data.email !== undefined && data.email !== '';
     const hasName = data.name !== undefined && data.name !== '';
-    const isManual = data.isManualPayment;
     if (hasEmail && !hasName) {
       ctx.addIssue({
         path: ['name'],
@@ -58,7 +57,7 @@ export const PaymentSchema = z
         path: ['email'],
         message: 'Email is required',
       });
-    } else if (isManual && (!data.paymentHash || data.paymentHash === '')) {
+    } else if (!data.paymentHash || data.paymentHash === '') {
       ctx.addIssue({
         path: ['paymentHash'],
         message: 'Payment hash is required',
@@ -68,6 +67,8 @@ export const PaymentSchema = z
 
 export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
+  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
+
   const router = useRouter();
 
   console.log({ userWallet });
@@ -108,11 +109,19 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
       isManualPayment,
     },
   });
-  const { handleSubmit } = form;
+  const {
+    handleSubmit,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = form;
+  const values = getValues();
+  console.log({ errors });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       setIsLoadingPayment(true);
+      const data = values;
 
       const amount = paymentLinkData.amount;
 
@@ -148,19 +157,6 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
           toAddress: userWallet.address,
           tokenAddress: paymentLinkData.asset.address,
         });
-      } else if (isManualPayment) {
-        // await addWallet({
-        //   id: paymentLinkData.id,
-        //   wallet: '', // TODO: Complete
-        // });
-
-        await handleManualTransfer({
-          assetId: paymentLinkData.assetId,
-          email: data.email,
-          id: paymentLinkData.id,
-          name: data.name,
-          paymentHash: data.paymentHash,
-        });
       } else {
         throw new Error('Invalid asset');
       }
@@ -187,13 +183,36 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
     }
   };
 
+  const handleVerifyPayment = async () => {
+    try {
+      setIsVerifyingPayment(true);
+      const paymentHash = await trigger('paymentHash', {
+        shouldFocus: true,
+      });
+      console.log({ paymentHash });
+      await handleManualTransfer({
+        assetId: paymentLinkData.assetId,
+        email: values.email,
+        id: paymentLinkData.id,
+        name: values.name,
+        paymentHash: values.paymentHash,
+      });
+    } catch (error) {
+      handleSubmissionError(error, 'Error verifying payment');
+    } finally {
+      setIsVerifyingPayment(false);
+    }
+  };
+
   return {
     form,
     handleConnection,
     handleSubmit,
+    handleVerifyPayment,
     isLoadingConnection,
     isLoadingPayment,
     isManualPayment,
+    isVerifyingPayment,
     isReady,
     onSubmit,
     steps,

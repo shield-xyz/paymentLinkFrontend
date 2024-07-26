@@ -19,6 +19,8 @@ export const StepTwo = ({
   isManualPayment,
   form,
   userWallet,
+  onSubmit,
+  isVerifyingPayment,
 }) => {
   const {
     register,
@@ -67,9 +69,9 @@ export const StepTwo = ({
             />
             <Button
               className="mt-4 w-full"
-              type="submit"
+              type="button"
               size="lg"
-              disabled={isLoadingPayment}
+              disabled={isLoadingPayment || isVerifyingPayment}
             >
               {isLoadingPayment ? (
                 <Icons.loaderCircle className="ml-2 h-6 w-6 animate-spin" />
@@ -86,7 +88,7 @@ export const StepTwo = ({
             </div>
             <Button
               className="flex justify-between rounded-lg px-5 py-7 text-base font-semibold text-primary"
-              disabled={isReady || isLoadingConnection}
+              disabled={isReady || isLoadingConnection || isLoadingPayment}
               onClick={onConnectWallet}
               size="sm"
               type="button"
@@ -103,8 +105,9 @@ export const StepTwo = ({
               className="flex justify-between rounded-lg px-5 py-7 text-base font-semibold text-primary"
               disabled={!isReady || isLoadingPayment}
               size="sm"
-              type="submit"
+              type="button"
               variant="outline"
+              onClick={onSubmit}
             >
               Wallet Transfer
               {isLoadingPayment ? (

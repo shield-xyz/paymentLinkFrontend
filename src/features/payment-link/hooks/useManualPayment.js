@@ -45,11 +45,11 @@ export const useManualPayment = () => {
           loading: 'Verifying payment...',
           success: (result) => {
             resolve(result);
-            return `Transfer successful: ${result}`;
+            return `Verification successful: ${result}`;
           },
           error: (error) => {
             resolve(`The transfer was not successful: ${error}`);
-            return `Transfer failed: ${error}`;
+            return `Verification failed: ${error}`;
           },
         },
       );
