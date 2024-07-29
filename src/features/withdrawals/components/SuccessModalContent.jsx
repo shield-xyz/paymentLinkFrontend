@@ -1,19 +1,18 @@
-import { Icons } from '@/components';
-import { Button } from '@/components/ui/button';
 import { useEffect } from 'react';
 
-const SuccessModalContent = ({ handleClose }) => {
+import { Icons } from '@/components';
+import { Button } from '@/components/ui/button';
 
+const SuccessModalContent = ({ handleClose }) => {
   useEffect(() => {
     // Add this Logger this after the withdraw feature is integrated
-
-    // posthog.capture('withdrawal', {
+    // posthogOriginal.capture('withdrawal', {
     //   distinctId: 'user-id',
     //   amount: amount,
     //   currency: currency,
     //   timestamp: new Date().toISOString()
     // })
-  }, [])
+  }, []);
 
   return (
     <div>

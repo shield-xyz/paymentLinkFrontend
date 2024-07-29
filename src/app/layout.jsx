@@ -1,10 +1,10 @@
 import { Analytics } from '@vercel/analytics/react';
+import dynamic from 'next/dynamic';
 import { Inter } from 'next/font/google';
 
 import './globals.css';
-import Provider from '@/lib/Provider';
 import { PHProvider } from '@/lib/PHProvider';
-import dynamic from 'next/dynamic';
+import Provider from '@/lib/Provider';
 
 export const viewport = {
   width: 'device-width',
@@ -22,14 +22,14 @@ export const metadata = {
 
 const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
   ssr: false,
-})
+});
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <PHProvider>
         <body className={`${inter.className} bg-muted text-foreground`}>
-          <PostHogPageView /> 
+          <PostHogPageView />
           <Provider>{children}</Provider>
           <Analytics />
         </body>
