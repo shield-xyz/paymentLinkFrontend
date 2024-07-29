@@ -11,6 +11,7 @@ import StepOne from './StepOne';
 import Steps from './Steps';
 import StepTwo from './StepTwo';
 import { register } from '../..';
+import posthog from 'posthog-js';
 
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
@@ -111,6 +112,14 @@ const RegisterForm = () => {
       };
 
       handleSubmissionSuccess('Registered successfully');
+
+      // Logger Signup
+      posthog.capture('user_signed_up', {
+        user_email: email.toLowerCase(),
+        event: 'user_signup',
+        signup_time: new Date().toISOString()
+      })
+
       await signIn('credentials', {
         ...loginCredentials,
         redirect: false,

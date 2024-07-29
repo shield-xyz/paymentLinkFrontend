@@ -12,6 +12,7 @@ import { useTronLink } from './useTronLink';
 import { addWallet } from '../actions';
 
 import { handleSubmissionError, parseAmountToDecimals } from '@/lib/utils';
+import posthog from 'posthog-js';
 
 const steps = [
   {
@@ -147,6 +148,8 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
           wallet: metaMaskAccount,
         });
 
+        
+
         await handleMetaMaskTransfer({
           account: metaMaskAccount,
           amount: parseAmountToDecimals(amount, paymentLinkData.asset.decimals),
@@ -157,6 +160,26 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
           toAddress: userWallet.address,
           tokenAddress: paymentLinkData.asset.address,
         });
+
+        // TODO: Try getting the transaction fee here by maybe logging the result of the tx
+        // Logger Transaction Success
+
+        posthog.capture('transaction_processed', {
+          payment_link_data_id: paymentLinkData.id,
+          properties: {
+            amount: amount,
+            // fee: transactionFee
+          }
+        })
+
+        // TODO: Figure out the currency
+
+        client.capture('payment_transaction', {
+          payment_link_data_id: paymentLinkData.id,
+          amount: amount,
+          // currency: currency,
+          timestamp: new Date().toISOString()
+        })
       } else {
         throw new Error('Invalid asset');
       }

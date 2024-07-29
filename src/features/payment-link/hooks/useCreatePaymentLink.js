@@ -13,6 +13,7 @@ import { getFinalPaymentLink } from '../utils';
 
 import { knownErrors, knownErrorsMessages } from '@/lib/knownErrors';
 import { handleSubmissionError } from '@/lib/utils';
+import posthog from 'posthog-js';
 
 export const CreatePaymentLinkSchema = z.object({
   id: z.nullable(),
@@ -57,6 +58,13 @@ export const useCreatePaymentLink = () => {
       const finalLink = getFinalPaymentLink(res.id);
       setLink(finalLink);
       toast.success('Payment link created successfully');
+
+      // Logger Create Payment Link
+      posthog.capture('payment_link_generated', {
+        timestamp: new Date().toISOString()
+      })
+
+
       setStep(2);
     } catch (error) {
       if (error.message === knownErrors['unverified user']) {

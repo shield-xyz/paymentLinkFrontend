@@ -12,6 +12,7 @@ import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
+import posthog from 'posthog-js';
 
 export const LoginSchema = z.object({
   email: z
@@ -56,6 +57,11 @@ const LoginForm = () => {
 
       router.push('/payment-links');
       handleSubmissionSuccess('Logged in successfully');
+      
+
+      // Logger user log in
+      posthog.capture('user_logged_in', { timestamp: new Date().toISOString() })
+      
     } catch (error) {
       handleSubmissionError(error, 'Could not login');
     }

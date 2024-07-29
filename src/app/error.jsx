@@ -5,10 +5,19 @@ import { useEffect } from 'react';
 import Nav from '../components/Nav';
 
 import { Button } from '@/components/ui/button';
+import posthog from 'posthog-js';
 
 export default function Error({ error }) {
   useEffect(() => {
     console.error(error);
+    posthog.capture('system_error', {
+      distinctId: 'system',
+      error: error,
+      properties: {
+        error_message: error.message,
+        error_type: error.type
+      }
+    })
   }, [error]);
 
   const reset = () => {

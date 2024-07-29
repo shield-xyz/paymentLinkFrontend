@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 
 import './globals.css';
 import Provider from '@/lib/Provider';
+import { PHProvider } from '@/lib/PHProvider';
+import dynamic from 'next/dynamic';
 
 export const viewport = {
   width: 'device-width',
@@ -18,13 +20,20 @@ export const metadata = {
   description: 'An app for managing your personal finances.',
 };
 
+const PostHogPageView = dynamic(() => import('./PostHogPageView'), {
+  ssr: false,
+})
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-muted text-foreground`}>
-        <Provider>{children}</Provider>
-        <Analytics />
-      </body>
+      <PHProvider>
+        <body className={`${inter.className} bg-muted text-foreground`}>
+          <PostHogPageView /> 
+          <Provider>{children}</Provider>
+          <Analytics />
+        </body>
+      </PHProvider>
     </html>
   );
 }
