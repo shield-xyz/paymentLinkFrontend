@@ -1,6 +1,6 @@
 'use server';
 
-import { compareAsc, format, startOfWeek } from 'date-fns';
+import { format, startOfWeek } from 'date-fns';
 
 import { env } from '@/config';
 import { validateResponse } from '@/lib/utils';
@@ -19,22 +19,23 @@ export async function getVolumeTransactionsPerDay() {
       'Error fetching transactions',
     );
 
-    const startDate = new Date('01 Apr, 2024');
-    const transactionsFrom = data.filter((transaction) => {
-      const date = new Date(transaction.date);
-      return compareAsc(date, startDate) > 0;
-    });
+    const startDate = new Date('2023-11-09');
+    const transactionsFrom =data;
+    //  data.filter((transaction) => {
+    //   const date = new Date(transaction.date);
+    //   return compareAsc(date, startDate) > 0;
+    // });
 
-    const groupedByWeek = transactionsFrom.reduce(
+    const groupedByWeek =transactionsFrom.reduce(
       (acc, { date, totalReceivedAmount }) => {
-        const dateObj = new Date(date);
-        const startOfTheWeek = startOfWeek(dateObj, { weekStartsOn: 1 }); // Adjust to Monday as the first day of the week
-        const weekKey = format(startOfTheWeek, 'MM-dd-yyyy');
+        // const dateObj = new Date(date);
+        // const startOfTheWeek = startOfWeek(dateObj, { weekStartsOn: 1 }); // Adjust to Monday as the first day of the week
+        // const weekKey = format(startOfTheWeek, 'MM-dd-yyyy');
 
-        if (!acc[weekKey]) {
-          acc[weekKey] = 0;
+        if (!acc[date]) {
+          acc[date] = 0;
         }
-        acc[weekKey] += totalReceivedAmount;
+        acc[date] += totalReceivedAmount;
         return acc;
       },
       {},

@@ -9,7 +9,7 @@ export const Volume = ({ transactions }) => {
     <Container className="flex h-full flex-col items-center justify-center border-none bg-black text-white lg:rounded-none lg:p-4">
       <div className="w-full px-10 pb-4 pt-5 text-left">
         <span className="text-left font-medium sm:text-xl">
-          Post-compliance transaction volume
+          Transaction Volume
         </span>
       </div>
 

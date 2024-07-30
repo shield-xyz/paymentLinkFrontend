@@ -13,6 +13,7 @@ import {
 
 import CustomTooltip from '@/components/Recharts/CustomTooltip';
 import { formatCurrency } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 const processData = (transactions) => {
   return Object.entries(transactions).map(([name, amt]) => ({
@@ -24,6 +25,31 @@ const processData = (transactions) => {
 const VolumeChart = ({ transactions }) => {
   const data = processData(transactions);
 
+  const [valuesMoney, setValuesMoney] = useState([]);
+
+  useEffect(() => {
+  
+    if (valuesMoney.length <= 0) {
+      let maxAmt = Math.max(...data.map(item => item.amt));
+      
+      const roundUpTo = (num, to) => Math.ceil(num / to) * to;
+      const maxRoundedAmt = roundUpTo(maxAmt, 50000);
+
+      const decrement = 100000;
+      let currentValue = maxRoundedAmt;
+      const resultArray = [];
+      
+      const formatCurrency = (value) => `${value.toLocaleString('en-US')}`;
+      console.log(currentValue,"currentValue")
+      while (currentValue >= 0) {
+        resultArray.push((currentValue));
+        currentValue -= decrement;
+      }
+      
+      console.log(resultArray);
+      setValuesMoney(resultArray);
+    }
+  }, [data])
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
@@ -64,7 +90,7 @@ const VolumeChart = ({ transactions }) => {
           type="number"
           hide={false}
           domain={[0, 'dataMax']}
-          ticks={[25000, 50000, 75000, 100000, 125000]}
+          ticks={valuesMoney}
           tickFormatter={(value) => `${formatCurrency(value, 0)}`}
           fontSize={15}
           style={{ fill: '#FFFFFF' }}
