@@ -31,6 +31,11 @@ export const SIDEBAR_PAGES = [
     icon: 'store',
     path: '/withdrawals',
   },
+  {
+    name: 'Buy/Sell',
+    icon: 'store',
+    path: '/buy-sell',
+  },
   // {
   //   name: 'Settings',
   //   icon: 'pie_chart',
