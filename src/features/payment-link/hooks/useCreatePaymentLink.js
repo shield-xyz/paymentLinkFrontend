@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import posthogOriginal from 'posthog-js';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
@@ -57,6 +58,12 @@ export const useCreatePaymentLink = () => {
       const finalLink = getFinalPaymentLink(res.id);
       setLink(finalLink);
       toast.success('Payment link created successfully');
+
+      // Logger Create Payment Link
+      posthogOriginal.capture('payment_link_generated', {
+        timestamp: new Date().toISOString(),
+      });
+
       setStep(2);
     } catch (error) {
       if (error.message === knownErrors['unverified user']) {

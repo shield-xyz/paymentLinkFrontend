@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import posthogOriginal from 'posthog-js';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -56,6 +57,11 @@ const LoginForm = () => {
 
       router.push('/payment-links');
       handleSubmissionSuccess('Logged in successfully');
+
+      // Logger user log in
+      posthogOriginal.capture('user_logged_in', {
+        timestamp: new Date().toISOString(),
+      });
     } catch (error) {
       handleSubmissionError(error, 'Could not login');
     }

@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
 import { signIn } from 'next-auth/react';
+import posthogOriginal from 'posthog-js';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -111,6 +112,14 @@ const RegisterForm = () => {
       };
 
       handleSubmissionSuccess('Registered successfully');
+
+      // Logger Signup
+      posthogOriginal.capture('user_signed_up', {
+        user_email: email.toLowerCase(),
+        event: 'user_signup',
+        signup_time: new Date().toISOString(),
+      });
+
       await signIn('credentials', {
         ...loginCredentials,
         redirect: false,
