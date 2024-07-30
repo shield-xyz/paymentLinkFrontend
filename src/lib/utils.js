@@ -206,7 +206,21 @@ export const downloadImage = async (imageUrl, imageName = undefined) => {
 };
 
 export function formatAmount(amount, decimals) {
-  return amount.toFixed(decimals);
+  // Ensure amount is a BigNumber to handle large or precise numbers
+  const bigAmount = new BigNumber(amount);
+  if (bigAmount.isNaN()) {
+    // Handle invalid input
+    console.error('Invalid amount input');
+    return 'NaN';
+  }
+
+  // Format the number with specified decimal places
+  let formattedAmount = bigAmount.toFixed(decimals);
+
+  // Remove trailing zeros and decimal point if not needed
+  formattedAmount = formattedAmount.replace(/\.?0+$/, '');
+
+  return formattedAmount;
 }
 
 export function formatCryptoHash(hash) {
