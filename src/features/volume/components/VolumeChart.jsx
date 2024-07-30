@@ -30,7 +30,7 @@ const VolumeChart = ({ transactions }) => {
   useEffect(() => {
   
     if (valuesMoney.length <= 0) {
-      let maxAmt = Math.max(...data.map(item => item.amt));
+      let maxAmt = Math.max(...data.map((item) => item.amt));
       
       const roundUpTo = (num, to) => Math.ceil(num / to) * to;
       const maxRoundedAmt = roundUpTo(maxAmt, 50000);
@@ -38,18 +38,16 @@ const VolumeChart = ({ transactions }) => {
       const decrement = 100000;
       let currentValue = maxRoundedAmt;
       const resultArray = [];
-      
-      const formatCurrency = (value) => `${value.toLocaleString('en-US')}`;
-      console.log(currentValue,"currentValue")
+   
       while (currentValue >= 0) {
-        resultArray.push((currentValue));
+        resultArray.push(currentValue);
         currentValue -= decrement;
       }
       
       console.log(resultArray);
       setValuesMoney(resultArray);
     }
-  }, [data])
+  }, [data]);
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
