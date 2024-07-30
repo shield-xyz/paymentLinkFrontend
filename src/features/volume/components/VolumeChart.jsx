@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -13,7 +14,7 @@ import {
 
 import CustomTooltip from '@/components/Recharts/CustomTooltip';
 import { formatCurrency } from '@/lib/utils';
-import { useEffect, useState } from 'react';
+
 
 const processData = (transactions) => {
   return Object.entries(transactions).map(([name, amt]) => ({
@@ -28,22 +29,18 @@ const VolumeChart = ({ transactions }) => {
   const [valuesMoney, setValuesMoney] = useState([]);
 
   useEffect(() => {
-  
     if (valuesMoney.length <= 0) {
       let maxAmt = Math.max(...data.map((item) => item.amt));
-      
       const roundUpTo = (num, to) => Math.ceil(num / to) * to;
       const maxRoundedAmt = roundUpTo(maxAmt, 50000);
 
       const decrement = 100000;
       let currentValue = maxRoundedAmt;
       const resultArray = [];
-   
       while (currentValue >= 0) {
         resultArray.push(currentValue);
         currentValue -= decrement;
       }
-      
       console.log(resultArray);
       setValuesMoney(resultArray);
     }
