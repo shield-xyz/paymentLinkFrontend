@@ -15,7 +15,6 @@ import {
 import CustomTooltip from '@/components/Recharts/CustomTooltip';
 import { formatCurrency } from '@/lib/utils';
 
-
 const processData = (transactions) => {
   return Object.entries(transactions).map(([name, amt]) => ({
     name, // Week start date in "MM-DD-YYYY" format
