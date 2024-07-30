@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -70,6 +70,10 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
 
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const transferError = searchParams.get('transferError') === 'true';
+  const id = searchParams.get('id');
 
   console.log({ userWallet });
 
@@ -161,8 +165,8 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
         throw new Error('Invalid asset');
       }
     } catch (error) {
-      console.error('Transaction failed:', error);
-      handleSubmissionError(error, 'Transaction failed');
+      console.error({ error });
+      router.push(pathname + '?' + `id=${id}&transferError=true`);
     } finally {
       router.refresh();
       setTimeout(() => {
@@ -185,6 +189,7 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
 
   const handleVerifyPayment = async () => {
     try {
+      console.log('ey');
       setIsVerifyingPayment(true);
       const paymentHash = await trigger('paymentHash', {
         shouldFocus: true,
@@ -198,7 +203,7 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
         paymentHash: values.paymentHash,
       });
     } catch (error) {
-      handleSubmissionError(error, 'Error verifying payment');
+      console.error({ error });
     } finally {
       setIsVerifyingPayment(false);
     }
@@ -216,5 +221,6 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
     isReady,
     onSubmit,
     steps,
+    transferError,
   };
 };

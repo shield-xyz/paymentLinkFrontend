@@ -164,7 +164,7 @@ export const useTronLink = () => {
       toAddress,
       tronWeb,
     });
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       toast.promise(
         sendTRC20({
           amount,
@@ -184,7 +184,7 @@ export const useTronLink = () => {
           },
           error: (error) => {
             console.error({ error });
-            resolve(`Transfer failed: ${error}`);
+            reject(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },
         },

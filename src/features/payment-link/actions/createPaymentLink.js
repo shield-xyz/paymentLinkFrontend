@@ -27,7 +27,7 @@ export async function createPaymentLink(linkData, token) {
 
     revalidatePath('/payment-links');
 
-    return { data };
+    return data.response;
   } catch (error) {
     console.log({ error });
     return handleReturnError(error, 'Error creating Link');

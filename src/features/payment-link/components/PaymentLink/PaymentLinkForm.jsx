@@ -19,6 +19,7 @@ export const PaymentLinkForm = ({ paymentLinkData, userWallet }) => {
     isReady,
     isVerifyingPayment,
     onSubmit,
+    transferError,
   } = usePaymentLink({
     paymentLinkData,
     userWallet,
@@ -45,13 +46,16 @@ export const PaymentLinkForm = ({ paymentLinkData, userWallet }) => {
           onConnectWallet={handleConnection}
           onSubmit={onSubmit}
           userWallet={userWallet}
-        />
-        <StepThree
-          form={form}
           handleVerifyPayment={handleVerifyPayment}
-          isLoadingPayment={isLoadingPayment}
-          isVerifyingPayment={isVerifyingPayment}
         />
+        {transferError && (
+          <StepThree
+            form={form}
+            handleVerifyPayment={handleVerifyPayment}
+            isLoadingPayment={isLoadingPayment}
+            isVerifyingPayment={isVerifyingPayment}
+          />
+        )}
       </form>
     </div>
   );

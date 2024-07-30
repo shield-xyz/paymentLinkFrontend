@@ -171,7 +171,7 @@ export const useMetaMask = () => {
     name,
     email,
   }) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       toast.promise(
         metaTaskTransfer({
           account,
@@ -190,7 +190,7 @@ export const useMetaMask = () => {
             return `Transfer successful: ${result}`;
           },
           error: (error) => {
-            resolve(`Transfer failed: ${error}`);
+            reject(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },
         },

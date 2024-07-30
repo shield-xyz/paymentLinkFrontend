@@ -21,6 +21,7 @@ export const StepTwo = ({
   userWallet,
   onSubmit,
   isVerifyingPayment,
+  handleVerifyPayment,
 }) => {
   const {
     register,
@@ -72,6 +73,7 @@ export const StepTwo = ({
               type="button"
               size="lg"
               disabled={isLoadingPayment || isVerifyingPayment}
+              onClick={handleVerifyPayment}
             >
               {isLoadingPayment ? (
                 <Icons.loaderCircle className="ml-2 h-6 w-6 animate-spin" />
