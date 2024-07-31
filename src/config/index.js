@@ -12,6 +12,11 @@ export const NODE_ENV = env.NEXT_PUBLIC_ENV; // 'development' or 'production'
 
 export const SIDEBAR_PAGES = [
   {
+    name: 'Buy/Sell',
+    icon: 'dollar',
+    path: '/buy-sell',
+  },
+  {
     name: 'Create Payment Link',
     icon: 'addCircle',
     path: '/payment-links',
@@ -30,11 +35,6 @@ export const SIDEBAR_PAGES = [
     name: 'Withdrawals',
     icon: 'store',
     path: '/withdrawals',
-  },
-  {
-    name: 'Buy/Sell',
-    icon: 'store',
-    path: '/buy-sell',
   },
   // {
   //   name: 'Settings',

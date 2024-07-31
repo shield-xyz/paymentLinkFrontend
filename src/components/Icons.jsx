@@ -8,6 +8,7 @@ import {
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  DollarSign,
   File,
   FileText,
   HelpCircle,
@@ -34,6 +35,7 @@ import {
 } from 'lucide-react';
 
 export const Icons = {
+  dollar: DollarSign,
   star: Star,
   close: X,
   loaderCircle: LoaderCircle,
