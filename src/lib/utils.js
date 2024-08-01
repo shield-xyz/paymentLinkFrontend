@@ -234,3 +234,10 @@ export const NOTIFICATION_STATUS = {
   ARCHIVED: 'archived',
   DELETED: 'deleted',
 };
+
+export const camelCaseToWords = (str) => {
+  return str
+    .split(/(?=[A-Z])/) // Split at position before uppercase letters
+    .join(' ') // Join array elements into a string, separated by spaces
+    .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first character of the resulting string
+};

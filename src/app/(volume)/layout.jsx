@@ -1,6 +1,6 @@
 export default function Layout({ children }) {
   return (
-    <html className="bg-black">
+    <html className="bg-background">
       <body>{children}</body>
     </html>
   );

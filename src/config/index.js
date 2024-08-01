@@ -6,6 +6,7 @@ export const env = {
   NEXT_PUBLIC_WALLET: process.env.NEXT_PUBLIC_WALLET,
   NEXT_PUBLIC_TOKEN_USDT: process.env.NEXT_PUBLIC_TOKEN_USDT,
   NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
+  MASTER_API_KEY: process.env.MASTER_API_KEY,
 };
 
 export const NODE_ENV = env.NEXT_PUBLIC_ENV; // 'development' or 'production'

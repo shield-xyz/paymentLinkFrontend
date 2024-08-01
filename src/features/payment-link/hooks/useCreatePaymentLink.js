@@ -48,7 +48,7 @@ export const useCreatePaymentLink = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await createPaymentLink(data, session.accessToken);
+      const res = await createPaymentLink(data, session?.accessToken);
 
       if (res.error) {
         throw new Error(res.error);

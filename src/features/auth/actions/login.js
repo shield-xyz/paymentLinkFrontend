@@ -20,6 +20,8 @@ export async function login(credentials) {
       'Error authenticating user',
     );
 
+    console.log({ data });
+
     const logo = getLogoUrl(data.logo);
 
     return {
@@ -30,6 +32,7 @@ export async function login(credentials) {
       logo,
       name: data.user_name,
       verify: data.verify,
+      admin: data.admin,
     };
   } catch (error) {
     handleError(error, 'Could not login');

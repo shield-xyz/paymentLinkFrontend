@@ -12,7 +12,7 @@ import {
 export async function updateNotificationStatus({ notificationId, status }) {
   try {
     const session = await getServerAuthSession();
-    const token = session.accessToken;
+    const token = session?.accessToken;
 
     if (!Object.values(NOTIFICATION_STATUS).includes(status)) {
       throw new Error('Invalid status provided');

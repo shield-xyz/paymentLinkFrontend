@@ -3,7 +3,7 @@ import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  const paymentLinks = await fetchLinks(session.accessToken);
+  const paymentLinks = await fetchLinks(session?.accessToken);
 
   return <PaymentLinksTable paymentLinks={paymentLinks} />;
 }

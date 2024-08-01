@@ -11,9 +11,9 @@ import { getServerAuthSession } from '@/lib/auth';
 export default async function Page() {
   const session = await getServerAuthSession();
   const [balances, transactions, withdrawals] = await Promise.all([
-    getBalances(session.accessToken),
-    getTransactions(session.accessToken),
-    getWithdrawals(session.accessToken),
+    getBalances(session?.accessToken),
+    getTransactions(session?.accessToken),
+    getWithdrawals(session?.accessToken),
   ]);
 
   return (

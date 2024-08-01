@@ -1,10 +1,25 @@
 import { Volume } from '@/features/volume';
-import { getVolumeTransactionsPerDay } from '@/features/volume/actions';
+import {
+  getVolumeTransactionsAdmin,
+  getVolumeTransactionsPerDay,
+} from '@/features/volume/actions';
+import { VolumeTransactionsTable } from '@/features/volume/components/VolumeTransactionsTable';
+import { getServerAuthSession } from '@/lib/auth';
 
 export const revalidate = 60;
 
 export default async function Page() {
-  const transactions = await getVolumeTransactionsPerDay();
+  const session = await getServerAuthSession();
 
-  return <Volume transactions={transactions} />;
+  const [transactions, transactionsAdmin] = await Promise.all([
+    getVolumeTransactionsPerDay(),
+    getVolumeTransactionsAdmin(session?.accessToken),
+  ]);
+
+  return (
+    <div>
+      <Volume transactions={transactions} />
+      <VolumeTransactionsTable transactions={transactionsAdmin} />
+    </div>
+  );
 }
