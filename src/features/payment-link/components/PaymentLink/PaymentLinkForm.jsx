@@ -1,6 +1,7 @@
 'use client';
 
 import { StepOne } from './StepOne';
+import { StepThree } from './StepThree';
 import { StepTwo } from './StepTwo';
 import { usePaymentLink } from '../../hooks';
 
@@ -11,21 +12,29 @@ export const PaymentLinkForm = ({ paymentLinkData, userWallet }) => {
     form,
     handleConnection,
     handleSubmit,
+    handleVerifyPayment,
     isLoadingConnection,
     isLoadingPayment,
-    isReady,
-    onSubmit,
     isManualPayment,
-  } = usePaymentLink({ paymentLinkData, userWallet });
+    isReady,
+    isVerifyingPayment,
+    onSubmit,
+    transferError,
+  } = usePaymentLink({
+    paymentLinkData,
+    userWallet,
+  });
 
   return (
     <div
-      className={cn('mx-auto flex w-full flex-col gap-4', {
-        'py-10': isManualPayment,
-        'py-24': !isManualPayment,
-      })}
+      className={cn(
+        'mx-auto flex max-h-screen w-full flex-col gap-4 overflow-auto',
+      )}
     >
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex flex-col gap-4 overflow-auto"
+      >
         <StepOne form={form} />
         <StepTwo
           form={form}
@@ -33,9 +42,20 @@ export const PaymentLinkForm = ({ paymentLinkData, userWallet }) => {
           isLoadingPayment={isLoadingPayment}
           isManualPayment={isManualPayment}
           isReady={isReady}
+          isVerifyingPayment={isVerifyingPayment}
           onConnectWallet={handleConnection}
+          onSubmit={onSubmit}
           userWallet={userWallet}
+          handleVerifyPayment={handleVerifyPayment}
         />
+        {transferError && (
+          <StepThree
+            form={form}
+            handleVerifyPayment={handleVerifyPayment}
+            isLoadingPayment={isLoadingPayment}
+            isVerifyingPayment={isVerifyingPayment}
+          />
+        )}
       </form>
     </div>
   );

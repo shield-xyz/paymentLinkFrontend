@@ -118,8 +118,9 @@ export const useTronLink = () => {
     });
 
     try {
+      console.log({ contractAddress });
       const contract = await tronWeb.contract().at(contractAddress);
-      console.log(contract);
+      console.log({ contract });
       const hash = await contract.transfer(toAddress, amount).send();
       console.log({ hash });
       const res = await savePayment({
@@ -129,6 +130,8 @@ export const useTronLink = () => {
         email,
         name,
       });
+
+      console.log({ res });
 
       if (res.error) {
         throw new Error(res.error);
@@ -161,7 +164,7 @@ export const useTronLink = () => {
       toAddress,
       tronWeb,
     });
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       toast.promise(
         sendTRC20({
           amount,
@@ -180,8 +183,8 @@ export const useTronLink = () => {
             return `Token transfer success: ${result}`;
           },
           error: (error) => {
-            console.log({ error });
-            resolve(`Transfer failed: ${error}`);
+            console.error({ error });
+            reject(`Transfer failed: ${error}`);
             return `Transfer failed: ${error}`;
           },
         },

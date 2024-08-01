@@ -1,16 +1,17 @@
 import { useEffect, useState } from 'react';
 
-export const usePagination = (data, itemsPerPage) => {
+export const usePagination = (data) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const maxPage = Math.ceil(data.length / itemsPerPage);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const maxPage = Math.ceil(data.length / rowsPerPage);
 
   useEffect(() => {
     setCurrentPage(1);
-  }, [data.length]);
+  }, [data.length, rowsPerPage]);
 
   function currentData() {
-    const begin = (currentPage - 1) * itemsPerPage;
-    const end = begin + itemsPerPage;
+    const begin = (currentPage - 1) * rowsPerPage;
+    const end = begin + rowsPerPage;
     return data.slice(begin, end);
   }
 
@@ -27,5 +28,19 @@ export const usePagination = (data, itemsPerPage) => {
     setCurrentPage(() => Math.min(pageNumber, maxPage));
   }
 
-  return { next, prev, jump, currentData: currentData(), currentPage, maxPage };
+  function handleRowsPerPage(number) {
+    setRowsPerPage(number);
+    setCurrentPage(1); // Reset to first page to avoid confusion on data display
+  }
+
+  return {
+    next,
+    prev,
+    jump,
+    rowsPerPage,
+    handleRowsPerPage,
+    currentData: currentData(),
+    currentPage,
+    maxPage,
+  };
 };

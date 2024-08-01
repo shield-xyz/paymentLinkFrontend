@@ -58,7 +58,7 @@ export const MobileSidebar = () => {
           </Button>
           <div className="ml-14 flex w-fit items-center gap-3 pl-6 lg:ml-0">
             <div className="flex items-center justify-center rounded-lg bg-black/5">
-              <Icons.logo2 className="" />
+              <Icons.logo2 className="scale-[0.65]" />
             </div>
             <span className="font-semibold text-gray-500">SHIELD</span>
           </div>

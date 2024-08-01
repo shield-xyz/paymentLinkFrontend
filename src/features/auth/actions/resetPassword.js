@@ -4,7 +4,6 @@ import { env } from '@/config';
 import { handleReturnError, validateResponse } from '@/lib/utils';
 
 export async function resetPassword({ password, resetToken }) {
-  console.log({ password, resetToken });
   try {
     const res = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/api/auth/reset-password/${resetToken}`,

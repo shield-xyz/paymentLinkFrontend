@@ -3,6 +3,8 @@ import clsx from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
+import { knownErrorsMessages } from './knownErrors';
+
 import { env } from '@/config';
 
 export function cn(...inputs) {
@@ -98,7 +100,7 @@ export function handleReturnError(error, defaultMessage) {
 export function handleSubmissionError(error, defaultMessage) {
   let message = defaultMessage;
   if (error instanceof Error) {
-    message = error.message;
+    message = knownErrorsMessages[error.message] || error.message;
   }
   console.error(error);
   toast.error(message);
@@ -123,7 +125,7 @@ async function parseResponse(response) {
 }
 
 export async function validateResponse(response, defaultMessage) {
-  console.log({ response });
+  // console.log({ response });
   if (!response.ok) {
     const data = await parseResponse(response);
     console.error('error data:', data);
@@ -131,6 +133,7 @@ export async function validateResponse(response, defaultMessage) {
       getStringValue(data?.data?.response) ||
       getStringValue(data.response) ||
       getStringValue(data.message) ||
+      getStringValue(data.msg) ||
       defaultMessage;
     throw new Error(message);
   } else {
@@ -203,7 +206,21 @@ export const downloadImage = async (imageUrl, imageName = undefined) => {
 };
 
 export function formatAmount(amount, decimals) {
-  return amount.toFixed(decimals);
+  // Ensure amount is a BigNumber to handle large or precise numbers
+  const bigAmount = new BigNumber(amount);
+  if (bigAmount.isNaN()) {
+    // Handle invalid input
+    console.error('Invalid amount input');
+    return 'NaN';
+  }
+
+  // Format the number with specified decimal places
+  let formattedAmount = bigAmount.toFixed(decimals);
+
+  // Remove trailing zeros and decimal point if not needed
+  formattedAmount = formattedAmount.replace(/\.?0+$/, '');
+
+  return formattedAmount;
 }
 
 export function formatCryptoHash(hash) {
@@ -216,4 +233,11 @@ export const NOTIFICATION_STATUS = {
   NOT_SEEN: 'not seen',
   ARCHIVED: 'archived',
   DELETED: 'deleted',
+};
+
+export const camelCaseToWords = (str) => {
+  return str
+    .split(/(?=[A-Z])/) // Split at position before uppercase letters
+    .join(' ') // Join array elements into a string, separated by spaces
+    .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first character of the resulting string
 };

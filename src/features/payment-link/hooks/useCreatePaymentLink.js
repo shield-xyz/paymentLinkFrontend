@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -10,6 +11,7 @@ import { z } from 'zod';
 import { createPaymentLink } from '../actions';
 import { getFinalPaymentLink } from '../utils';
 
+import { knownErrors, knownErrorsMessages } from '@/lib/knownErrors';
 import { handleSubmissionError } from '@/lib/utils';
 
 export const CreatePaymentLinkSchema = z.object({
@@ -28,8 +30,10 @@ export const CreatePaymentLinkSchema = z.object({
 });
 
 export const useCreatePaymentLink = () => {
-  const [step, setStep] = useState(1);
   const { data: session } = useSession();
+  const router = useRouter();
+
+  const [step, setStep] = useState(1);
   const [link, setLink] = useState('');
 
   const form = useForm({
@@ -44,14 +48,28 @@ export const useCreatePaymentLink = () => {
 
   const onSubmit = async (data) => {
     try {
-      console.log({ data });
-      const res = await createPaymentLink(data, session.accessToken);
+      const res = await createPaymentLink(data, session?.accessToken);
+
+      if (res.error) {
+        throw new Error(res.error);
+      }
+
       const finalLink = getFinalPaymentLink(res.id);
       setLink(finalLink);
       toast.success('Payment link created successfully');
       setStep(2);
     } catch (error) {
-      handleSubmissionError(error, 'Could not register');
+      if (error.message === knownErrors['unverified user']) {
+        toast(knownErrorsMessages['unverified user'], {
+          action: {
+            label: 'Verify',
+            onClick: () => router.push('/settings/verification'),
+          },
+          duration: 20000,
+        });
+      } else {
+        handleSubmissionError(error, 'Could not register');
+      }
     }
   };
 

@@ -4,7 +4,7 @@ import { getServerAuthSession } from '@/lib/auth';
 export default async function Page() {
   const session = await getServerAuthSession();
   const [transactions] = await Promise.all([
-    getTransactions(session.accessToken),
+    getTransactions(session?.accessToken),
   ]);
 
   return <TransactionsTable transactions={transactions} />;

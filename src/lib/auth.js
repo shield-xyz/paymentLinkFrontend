@@ -23,6 +23,7 @@ export const authOptions = {
         token.logo = user.logo;
         token.name = user.name;
         token.verify = user.verify;
+        token.admin = user.admin;
       } else if (trigger === 'update' && session.updatedUser) {
         // Profile update, modifying token details and updating last activity time
         const updatedUser = session.updatedUser;
@@ -34,6 +35,7 @@ export const authOptions = {
         token.logo = logo;
         token.name = updatedUser.user_name;
         token.verify = updatedUser.verify;
+        token.admin = updatedUser.admin;
       }
 
       return token;
@@ -45,9 +47,9 @@ export const authOptions = {
         session.user.name = token.name;
         session.user.logo = token.logo;
         session.user.verify = token.verify;
+        session.user.admin = token.admin;
         session.accessToken = token.accessToken;
       }
-      console.log({ session });
       return session;
     },
   },

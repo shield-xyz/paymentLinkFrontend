@@ -3,13 +3,14 @@
 import { revalidatePath } from 'next/cache';
 
 import { env } from '@/config';
-import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
+import {
+  fetchWithToken,
+  handleReturnError,
+  validateResponse,
+} from '@/lib/utils';
 
 export async function createPaymentLink(linkData, token) {
   try {
-    console.log({
-      linkData,
-    });
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/`,
       token,
@@ -22,15 +23,13 @@ export async function createPaymentLink(linkData, token) {
       },
     );
 
-    const { response: data } = await validateResponse(
-      res,
-      'Error creating Link',
-    );
+    const data = await validateResponse(res, 'Error creating Link');
 
     revalidatePath('/payment-links');
 
-    return data;
+    return data.response;
   } catch (error) {
-    handleError(error, 'Error payment link');
+    console.log({ error });
+    return handleReturnError(error, 'Error creating Link');
   }
 }

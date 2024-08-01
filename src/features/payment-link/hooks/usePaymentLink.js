@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -47,7 +47,6 @@ export const PaymentSchema = z
   .superRefine((data, ctx) => {
     const hasEmail = data.email !== undefined && data.email !== '';
     const hasName = data.name !== undefined && data.name !== '';
-    const isManual = data.isManualPayment;
     if (hasEmail && !hasName) {
       ctx.addIssue({
         path: ['name'],
@@ -58,7 +57,7 @@ export const PaymentSchema = z
         path: ['email'],
         message: 'Email is required',
       });
-    } else if (isManual && (!data.paymentHash || data.paymentHash === '')) {
+    } else if (!data.paymentHash || data.paymentHash === '') {
       ctx.addIssue({
         path: ['paymentHash'],
         message: 'Payment hash is required',
@@ -68,7 +67,15 @@ export const PaymentSchema = z
 
 export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
   const [isLoadingPayment, setIsLoadingPayment] = useState(false);
+  const [isVerifyingPayment, setIsVerifyingPayment] = useState(false);
+
   const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const transferError = searchParams.get('transferError') === 'true';
+  const id = searchParams.get('id');
+
+  console.log({ userWallet });
 
   const {
     address: tronAddress,
@@ -106,11 +113,19 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
       isManualPayment,
     },
   });
-  const { handleSubmit } = form;
+  const {
+    handleSubmit,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = form;
+  const values = getValues();
+  console.log({ errors });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async () => {
     try {
       setIsLoadingPayment(true);
+      const data = values;
 
       const amount = paymentLinkData.amount;
 
@@ -146,25 +161,12 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
           toAddress: userWallet.address,
           tokenAddress: paymentLinkData.asset.address,
         });
-      } else if (isManualPayment) {
-        // await addWallet({
-        //   id: paymentLinkData.id,
-        //   wallet: '', // TODO: Complete
-        // });
-
-        await handleManualTransfer({
-          assetId: paymentLinkData.assetId,
-          email: data.email,
-          id: paymentLinkData.id,
-          name: data.name,
-          paymentHash: data.paymentHash,
-        });
       } else {
         throw new Error('Invalid asset');
       }
     } catch (error) {
-      console.error('Transaction failed:', error);
-      handleSubmissionError(error, 'Transaction failed');
+      console.error({ error });
+      router.push(pathname + '?' + `id=${id}&transferError=true`);
     } finally {
       router.refresh();
       setTimeout(() => {
@@ -181,8 +183,29 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
         await connectToTron();
       }
     } catch (error) {
-      console.log({ error });
       handleSubmissionError(error, 'Error connecting wallet');
+    }
+  };
+
+  const handleVerifyPayment = async () => {
+    try {
+      console.log('ey');
+      setIsVerifyingPayment(true);
+      const paymentHash = await trigger('paymentHash', {
+        shouldFocus: true,
+      });
+      console.log({ paymentHash });
+      await handleManualTransfer({
+        assetId: paymentLinkData.assetId,
+        email: values.email,
+        id: paymentLinkData.id,
+        name: values.name,
+        paymentHash: values.paymentHash,
+      });
+    } catch (error) {
+      console.error({ error });
+    } finally {
+      setIsVerifyingPayment(false);
     }
   };
 
@@ -190,11 +213,14 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
     form,
     handleConnection,
     handleSubmit,
+    handleVerifyPayment,
     isLoadingConnection,
     isLoadingPayment,
     isManualPayment,
+    isVerifyingPayment,
     isReady,
     onSubmit,
     steps,
+    transferError,
   };
 };

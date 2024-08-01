@@ -32,7 +32,7 @@ export const useManualPayment = () => {
   };
 
   const handleManualTransfer = ({ id, assetId, name, email, paymentHash }) => {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       toast.promise(
         manualTransfer({
           assetId,
@@ -45,11 +45,11 @@ export const useManualPayment = () => {
           loading: 'Verifying payment...',
           success: (result) => {
             resolve(result);
-            return `Transfer successful: ${result}`;
+            return `Verification successful: ${result}`;
           },
           error: (error) => {
-            resolve(`The transfer was not successful: ${error}`);
-            return `Transfer failed: ${error}`;
+            reject(`The transfer was not successful: ${error}`);
+            return `Verification failed: ${error.message}`;
           },
         },
       );

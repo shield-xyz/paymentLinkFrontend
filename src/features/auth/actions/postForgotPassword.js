@@ -4,7 +4,6 @@ import { env } from '@/config';
 import { handleReturnError, validateResponse } from '@/lib/utils';
 
 export async function postForgotPassword({ email }) {
-  console.log({ email });
   try {
     const res = await fetch(
       `${env.NEXT_PUBLIC_API_URL}/api/auth/forgot-password`,

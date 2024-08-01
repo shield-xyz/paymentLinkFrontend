@@ -103,8 +103,6 @@ export const ProfileForm = ({ session, userData }) => {
 
   const values = getValues();
 
-  console.log({ values });
-
   async function downloadAndSetImageAsFile(imageUrl) {
     try {
       const imageFile = await downloadImage(imageUrl);

@@ -21,22 +21,27 @@ const headers = [
   {
     key: 'name',
     title: 'Name',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    className: 'px-2 min-w-[250px] font-light font-semibold',
+  },
+  {
+    key: 'network',
+    title: 'Network',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
     key: 'amount',
     title: 'Amount',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
     key: 'currency',
     title: 'Currency',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
     key: 'status',
     title: 'Status',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
     key: 'date',
@@ -46,7 +51,7 @@ const headers = [
   {
     key: 'actions',
     title: 'Actions',
-    className: 'px-2 min-w-[100px] font-light font-semibold',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
   },
 ];
 
@@ -76,6 +81,13 @@ const statusGroups = [
 
 const cellRenderers = {
   name: ({ row }) => {
+    return (
+      <div className="flex w-full items-center gap-5">
+        <span className="line-clamp-1 text-ellipsis text-sm">{row?.name}</span>
+      </div>
+    );
+  },
+  network: ({ row }) => {
     const network = row.network || {};
     return (
       <div className="flex w-full items-center gap-5">

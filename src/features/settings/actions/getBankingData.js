@@ -25,6 +25,6 @@ export async function getBankingData() {
     return data;
   } catch (error) {
     console.error('Error fetching banking data', error);
-    return [];
+    return {};
   }
 }

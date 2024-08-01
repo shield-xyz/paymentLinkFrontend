@@ -1,10 +1,12 @@
-import { formatCurrency } from '@/lib/utils';
+import { cn, formatCurrency } from '@/lib/utils';
 
-const CustomTooltip = ({ active, payload, label }) => {
+const CustomTooltip = ({ active, payload, label, dateClassName }) => {
   if (active && payload && payload.length) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-lg border bg-white/50 p-2 backdrop-blur-sm">
-        <span className="text-sm text-muted-foreground">{`${label.replaceAll('-', '/')}`}</span>
+      <div className="flex flex-col items-center justify-center rounded-lg  bg-white/30 p-2 backdrop-blur-sm">
+        <span
+          className={cn('text-sm text-muted-foreground', dateClassName)}
+        >{`${label.replaceAll('-', '/')}`}</span>
         <div>
           {payload.map((pld, index) => (
             <div className="flex gap-1" key={index}>
