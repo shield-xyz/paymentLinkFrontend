@@ -2,10 +2,11 @@
 
 import { env } from '@/config';
 import { getServerAuthSession } from '@/lib/auth';
-import { fetchWithToken, validateResponse } from '@/lib/utils';
+import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 
-export async function getBankingData() {
+export async function updateBankingData(formData) {
   try {
+    console.log({ formData });
     const session = await getServerAuthSession();
     const token = session?.accessToken;
 
@@ -13,18 +14,23 @@ export async function getBankingData() {
       `${env.NEXT_PUBLIC_API_URL}/api/banks`,
       token,
       {
-        method: 'GET',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       },
     );
 
     const { response: data } = await validateResponse(
       res,
-      'Error fetching banking data',
+      'Error updating banking data',
     );
+
+    console.log({ data });
 
     return data;
   } catch (error) {
-    console.error('Error fetching banking data', error);
-    return {};
+    handleError(error, 'Error updating banking data');
   }
 }

@@ -12,7 +12,6 @@ const InfoRow = ({ label, value }) => (
 );
 
 export const BankData = ({ bankData }) => {
-  const { address, contact_details } = bankData;
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible(!isVisible);
@@ -34,24 +33,24 @@ export const BankData = ({ bankData }) => {
       {isVisible && (
         <div>
           <InfoRow
-            label="Account Holder"
-            value={bankData.account_holder_name}
+            label="Account Beneficiary Name"
+            value={bankData['custom.beneficiary_name']}
           />
-          <InfoRow label="Bank Name" value={bankData.bank_name} />
-          <InfoRow label="Account Number" value={bankData.account_number} />
-          <InfoRow label="Routing Number" value={bankData.routing_number} />
-          <InfoRow label="Account Type" value={bankData.account_type} />
+          <InfoRow label="Bank Name" value={bankData['custom.bank_name']} />
+          <InfoRow
+            label="Account Number"
+            value={bankData['custom.account_number']}
+          />
+          <InfoRow
+            label="Routing Number"
+            value={bankData['custom.routing_number']}
+          />
 
-          <div className="mt-8">
-            <h3 className="mb-4 text-xl font-semibold">Contact Details</h3>
-            <InfoRow label="Email" value={contact_details.email} />
-            <InfoRow label="Phone" value={contact_details.phone} />
-          </div>
-
-          <div className="mt-8">
-            <h3 className="mb-2 text-lg font-semibold">Address</h3>
-            <p className="mb-2">{address.street}</p>
-            <p>{`${address.city}, ${address.state} ${address.zip_code}`}</p>
+          <div className="mt-8 flex flex-col gap-2">
+            <h3 className=" text-lg font-semibold">Address</h3>
+            <p className="">{bankData['custom.street_address']}</p>
+            <p>{`${bankData['custom.city']}, ${bankData['custom.state']} ${bankData['custom.zip_code']}`}</p>
+            <p>{bankData['custom.country']}</p>
           </div>
         </div>
       )}
