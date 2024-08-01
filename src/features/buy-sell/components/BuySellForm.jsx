@@ -2,11 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
-import { useStore } from '../store';
 import { BuyOrSellForm } from './BuyOrSellForm';
 import { SelectTokenForm } from './SelectTokenForm';
 import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
+import { useStore } from '../store';
 
 import { getAssets } from '@/actions';
 import { LogoIcon } from '@/assets';
