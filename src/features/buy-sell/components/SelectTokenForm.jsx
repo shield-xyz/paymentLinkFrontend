@@ -1,41 +1,21 @@
 'use client';
 
 import Image from 'next/image';
-import { useEffect, useState } from 'react';
 
 import { useStore } from '../store';
 
-import { getAssets } from '@/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { getNetworks } from '@/features/payment-link';
 
-export const SelectTokenForm = ({ handleChangeStep }) => {
+export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
   const {
     selectedNetwork,
     selectedAsset,
     amount,
-    setNetwork,
     setAsset,
     setAmount,
+    setNetwork,
   } = useStore();
-
-  const [networks, setNetworks] = useState([]);
-  const [assets, setAssets] = useState([]);
-
-  useEffect(() => {
-    getNetworks().then((networks) => {
-      setNetworks(networks);
-      setNetwork(networks[0]);
-    });
-    getAssets().then(setAssets);
-  }, []);
-
-  useEffect(() => {
-    setAsset(
-      assets.find((asset) => asset.networkId === selectedNetwork.networkId),
-    );
-  }, [selectedNetwork]);
 
   return (
     <div className="max-w-lg rounded-2xl border p-8">

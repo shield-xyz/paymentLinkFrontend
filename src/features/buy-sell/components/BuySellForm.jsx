@@ -1,20 +1,42 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { BuyOrSellForm } from './BuyOrSellForm';
 import { ProcessingPaymentForm } from './ProcessingPaymentForm';
 import { SelectTokenForm } from './SelectTokenForm';
 import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
+import { useStore } from '../store';
 
+import { getAssets } from '@/actions';
 import { LogoIcon } from '@/assets';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
+import { getNetworks } from '@/features/payment-link';
 import { cn } from '@/lib/utils';
 
 export const BuySellFrom = () => {
   const [step, setStep] = useState(1);
+
+  const { setNetwork, setAsset, selectedNetwork } = useStore();
+
+  const [networks, setNetworks] = useState([]);
+  const [assets, setAssets] = useState([]);
+
+  useEffect(() => {
+    getNetworks().then((networks) => {
+      setNetworks(networks);
+      setNetwork(networks[0]);
+    });
+    getAssets().then(setAssets);
+  }, []);
+
+  useEffect(() => {
+    setAsset(
+      assets.find((asset) => asset.networkId === selectedNetwork.networkId),
+    );
+  }, [selectedNetwork]);
 
   const LISTS = [
     'Buy or Sell',
@@ -30,10 +52,16 @@ export const BuySellFrom = () => {
 
   const STEPS = {
     1: <BuyOrSellForm handleChangeStep={handleChangeStep} />,
-    2: <SelectTokenForm handleChangeStep={handleChangeStep} />,
+    2: (
+      <SelectTokenForm
+        handleChangeStep={handleChangeStep}
+        networks={networks}
+        assets={assets}
+      />
+    ),
     3: <WaitingForPaymentForm handleChangeStep={handleChangeStep} />,
     4: <ProcessingPaymentForm handleChangeStep={handleChangeStep} />,
-    5: <SuccessForm />,
+    5: <SuccessForm handleChangeStep={handleChangeStep} />,
   };
 
   return (
@@ -58,47 +86,12 @@ export const BuySellFrom = () => {
                 <Button
                   variant="outline"
                   className={`rounded-2xl font-medium text-black/30 ${step >= index + 1 ? 'border-2 border-[#3774EB]/30 text-black' : ''}`}
-                  disabled={step < index + 1}
-                  onClick={() => setStep(index + 1)}
                 >
                   {list}
                 </Button>
               </div>
             ))}
-
-            {/* <div className='flex items-center gap-2'>
-            <div className='w-1 h-1 rounded-full bg-black/15' />
-            <Button variant="outline" className={`font-medium rounded-2xl text-black/30 ${isActive ? "border-2 border-[#3774EB]/30 text-black" : ""}`}>
-              Buy or Sell
-            </Button>
           </div>
-          <div className='flex items-center gap-2'>
-            <div className='w-1 h-1 rounded-full bg-black/15' />
-            <Button variant="outline" className="font-medium rounded-2xl text-black/30">
-              Select token
-            </Button>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='w-1 h-1 rounded-full bg-black/15' />
-            <Button variant="outline" className="font-medium rounded-2xl text-black/30">
-              Waiting for payment
-            </Button>
-          </div>
-          <div className='flex items-center gap-2'>
-          <div className='w-1 h-1 rounded-full bg-black/15' />
-            <Button variant="outline" className="font-medium rounded-2xl text-black/30">
-              Processing payment
-            </Button>
-          </div>
-          <div className='flex items-center gap-2'>
-            <div className='w-1 h-1 rounded-full bg-black/15' />
-            <Button variant="outline" className="font-medium rounded-2xl text-black/30">
-              Success
-            </Button>
-          </div> */}
-          </div>
-
-          {/* FORMS */}
 
           {STEPS[step]}
         </div>
