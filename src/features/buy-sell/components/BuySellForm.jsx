@@ -2,12 +2,11 @@
 
 import { useEffect, useState } from 'react';
 
+import { useStore } from '../store';
 import { BuyOrSellForm } from './BuyOrSellForm';
-import { ProcessingPaymentForm } from './ProcessingPaymentForm';
 import { SelectTokenForm } from './SelectTokenForm';
 import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
-import { useStore } from '../store';
 
 import { getAssets } from '@/actions';
 import { LogoIcon } from '@/assets';
@@ -27,7 +26,7 @@ export const BuySellFrom = () => {
   useEffect(() => {
     getNetworks().then((networks) => {
       setNetworks(networks);
-      setNetwork(networks[0]);
+      setNetwork(networks.find((network) => network.networkId === 'tron'));
     });
     getAssets().then(setAssets);
   }, []);
@@ -42,7 +41,7 @@ export const BuySellFrom = () => {
     'Buy or Sell',
     'Select token',
     'Waiting for payment',
-    'Processing payment',
+    // 'Processing payment',
     'Success',
   ];
 
@@ -60,8 +59,8 @@ export const BuySellFrom = () => {
       />
     ),
     3: <WaitingForPaymentForm handleChangeStep={handleChangeStep} />,
-    4: <ProcessingPaymentForm handleChangeStep={handleChangeStep} />,
-    5: <SuccessForm handleChangeStep={handleChangeStep} />,
+    // 4: <ProcessingPaymentForm handleChangeStep={handleChangeStep} />,
+    4: <SuccessForm handleChangeStep={handleChangeStep} />,
   };
 
   return (
@@ -86,6 +85,8 @@ export const BuySellFrom = () => {
                 <Button
                   variant="outline"
                   className={`rounded-2xl font-medium text-black/30 ${step >= index + 1 ? 'border-2 border-[#3774EB]/30 text-black' : ''}`}
+                  onClick={() => setStep(index + 1)}
+                  disabled={step < index + 1}
                 >
                   {list}
                 </Button>

@@ -1,11 +1,20 @@
+import { useStore } from '../store';
+
 import { Button } from '@/components/ui/button';
 
 export const BuyOrSellForm = ({ handleChangeStep }) => {
+  const { setSide } = useStore();
+
+  const handleClick = (side) => {
+    setSide(side);
+    handleChangeStep();
+  };
+
   return (
     <div className="rounded-2xl border p-8">
       <div className="flex gap-4">
         <Button
-          onClick={handleChangeStep}
+          onClick={() => handleClick('buy')}
           variant="secondary"
           className="font-medium"
           size="sm"
@@ -13,7 +22,7 @@ export const BuyOrSellForm = ({ handleChangeStep }) => {
           BUY
         </Button>
         <Button
-          onClick={handleChangeStep}
+          onClick={() => handleClick('sell')}
           variant="secondary"
           className="font-medium"
           size="sm"

@@ -1,9 +1,13 @@
 import Image from 'next/image';
 
+import { useStore } from '../store';
+
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 
 export const ProcessingPaymentForm = ({ handleChangeStep }) => {
+  const { selectedNetwork, selectedAsset, amount } = useStore();
+
   return (
     <div className="rounded-2xl border p-8">
       <div className="text-black/30">Payment Processing</div>
@@ -17,15 +21,16 @@ export const ProcessingPaymentForm = ({ handleChangeStep }) => {
       <div className="mt-4 flex justify-between gap-8">
         <div className="text-black/60">Address</div>
         <div className="flex gap-4">
-          <div>1Lbcfr7sAHTD9CgdQo3HTMTkV8LK4ZnX71</div>
+          <div>{selectedNetwork.deposit_address}</div>
           <Icons.copy />
         </div>
       </div>
       <div className="mt-4 flex justify-between">
-        <div className="text-black/60">Total price</div>
+        <div className="text-black/60">Total amount</div>
         <div className="flex gap-2">
-          <div>1.96 ETH</div>
-          <div className="font-bold text-black/20">($4,434.18)</div>
+          <div>
+            {amount} {selectedAsset.symbol}
+          </div>
         </div>
       </div>
 
