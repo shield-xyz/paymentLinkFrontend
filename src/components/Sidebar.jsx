@@ -14,7 +14,7 @@ const Sidebar = () => {
   return (
     <div
       className={cn(
-        'fixed z-[60] hidden h-screen w-80 translate-x-0 flex-col gap-10 border-r border-gray-200 bg-background py-4 lg:flex',
+        'w-30 fixed z-[60] hidden h-screen translate-x-0 flex-col gap-10 border-r border-gray-200 bg-background py-4 lg:flex',
       )}
     >
       <div className="flex w-full items-center gap-3 px-6">

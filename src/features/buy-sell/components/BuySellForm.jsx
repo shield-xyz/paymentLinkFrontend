@@ -58,6 +58,8 @@ export const BuySellFrom = () => {
                 <Button
                   variant="outline"
                   className={`rounded-2xl font-medium text-black/30 ${step >= index + 1 ? 'border-2 border-[#3774EB]/30 text-black' : ''}`}
+                  disabled={step < index + 1}
+                  onClick={() => setStep(index + 1)}
                 >
                   {list}
                 </Button>

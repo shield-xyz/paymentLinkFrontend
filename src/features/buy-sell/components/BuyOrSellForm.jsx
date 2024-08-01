@@ -7,12 +7,17 @@ export const BuyOrSellForm = ({ handleChangeStep }) => {
         <Button
           onClick={handleChangeStep}
           variant="secondary"
-          className="font-medium text-black/60"
+          className="font-medium"
           size="sm"
         >
           BUY
         </Button>
-        <Button onClick={handleChangeStep} className="font-medium" size="sm">
+        <Button
+          onClick={handleChangeStep}
+          variant="secondary"
+          className="font-medium"
+          size="sm"
+        >
           SELL
         </Button>
       </div>
