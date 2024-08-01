@@ -8,8 +8,10 @@ import { Icons } from './Icons';
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
-const Sidebar = () => {
+const Sidebar = ({ session }) => {
   const pathname = usePathname();
+
+  const isAdmin = session?.user?.admin;
 
   return (
     <div
@@ -26,6 +28,7 @@ const Sidebar = () => {
       <div className="flex flex-col gap-2 px-4">
         {SIDEBAR_PAGES.map((page, index) => {
           const Icon = Icons[page.icon];
+          if (page.isAdmin && !isAdmin) return null;
           return (
             <Link
               className="flex items-center gap-2 rounded-xl px-5 py-3 duration-300 hover:bg-gray-500/10"

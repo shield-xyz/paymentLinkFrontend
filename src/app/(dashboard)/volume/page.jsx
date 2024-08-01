@@ -1,3 +1,4 @@
+import Container from '@/components/ui/container';
 import { Volume } from '@/features/volume';
 import {
   getVolumeTransactionsAdmin,
@@ -17,8 +18,10 @@ export default async function Page() {
   ]);
 
   return (
-    <div>
-      <Volume transactions={transactions} />
+    <div className="flex flex-col lg:gap-4">
+      <Container className="overflow-auto">
+        <Volume transactions={transactions} />
+      </Container>
       <VolumeTransactionsTable transactions={transactionsAdmin} />
     </div>
   );

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { FormInput } from '@/components/Form';
+import { GoBack } from '@/components/GoBack';
 import { Button } from '@/components/ui/button';
 import {
   camelCaseToWords,
@@ -60,12 +61,15 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
 
   return (
     <div>
-      <h2 className="mb-4 mt-2 flex items-center gap-4 text-xl font-bold">
-        Transaction Form
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="mb-4 mt-2 flex items-center gap-4 text-xl font-bold">
+          Transaction Form
+        </h2>
+        <GoBack className="mb-2">Back</GoBack>
+      </div>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2"
+        className="grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2"
       >
         {Object.keys(selectedFieldsSchema.shape).map((key) => {
           const label = camelCaseToWords(key);
@@ -84,9 +88,11 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
         })}
         <div></div>
         <div className="ml-auto flex w-full items-center justify-end gap-2">
-          <Button type="button" variant="destructive" onClick={onDelete}>
-            Delete
-          </Button>
+          {volumeTransactionData && (
+            <Button type="button" variant="destructive" onClick={onDelete}>
+              Delete
+            </Button>
+          )}
           <Button type="submit" variant="default" isLoading={isSubmitting}>
             Submit
           </Button>

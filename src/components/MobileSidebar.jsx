@@ -10,9 +10,11 @@ import { Button } from './ui/button';
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
-export const MobileSidebar = () => {
+export const MobileSidebar = ({ session }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+  const isAdmin = session?.user?.isAdmin;
 
   const toggleSidebar = () => {
     setOpen(!open);
@@ -66,7 +68,11 @@ export const MobileSidebar = () => {
 
         <div className="flex flex-col gap-2 px-4">
           {SIDEBAR_PAGES.map((page, index) => {
+            console.log({ page });
             const Icon = Icons[page.icon];
+            if (page.isAdmin && !isAdmin) {
+              return null;
+            }
             return (
               <Link
                 className="flex items-center gap-2 rounded-xl px-5 py-3 text-sm duration-300 hover:bg-gray-500/10"

@@ -14,8 +14,8 @@ import { formatDate } from '@/lib/utils';
 
 const headers = [
   {
-    key: 'business',
-    title: 'Regulatory Period',
+    key: 'client',
+    title: 'Client',
     className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
@@ -24,18 +24,28 @@ const headers = [
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
+    key: 'receivedAmount',
+    title: 'Received Amount',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
+  {
+    key: 'shieldFee',
+    title: 'Shield Fee',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
+  {
     key: 'methodPay',
     title: 'Payment Method',
     className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
-    key: 'receivedAmount',
-    title: 'Amount',
-    className: 'px-2 min-w-[150px] font-light font-semibold',
-  },
-  {
     key: 'symbol',
     title: 'Currency',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
+  {
+    key: 'blockchain',
+    title: 'Blockchain',
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
@@ -51,12 +61,17 @@ const cellRenderers = {
   business: ({ row }) => (
     <span className="line-clamp-1 text-ellipsis text-sm">{row.business}</span>
   ),
+  client: ({ row }) => (
+    <span className="line-clamp-1 text-ellipsis text-sm">{row.client}</span>
+  ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
-  methodPay: ({ row }) => <span className="font-light">{row.methodPay}</span>,
   receivedAmount: ({ row }) => (
     <span className="font-light">{row.receivedAmount}</span>
   ),
+  shieldFee: ({ row }) => <span className="font-light">{row.shieldFee}</span>,
+  methodPay: ({ row }) => <span className="font-light">{row.methodPay}</span>,
   symbol: ({ row }) => <span className="font-light">{row.symbol}</span>,
+  blockchain: ({ row }) => <span className="font-light">{row.blockchain}</span>,
   actions: ({ row }) => {
     return (
       <div className="flex items-center gap-2">
@@ -78,6 +93,8 @@ export function VolumeTransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
+
+  console.log({ transactions });
 
   const groupCounts = useMemo(
     () =>
@@ -141,7 +158,7 @@ export function VolumeTransactionsTable({ transactions }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Link href="/create-payment-transaction">
+            <Link href="/volume/create">
               <Button className="font-light" size="sm">
                 Create transaction
               </Button>

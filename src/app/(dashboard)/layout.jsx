@@ -16,7 +16,7 @@ export default async function DashboardLayout({ children }) {
   return (
     <AutoLogoutProvider>
       <Nav session={session} notifications={notifications} />
-      <Sidebar />
+      <Sidebar session={session} />
       <main className="min-h-screen pt-[80px] lg:pb-8 lg:pl-[calc(320px+2rem)] lg:pr-8 lg:pt-[calc(80px+2rem)]">
         {children}
       </main>

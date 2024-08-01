@@ -1,3 +1,4 @@
+import Container from '@/components/ui/container';
 import { getVolumeTransactionsAdmin } from '@/features/volume/actions';
 import { VolumeTransactionForm } from '@/features/volume/components/VolumeTransactionForm';
 
@@ -11,8 +12,10 @@ export default async function Page({ params: { id } }) {
   );
 
   return (
-    <div className="m-auto max-w-5xl p-4">
-      <VolumeTransactionForm volumeTransactionData={transaction} />
+    <div>
+      <Container className="p-4">
+        <VolumeTransactionForm volumeTransactionData={transaction} />
+      </Container>
     </div>
   );
 }

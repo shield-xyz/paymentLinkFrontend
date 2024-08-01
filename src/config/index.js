@@ -32,6 +32,12 @@ export const SIDEBAR_PAGES = [
     icon: 'store',
     path: '/withdrawals',
   },
+  {
+    name: 'Volume',
+    icon: 'shieldCheck',
+    path: '/volume',
+    isAdmin: true,
+  },
   // {
   //   name: 'Settings',
   //   icon: 'pie_chart',
