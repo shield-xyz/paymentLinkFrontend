@@ -1,12 +1,82 @@
-import QRCode from 'qrcode.react';
+'use client';
 
+import { useSession } from 'next-auth/react';
+import QRCode from 'qrcode.react';
+import { useState } from 'react';
+
+import { submitRampOrder } from '../actions';
 import { useStore } from '../store';
 
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import Spinner from '@/components/ui/spinner';
 
 export const WaitingForPaymentForm = ({ handleChangeStep }) => {
-  const { side, selectedNetwork, selectedAsset, amount } = useStore();
+  const { data } = useSession();
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    side,
+    selectedNetwork,
+    selectedAsset,
+    amount,
+    hash,
+    clientDepositAddress,
+    bankName,
+    accountNumber,
+    routingNumber,
+    beneficiaryName,
+    country,
+    state,
+    city,
+    streetAddress,
+    zipCode,
+    setHash,
+  } = useStore();
+
+  const handleSubmit = () => {
+    setIsLoading(true);
+
+    const order =
+      side === 'sell'
+        ? {
+            userId: data.user.id,
+            clientName: data.user.name,
+            status: 'initiated',
+            bankDetails: {
+              bankName,
+              accountNumber,
+              routingNumber,
+              beneficiaryName,
+              country,
+              state,
+              city,
+              streetAddress,
+              zipCode,
+            },
+            transactionDetails: {
+              amountToTransfer: amount,
+              transactionHash: hash,
+              networkId: selectedNetwork.networkId,
+              assetId: selectedAsset.assetId,
+            },
+          }
+        : {
+            userId: data.user.id,
+            clientName: data.user.name,
+            status: 'initiated',
+          };
+
+    submitRampOrder(data.accessToken, side, order)
+      .then((data) => {
+        if (data.status === 'success') {
+          handleChangeStep();
+        }
+      })
+      .finally(() => setIsLoading(false));
+  };
 
   return (
     <div className="rounded-2xl border p-8">
@@ -48,7 +118,7 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
               <Icons.copy />
             </div>
           </div>
-          <div className="mt-4 flex justify-between">
+          <div className="mb-4 mt-4 flex justify-between">
             <div className="text-black/60">Total amount</div>
             <div className="flex gap-2">
               <div>
@@ -56,11 +126,20 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
               </div>
             </div>
           </div>
+          <Input
+            label="Transaction Hash"
+            value={hash}
+            onChange={(e) => setHash(e.target.value)}
+          />
         </div>
       )}
 
-      <Button onClick={handleChangeStep} className="mt-8 w-full font-medium">
-        I have paid!
+      <Button
+        onClick={handleSubmit}
+        className="mt-8 w-full font-medium"
+        disabled={(side === 'sell' && !hash) || isLoading}
+      >
+        {isLoading ? <Spinner /> : 'I have paid!'}
       </Button>
     </div>
   );

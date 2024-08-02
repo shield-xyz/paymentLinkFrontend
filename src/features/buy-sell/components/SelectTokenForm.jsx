@@ -9,12 +9,15 @@ import { Input } from '@/components/ui/input';
 
 export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
   const {
+    side,
     selectedNetwork,
     selectedAsset,
     amount,
+    clientDepositAddress,
     setAsset,
     setAmount,
     setNetwork,
+    setClientDepositAddress,
   } = useStore();
 
   return (
@@ -80,19 +83,32 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
         <Input
           value={amount}
           onChange={(e) => setAmount(e.target.value)}
-          className=""
           type="number"
         />
         <span className="whitespace-nowrap text-black/80">
           {selectedAsset ? selectedAsset.symbol : ''}
         </span>
       </div>
+      {side === 'buy' && (
+        <>
+          <div className="mt-8 text-black/30">Enter your deposit address</div>
+          <Input
+            className="mt-4"
+            value={clientDepositAddress}
+            onChange={(e) => setClientDepositAddress(e.target.value)}
+          />
+        </>
+      )}
       <Button
         onClick={handleChangeStep}
         variant="default"
         className="mt-8 w-full font-medium"
         size="sm"
-        disabled={!selectedAsset || amount <= 0}
+        disabled={
+          !selectedAsset ||
+          amount <= 0 ||
+          (side === 'buy' && !clientDepositAddress)
+        }
       >
         Continue
       </Button>
