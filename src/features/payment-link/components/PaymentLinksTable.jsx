@@ -118,9 +118,6 @@ const cellRenderers = {
     const link = getFinalPaymentLink(row.id);
     return (
       <div className="flex items-center gap-2">
-        {/* <Button variant="ghost" className="px-2 py-2 font-light">
-          <Icons.edit className="h-5 text-gray-500" />
-        </Button> */}
         <Button
           variant="ghost"
           className="px-2 py-2 font-light"

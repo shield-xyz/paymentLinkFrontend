@@ -5,12 +5,13 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { CustomPagination, Icons } from '@/components';
 import CustomTable from '@/components/CustomTable';
+import { HashString } from '@/components/Hash';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
-import { formatDate } from '@/lib/utils';
+import { formatAmount, formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -34,19 +35,24 @@ const headers = [
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
-    key: 'methodPay',
-    title: 'Payment Method',
-    className: 'px-2 min-w-[150px] font-light font-semibold',
-  },
-  {
     key: 'symbol',
-    title: 'Currency',
+    title: 'Symbol',
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
     key: 'blockchain',
     title: 'Blockchain',
     className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
+  {
+    key: 'tx',
+    title: 'Tx',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
+  },
+  {
+    key: 'walletSend',
+    title: 'Wallet Send',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'actions',
@@ -66,19 +72,22 @@ const cellRenderers = {
   ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
   receivedAmount: ({ row }) => (
-    <span className="font-light">{row.receivedAmount}</span>
+    <span className="font-light">{formatAmount(row.receivedAmount)}</span>
   ),
   shieldFee: ({ row }) => <span className="font-light">{row.shieldFee}</span>,
-  methodPay: ({ row }) => <span className="font-light">{row.methodPay}</span>,
   symbol: ({ row }) => <span className="font-light">{row.symbol}</span>,
   blockchain: ({ row }) => <span className="font-light">{row.blockchain}</span>,
+  tx: ({ row }) => {
+    <HashString hash={row.tx} withCopy />;
+  },
+  walletSend: ({ row }) => <HashString hash={row.walletSend} withCopy />,
   actions: ({ row }) => {
     return (
       <div className="flex items-center gap-2">
         {/* <Button variant="ghost" className="px-2 py-2 font-light">
           <Icons.edit className="h-5 text-gray-500" />
         </Button> */}
-        <Link href={`/volume/${row._id}`}>
+        <Link href={`/volume/${row._id}`} scroll={false}>
           <Button variant="ghost" className="px-2 py-2 font-light">
             <Icons.edit className="h-5 text-gray-500" />
           </Button>
@@ -158,7 +167,7 @@ export function VolumeTransactionsTable({ transactions }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Link href="/volume/create">
+            <Link href="/volume/create" scroll={false}>
               <Button className="font-light" size="sm">
                 Create transaction
               </Button>
