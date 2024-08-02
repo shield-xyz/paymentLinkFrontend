@@ -6,7 +6,7 @@ import Container from '@/components/ui/container';
 
 export const Volume = ({ transactions }) => {
   return (
-    <Container className="flex h-full flex-col items-center justify-center border-none bg-black text-white lg:rounded-none lg:p-4">
+    <Container className="flex h-screen flex-col items-center justify-center border-none bg-black text-white lg:rounded-none lg:p-4">
       <div className="w-full px-10 pb-4 pt-5 text-left">
         <span className="text-left font-medium sm:text-xl">
           Transaction Volume
