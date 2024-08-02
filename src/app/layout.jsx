@@ -1,8 +1,8 @@
 import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
 
-import './globals.css';
 import Provider from '@/lib/Provider';
+import './globals.css';
 
 export const viewport = {
   width: 'device-width',
@@ -11,7 +11,7 @@ export const viewport = {
   userScalable: false,
 };
 
-const inter = Inter({ subsets: ['latin'] });
+const inter = Inter({ subsets: ['latin'], adjustFontFallback: false });
 
 export const metadata = {
   title: 'Shield',
