@@ -24,7 +24,7 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
     selectedAsset,
     amount,
     hash,
-    // clientDepositAddress,
+    clientDepositAddress,
     bankName,
     accountNumber,
     routingNumber,
@@ -69,6 +69,7 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
             clientName: data.user.name,
             status: 'initiated',
             transactionDetails: {
+              walletAddress: clientDepositAddress,
               amountToTransfer: amount,
               networkId: selectedNetwork.networkId,
               assetId: selectedAsset.assetId,
