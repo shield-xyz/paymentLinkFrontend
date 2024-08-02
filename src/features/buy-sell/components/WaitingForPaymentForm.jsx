@@ -3,6 +3,7 @@
 import { useSession } from 'next-auth/react';
 import QRCode from 'qrcode.react';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { submitRampOrder } from '../actions';
 import { useStore } from '../store';
@@ -23,7 +24,7 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
     selectedAsset,
     amount,
     hash,
-    clientDepositAddress,
+    // clientDepositAddress,
     bankName,
     accountNumber,
     routingNumber,
@@ -67,12 +68,19 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
             userId: data.user.id,
             clientName: data.user.name,
             status: 'initiated',
+            transactionDetails: {
+              amountToTransfer: amount,
+              networkId: selectedNetwork.networkId,
+              assetId: selectedAsset.assetId,
+            },
           };
 
     submitRampOrder(data.accessToken, side, order)
       .then((data) => {
         if (data.status === 'success') {
           handleChangeStep();
+        } else {
+          toast.warning('Something went wrong. Please try again.');
         }
       })
       .finally(() => setIsLoading(false));
