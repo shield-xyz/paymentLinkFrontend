@@ -43,8 +43,6 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
     const order =
       side === 'sell'
         ? {
-            userId: data.user.id,
-            clientName: data.user.name,
             status: 'initiated',
             bankDetails: {
               bankName,
@@ -65,17 +63,16 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
             },
           }
         : {
-            userId: data.user.id,
-            clientName: data.user.name,
             status: 'initiated',
             transactionDetails: {
               walletAddress: clientDepositAddress,
-              amountToTransfer: amount,
+              amountTransferred: amount,
               networkId: selectedNetwork.networkId,
               assetId: selectedAsset.assetId,
             },
           };
 
+    console.log(order);
     submitRampOrder(data.accessToken, side, order)
       .then((data) => {
         if (data.status === 'success') {
