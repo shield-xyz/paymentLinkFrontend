@@ -62,8 +62,6 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
     },
   });
 
-  console.log({ volumeTransactionData });
-
   const {
     handleSubmit,
     formState: { errors, isSubmitting },
@@ -99,6 +97,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
       handleSubmissionSuccess(
         `Transaction ${isEdit ? 'updated' : 'created'} successfully`,
       );
+      router.refresh();
     } catch (error) {
       handleSubmissionError(
         error,
@@ -114,6 +113,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
       await deleteVolumeTransaction(volumeTransactionData._id);
       handleSubmissionSuccess('Transaction deleted successfully');
       router.push('/volume', { scroll: false });
+      router.refresh();
     } catch (error) {
       handleSubmissionError(
         error,
