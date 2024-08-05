@@ -5,9 +5,13 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
+import { useStore } from '../store';
+
 import { Button } from '@/components/ui/button';
 
 export const SuccessForm = () => {
+  const { setSuccess } = useStore();
+
   useEffect(() => {
     confetti({
       particleCount: 100,
@@ -29,7 +33,7 @@ export const SuccessForm = () => {
       <div className="mt-4 text-black/30">
         We will notify you once the transaction is confirmed.
       </div>
-      <Link href="/dashboard">
+      <Link href="/dashboard" onClick={() => setSuccess(false)}>
         <Button className="mt-4 w-full font-medium">Confirm</Button>
       </Link>
     </div>

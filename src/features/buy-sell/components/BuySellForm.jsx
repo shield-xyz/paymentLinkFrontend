@@ -19,7 +19,7 @@ import { cn } from '@/lib/utils';
 export const BuySellFrom = () => {
   const [step, setStep] = useState(0);
 
-  const { side, setNetwork, setAsset, selectedNetwork } = useStore();
+  const { success, side, setNetwork, setAsset, selectedNetwork } = useStore();
 
   const [networks, setNetworks] = useState([]);
   const [assets, setAssets] = useState([]);
@@ -33,6 +33,7 @@ export const BuySellFrom = () => {
   }, []);
 
   useEffect(() => {
+    if (!selectedNetwork) return;
     setAsset(
       assets.find((asset) => asset.networkId === selectedNetwork.networkId),
     );
@@ -87,7 +88,7 @@ export const BuySellFrom = () => {
                   variant="outline"
                   className={`rounded-2xl font-medium text-black/30 ${step >= index ? 'border-2 border-[#3774EB]/30 text-black' : ''}`}
                   onClick={() => setStep(index)}
-                  disabled={step < index}
+                  disabled={step < index || success}
                 >
                   {list}
                 </Button>

@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 
 export const useStore = create((set) => ({
+  success: false,
   side: 'buy',
   selectedNetwork: null,
   selectedAsset: null,
@@ -17,6 +18,7 @@ export const useStore = create((set) => ({
   city: '',
   streetAddress: '',
   zipCode: '',
+  setSuccess: (success) => set({ success }),
   setSide: (side) => set({ side }),
   setNetwork: (selectedNetwork) => set({ selectedNetwork }),
   setAsset: (selectedAsset) => set({ selectedAsset }),
@@ -33,4 +35,22 @@ export const useStore = create((set) => ({
   setCity: (city) => set({ city }),
   setStreetAddress: (streetAddress) => set({ streetAddress }),
   setZipCode: (zipCode) => set({ zipCode }),
+  reset: () =>
+    set({
+      selectedNetwork: null,
+      selectedAsset: null,
+      amount: 0,
+      hash: '',
+      transactionHash: '',
+      clientDepositAddress: null,
+      bankName: '',
+      accountNumber: '',
+      routingNumber: '',
+      beneficiaryName: '',
+      country: '',
+      state: '',
+      city: '',
+      streetAddress: '',
+      zipCode: '',
+    }),
 }));

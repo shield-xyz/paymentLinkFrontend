@@ -1,5 +1,6 @@
 'use client';
 
+import copy from 'copy-to-clipboard';
 import { useSession } from 'next-auth/react';
 import QRCode from 'qrcode.react';
 import { useState } from 'react';
@@ -19,6 +20,8 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
   const [isLoading, setIsLoading] = useState(false);
 
   const {
+    reset,
+    setSuccess,
     side,
     selectedNetwork,
     selectedAsset,
@@ -72,11 +75,12 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
             },
           };
 
-    console.log(order);
     submitRampOrder(data.accessToken, side, order)
       .then((data) => {
         if (data.status === 'success') {
+          setSuccess(true);
           handleChangeStep();
+          reset();
         } else {
           toast.warning('Something went wrong. Please try again.');
         }
@@ -121,7 +125,14 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
             <div className="text-black/60">Address</div>
             <div className="flex gap-4">
               <div>{selectedNetwork.deposit_address}</div>
-              <Icons.copy />
+              <button
+                onClick={() => {
+                  copy(selectedNetwork.deposit_address);
+                  toast.success('Address copied');
+                }}
+              >
+                <Icons.copy />
+              </button>
             </div>
           </div>
           <div className="mb-4 mt-4 flex justify-between">
