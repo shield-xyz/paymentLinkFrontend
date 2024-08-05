@@ -6,7 +6,11 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { deleteVolumeTransaction, postVolumeTransaction } from '../actions';
+import {
+  deleteVolumeTransaction,
+  postVolumeTransaction,
+  putVolumeTransaction,
+} from '../actions';
 
 import { FormInput } from '@/components/Form';
 import { DatePickerForm } from '@/components/Form/DatePickerform';
@@ -18,44 +22,88 @@ import {
   handleSubmissionSuccess,
 } from '@/lib/utils';
 
+const amountValidation = (keyText) =>
+  z.preprocess(
+    (input) => {
+      if (input === '') {
+        return NaN;
+      }
+      return parseFloat(input);
+    },
+    z
+      .number({ message: `${keyText} is required` })
+      .min(0, { message: `${keyText} must be greater than 0` }),
+  );
+
 const selectedFieldsSchema = z.object({
-  receivedAmount: z.coerce.number({ message: 'Received Amount is required' }),
+  receivedAmount: amountValidation('Received Amount'),
   client: z.string().min(1, { message: 'Client Name is required' }),
-  shieldFee: z.coerce.number().nullable({ message: 'Shield Fee is required' }),
+  shieldFee: amountValidation('Shield Fee'),
   currencyPair: z.string().nullable(),
   blockchain: z.string().nullable(),
   date: z.coerce.string().min(1, { message: 'Transaction Date is required' }),
 });
+
 export const VolumeTransactionForm = ({ volumeTransactionData }) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
-  console.log({ volumeTransactionData });
+  const isEdit = !!volumeTransactionData;
 
   const form = useForm({
     resolver: zodResolver(selectedFieldsSchema),
     mode: 'onTouch',
-    defaultValues: volumeTransactionData,
+    defaultValues: {
+      receivedAmount: volumeTransactionData?.receivedAmount || '',
+      client: volumeTransactionData?.client || '',
+      shieldFee: volumeTransactionData?.shieldFee || '',
+      currencyPair: volumeTransactionData?.currencyPair || '',
+      blockchain: volumeTransactionData?.blockchain || '',
+      date: volumeTransactionData?.date || '',
+    },
   });
+
+  console.log({ volumeTransactionData });
+
   const {
     handleSubmit,
     formState: { errors, isSubmitting },
     register,
-    getValues,
   } = form;
 
-  console.log(getValues());
-
   const onSubmit = async (data) => {
-    // perform Put & Post
-    console.log({ data });
     try {
-      const res = await postVolumeTransaction(data);
+      const payload = {
+        _id: volumeTransactionData?._id,
+        receivedAmount: String(data.receivedAmount),
+        client: data.client,
+        shieldFee: String(data.shieldFee),
+        currencyPair: data.currencyPair,
+        blockchain: data.blockchain,
+        date: data.date,
+      };
+
+      let res;
+      if (isEdit) {
+        res = await putVolumeTransaction({
+          ...payload,
+          _id: volumeTransactionData._id,
+        });
+      } else {
+        res = await postVolumeTransaction(payload);
+      }
+
       if (res.error) {
         throw new Error(res.error);
       }
-      handleSubmissionSuccess('Selected transaction data saved successfully');
+      router.push('/volume', { scroll: false });
+      handleSubmissionSuccess(
+        `Transaction ${isEdit ? 'updated' : 'created'} successfully`,
+      );
     } catch (error) {
-      handleSubmissionError(error, 'Could not save selected transaction data');
+      handleSubmissionError(
+        error,
+        `Could not ${isEdit ? 'update' : 'create'} transaction`,
+      );
     }
   };
 
@@ -65,7 +113,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
     try {
       await deleteVolumeTransaction(volumeTransactionData._id);
       handleSubmissionSuccess('Transaction deleted successfully');
-      router.push('/volume');
+      router.push('/volume', { scroll: false });
     } catch (error) {
       handleSubmissionError(
         error,
@@ -75,70 +123,69 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
     }
   };
 
-  console.log({ isDeleting });
-
   return (
     <div className="">
       <div className="flex items-center justify-between">
         <h2 className="mb-4 mt-2 flex items-center gap-4 text-xl font-bold">
           {volumeTransactionData ? 'Edit Transaction' : 'Create Transaction'}
         </h2>
-        <GoBack className="mb-2">Back</GoBack>
       </div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className=" grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2"
-      >
-        {Object.keys(selectedFieldsSchema.shape).map((key) => {
-          const label = camelCaseToWords(key);
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="grid max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2">
+          {Object.keys(selectedFieldsSchema.shape).map((key) => {
+            const label = camelCaseToWords(key);
 
-          const numberTypes = ['receivedAmount', 'shieldFee'];
+            const numberTypes = ['receivedAmount', 'shieldFee'];
 
-          if (key === 'date') {
+            if (key === 'date') {
+              return (
+                <DatePickerForm
+                  className=" w-full"
+                  key={key}
+                  label={label}
+                  placeholder={label}
+                  name={key}
+                  control={form.control}
+                  errors={errors}
+                  modal={false}
+                />
+              );
+            }
+
             return (
-              <DatePickerForm
-                className=" w-full"
+              <FormInput
+                autoFocus={key === 'receivedAmount'}
+                type={numberTypes.includes(key) ? 'number' : 'text'}
+                labelClassName=""
                 key={key}
                 label={label}
                 placeholder={label}
                 name={key}
-                control={form.control}
+                register={register}
                 errors={errors}
-                modal={false}
+                step="0.00000001"
               />
             );
-          }
+          })}
+        </div>
 
-          return (
-            <FormInput
-              autoFocus={key === 'receivedAmount'}
-              type={numberTypes.includes(key) ? 'number' : 'text'}
-              labelClassName=""
-              key={key}
-              label={label}
-              placeholder={label}
-              name={key}
-              register={register}
-              errors={errors}
-              step="0.00000001"
-            />
-          );
-        })}
-        <div></div>
-        <div className="ml-auto flex w-full items-center justify-end gap-2">
-          {volumeTransactionData && (
-            <Button
-              type="button"
-              variant="destructive"
-              onClick={onDelete}
-              isLoading={isDeleting}
-            >
-              Delete
+        <div className="mt-10 flex w-full items-center justify-between">
+          <GoBack className="flex">Back</GoBack>
+          <div className="ml-auto flex w-full items-center justify-end gap-2">
+            {volumeTransactionData && (
+              <Button
+                type="button"
+                variant="destructive"
+                onClick={onDelete}
+                isLoading={isDeleting}
+              >
+                Delete
+              </Button>
+            )}
+            <Button type="submit" variant="default" isLoading={isSubmitting}>
+              {volumeTransactionData ? 'Update' : 'Create'}
             </Button>
-          )}
-          <Button type="submit" variant="default" isLoading={isSubmitting}>
-            {volumeTransactionData ? 'Update' : 'Create'}
-          </Button>
+          </div>
         </div>
       </form>
     </div>

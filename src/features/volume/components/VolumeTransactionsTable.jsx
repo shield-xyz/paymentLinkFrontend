@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
-import { formatAmount, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -72,7 +72,7 @@ const cellRenderers = {
   ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
   receivedAmount: ({ row }) => (
-    <span className="font-light">{formatAmount(row.receivedAmount)}</span>
+    <span className="font-light">{row.receivedAmount}</span>
   ),
   shieldFee: ({ row }) => <span className="font-light">{row.shieldFee}</span>,
   symbol: ({ row }) => <span className="font-light">{row.symbol}</span>,
@@ -134,8 +134,10 @@ export function VolumeTransactionsTable({ transactions }) {
         const lowercasedQuery = searchQuery.toLowerCase();
         return (
           matchesTab &&
-          (transaction.business.toLowerCase().includes(lowercasedQuery) ||
-            transaction.receivedAmount.toString().includes(lowercasedQuery) ||
+          (transaction.business?.toLowerCase().includes(lowercasedQuery) ||
+            transaction.receivedAmount?.toString().includes(lowercasedQuery) ||
+            transaction.blockchain?.toLowerCase().includes(lowercasedQuery) ||
+            transaction.client?.toLowerCase().includes(lowercasedQuery) ||
             formatDate(transaction.date)
               .toLowerCase()
               .includes(lowercasedQuery))
@@ -162,7 +164,7 @@ export function VolumeTransactionsTable({ transactions }) {
           <h1 className="text-xl font-medium">All volume transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
             <Searchbar
-              placeholder="Search by Date, Time"
+              placeholder="Search by Client, Blockchain, Date, Time"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
               value={searchQuery}

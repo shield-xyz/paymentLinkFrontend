@@ -5,12 +5,12 @@ import { revalidatePath } from 'next/cache';
 import { env } from '@/config';
 import { handleReturnError, validateResponse } from '@/lib/utils';
 
-export async function postVolumeTransaction(volumeTransaction) {
+export async function putVolumeTransaction(volumeTransaction) {
   try {
     const res = await fetch(
-      `${env.NEXT_PUBLIC_API_URL}/api/volumetransactions/`,
+      `${env.NEXT_PUBLIC_API_URL}/api/volumetransactions/${volumeTransaction._id}`,
       {
-        method: 'POST',
+        method: 'PUT',
         headers: {
           'x-api-key': env.MASTER_API_KEY,
           'Content-Type': 'application/json',
@@ -19,13 +19,13 @@ export async function postVolumeTransaction(volumeTransaction) {
       },
     );
 
-    const data = await validateResponse(res, 'Error creating transaction');
+    const data = await validateResponse(res, 'Error updating transaction');
 
     revalidatePath('/volume');
 
     return data;
   } catch (error) {
     console.log({ error });
-    return handleReturnError(error, 'Error creating transaction');
+    return handleReturnError(error, 'Error updating transaction');
   }
 }
