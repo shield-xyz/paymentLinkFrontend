@@ -21,7 +21,11 @@ export async function getVolumeTransactionsAdmin(accessToken) {
       'Error fetching transactions admin',
     );
 
-    return data;
+    const sortedData = data.sort((a, b) => {
+      return new Date(b.date) - new Date(a.date);
+    });
+
+    return sortedData;
   } catch (error) {
     console.error(error);
     return [];

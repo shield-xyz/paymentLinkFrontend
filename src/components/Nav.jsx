@@ -16,7 +16,7 @@ const Nav = ({ session, notifications }) => {
         </div>
         <span className="font-semibold text-gray-500">SHIELD</span>
       </div>
-      <MobileSidebar />
+      <MobileSidebar session={session} />
       <div className="m-auto flex h-20 w-full items-center justify-between gap-4 px-4 pr-8 lg:pl-[calc(320px+2rem)]">
         {!session?.user?.verify && (
           <Link href={'/settings/verification'}>

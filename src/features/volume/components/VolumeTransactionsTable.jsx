@@ -5,6 +5,7 @@ import { useEffect, useMemo, useState } from 'react';
 
 import { CustomPagination, Icons } from '@/components';
 import CustomTable from '@/components/CustomTable';
+import { HashString } from '@/components/Hash';
 import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
@@ -14,8 +15,8 @@ import { formatDate } from '@/lib/utils';
 
 const headers = [
   {
-    key: 'business',
-    title: 'Regulatory Period',
+    key: 'client',
+    title: 'Client',
     className: 'px-2 min-w-[150px] font-light font-semibold',
   },
   {
@@ -24,19 +25,34 @@ const headers = [
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
-    key: 'methodPay',
-    title: 'Payment Method',
-    className: 'px-2 min-w-[150px] font-light font-semibold',
+    key: 'receivedAmount',
+    title: 'Received Amount',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
-    key: 'receivedAmount',
-    title: 'Amount',
-    className: 'px-2 min-w-[150px] font-light font-semibold',
+    key: 'shieldFee',
+    title: 'Shield Fee',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
     key: 'symbol',
-    title: 'Currency',
+    title: 'Symbol',
     className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
+  {
+    key: 'blockchain',
+    title: 'Blockchain',
+    className: 'px-2 min-w-[120px] font-light font-semibold',
+  },
+  {
+    key: 'tx',
+    title: 'Tx',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
+  },
+  {
+    key: 'walletSend',
+    title: 'Wallet Send',
+    className: 'px-2 min-w-[200px] font-light font-semibold',
   },
   {
     key: 'actions',
@@ -51,19 +67,27 @@ const cellRenderers = {
   business: ({ row }) => (
     <span className="line-clamp-1 text-ellipsis text-sm">{row.business}</span>
   ),
+  client: ({ row }) => (
+    <span className="line-clamp-1 text-ellipsis text-sm">{row.client}</span>
+  ),
   date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
-  methodPay: ({ row }) => <span className="font-light">{row.methodPay}</span>,
   receivedAmount: ({ row }) => (
     <span className="font-light">{row.receivedAmount}</span>
   ),
+  shieldFee: ({ row }) => <span className="font-light">{row.shieldFee}</span>,
   symbol: ({ row }) => <span className="font-light">{row.symbol}</span>,
+  blockchain: ({ row }) => <span className="font-light">{row.blockchain}</span>,
+  tx: ({ row }) => {
+    <HashString hash={row.tx} withCopy />;
+  },
+  walletSend: ({ row }) => <HashString hash={row.walletSend} withCopy />,
   actions: ({ row }) => {
     return (
       <div className="flex items-center gap-2">
         {/* <Button variant="ghost" className="px-2 py-2 font-light">
           <Icons.edit className="h-5 text-gray-500" />
         </Button> */}
-        <Link href={`/volume/${row._id}`}>
+        <Link href={`/volume/${row._id}`} scroll={false}>
           <Button variant="ghost" className="px-2 py-2 font-light">
             <Icons.edit className="h-5 text-gray-500" />
           </Button>
@@ -78,6 +102,8 @@ export function VolumeTransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
+
+  console.log({ transactions });
 
   const groupCounts = useMemo(
     () =>
@@ -108,8 +134,10 @@ export function VolumeTransactionsTable({ transactions }) {
         const lowercasedQuery = searchQuery.toLowerCase();
         return (
           matchesTab &&
-          (transaction.business.toLowerCase().includes(lowercasedQuery) ||
-            transaction.receivedAmount.toString().includes(lowercasedQuery) ||
+          (transaction.business?.toLowerCase().includes(lowercasedQuery) ||
+            transaction.receivedAmount?.toString().includes(lowercasedQuery) ||
+            transaction.blockchain?.toLowerCase().includes(lowercasedQuery) ||
+            transaction.client?.toLowerCase().includes(lowercasedQuery) ||
             formatDate(transaction.date)
               .toLowerCase()
               .includes(lowercasedQuery))
@@ -136,12 +164,12 @@ export function VolumeTransactionsTable({ transactions }) {
           <h1 className="text-xl font-medium">All volume transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
             <Searchbar
-              placeholder="Search by Date, Time"
+              placeholder="Search by Client, Blockchain, Date, Time"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
               value={searchQuery}
             />
-            <Link href="/create-payment-transaction">
+            <Link href="/volume/create" scroll={false}>
               <Button className="font-light" size="sm">
                 Create transaction
               </Button>

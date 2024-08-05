@@ -33,6 +33,12 @@ export const SIDEBAR_PAGES = [
     path: '/withdrawals',
   },
   // {
+  //   name: 'Volume',
+  //   icon: 'shieldCheck',
+  //   path: '/volume',
+  //   isAdmin: true,
+  // },
+  // {
   //   name: 'Settings',
   //   icon: 'pie_chart',
   //   path: '/settings',

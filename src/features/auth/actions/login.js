@@ -13,6 +13,7 @@ export async function login(credentials) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
+      cache: 'no-cache',
     });
 
     const { response: data } = await validateResponse(

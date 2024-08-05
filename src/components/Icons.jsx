@@ -25,6 +25,8 @@ import {
   Plus,
   Search,
   Settings,
+  Shield,
+  ShieldCheck,
   Sparkles,
   Star,
   SunMedium,
@@ -65,6 +67,8 @@ export const Icons = {
   link: Link,
   archive: Archive,
   packageOpen: PackageOpen,
+  shield: Shield,
+  shieldCheck: ShieldCheck,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"
