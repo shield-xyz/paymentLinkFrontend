@@ -34,7 +34,7 @@ import {
   SunMedium,
   Trash,
   User,
-  X
+  X,
 } from 'lucide-react';
 
 export const Icons = {
