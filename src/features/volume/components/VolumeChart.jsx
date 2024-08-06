@@ -23,11 +23,14 @@ const processData = (transactions) => {
 };
 
 const VolumeChart = ({ transactions }) => {
-  const data = processData(transactions);
-
+  const [data, setData] = useState([]);
   const [valuesMoney, setValuesMoney] = useState([]);
 
   useEffect(() => {
+    if (transactions) {
+      const processedData = processData(transactions);
+      setData(processedData);
+    }
     if (valuesMoney.length <= 0) {
       let maxAmt = Math.max(...data.map((item) => item.amt));
       const roundUpTo = (num, to) => Math.ceil(num / to) * to;
@@ -43,7 +46,8 @@ const VolumeChart = ({ transactions }) => {
       console.log(resultArray);
       setValuesMoney(resultArray);
     }
-  }, [data]);
+  }, [transactions]);
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
