@@ -46,7 +46,6 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
     const order =
       side === 'sell'
         ? {
-            side,
             status: 'initiated',
             bankDetails: {
               bankName,
@@ -67,7 +66,6 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
             },
           }
         : {
-            side,
             status: 'initiated',
             transactionDetails: {
               walletAddress: clientDepositAddress,

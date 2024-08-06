@@ -11,7 +11,7 @@ export async function submitRampOrder(token, side, order) {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ type: side, ...order }),
+        body: JSON.stringify(order),
       },
     );
 
