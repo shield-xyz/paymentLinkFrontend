@@ -77,12 +77,12 @@ export const BuySellFrom = () => {
           <div className="text-4xl font-semibold">Shield</div>
         </div>
 
-        <div className="flex items-start gap-12">
+        <div className="flex flex-col items-start gap-12 px-4 sm:flex-row">
           <div className="flex flex-col gap-2">
             {LISTS.filter(
               (list) => side === 'sell' || list !== 'Set bank account',
             ).map((list, index) => (
-              <div className="flex items-center gap-2">
+              <div key={`${list}-${index}`} className="flex items-center gap-2">
                 <div className="h-1 w-1 rounded-full bg-black/15" />
                 <Button
                   variant="outline"

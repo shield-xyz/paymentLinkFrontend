@@ -11,7 +11,7 @@ export const BuyOrSellForm = ({ handleChangeStep }) => {
   };
 
   return (
-    <div className="rounded-2xl border p-8">
+    <div className="rounded-2xl border p-8 ">
       <div className="flex gap-4">
         <Button
           onClick={() => handleClick('buy')}

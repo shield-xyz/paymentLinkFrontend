@@ -13,11 +13,29 @@ export const SuccessForm = () => {
   const { setSuccess } = useStore();
 
   useEffect(() => {
-    confetti({
-      particleCount: 100,
-      spread: 70,
-      origin: { x: 0.7, y: 0.6 },
-    });
+    const width = window.screen.width;
+
+    // const isMobile = width <= 640
+    const isTablet = width > 640 && width <= 768;
+    const isLaptop = width > 768 && width <= 1024;
+    const isLaptopL = width > 1024 && width <= 1440;
+    const is4K = width > 1440;
+
+    if (width) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: is4K
+          ? { x: 0.6, y: 0.2 }
+          : isLaptopL
+            ? { x: 0.7, y: 0.4 }
+            : isLaptop
+              ? { x: 0.8, y: 0.45 }
+              : isTablet
+                ? { x: 0.6, y: 0.5 }
+                : { x: 0.5, y: 0.8 },
+      });
+    }
   }, []);
 
   return (
