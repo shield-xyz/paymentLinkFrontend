@@ -8,12 +8,5 @@ export default async function Page() {
     await getRampTransactions(session.accessToken),
   ]);
 
-  // type
-  // status
-  // createdAt
-  // transactionDetails.amountToTransfer
-  // transactionDetails.networkId
-  // transactionDetails.assetId
-
   return <RampsTable transactions={transactions} />;
 }

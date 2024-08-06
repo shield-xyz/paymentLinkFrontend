@@ -51,7 +51,11 @@ const cellRenderers = {
   status: ({ row }) => <span className="font-light">{row.status}</span>,
   amount: ({ row }) => {
     const txn = row.transactionDetails;
-    return <span className="font-light">{txn.amountToTransfer}</span>;
+    return (
+      <span className="font-light">
+        {txn.amountToTransfer ?? txn.amountTransferred}
+      </span>
+    );
   },
   asset: ({ row }) => {
     const txn = row.transactionDetails;
