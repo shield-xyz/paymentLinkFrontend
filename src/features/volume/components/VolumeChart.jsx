@@ -31,6 +31,9 @@ const VolumeChart = ({ transactions }) => {
       const processedData = processData(transactions);
       setData(processedData);
     }
+  }, [transactions]);
+
+  useEffect(() => {
     if (valuesMoney.length <= 0) {
       let maxAmt = Math.max(...data.map((item) => item.amt));
       const roundUpTo = (num, to) => Math.ceil(num / to) * to;
@@ -43,10 +46,9 @@ const VolumeChart = ({ transactions }) => {
         resultArray.push(currentValue);
         currentValue -= decrement;
       }
-      console.log(resultArray);
       setValuesMoney(resultArray);
     }
-  }, [transactions]);
+  }, [data]);
 
   return (
     <ResponsiveContainer width="100%" height="100%">
