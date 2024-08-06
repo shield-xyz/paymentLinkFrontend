@@ -2,19 +2,16 @@
 
 'use client';
 
-import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
 import { CustomPagination } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
 import FilterDropDown from '@/components/FilterDropDown';
-import Searchbar from '@/components/Searchbar';
-import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
-import { PAYMENT_STATUSES, formatDate } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 
 const headers = [
   {
@@ -43,29 +40,20 @@ const statusGroups = [
   { label: 'All', value: 'all', filter: () => true },
   {
     label: 'Paid',
-    value: PAYMENT_STATUSES.Paid,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Paid,
+    value: 'paid',
+    filter: (deposit) => deposit.status === 'success',
   },
   {
     label: 'Pending',
-    value: PAYMENT_STATUSES.Pending,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Pending,
-  },
-  {
-    label: 'Paused',
-    value: PAYMENT_STATUSES.Paused,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Paused,
-  },
-  {
-    label: 'Expired',
-    value: PAYMENT_STATUSES.Expired,
-    filter: (withdrawal) => withdrawal.status === PAYMENT_STATUSES.Expired,
+    value: 'pending',
+    filter: (deposit) => deposit.status === 'notified',
   },
 ];
 
 const cellRenderers = {
   asset: ({ row, assets }) => {
-    const asset = assets[row.assetId];
+    const txn = row.transactionDetails;
+    const asset = assets[txn.assetId];
     let logoSrc = asset.logo;
     return (
       <div className="flex w-full items-center gap-5">
@@ -81,25 +69,33 @@ const cellRenderers = {
     );
   },
   amount: ({ row }) => {
-    return <span className="font-light">{row.amount || 0}</span>;
+    const txn = row.transactionDetails;
+    return (
+      <span className="font-light">
+        {txn.amountTransferred ?? txn.amountToTransfer}
+      </span>
+    );
   },
-  currency: ({ row }) => <span className="font-light">{row.token}</span>,
-  status: ({ row }) => <Badge variant={row.status}>{row.status}</Badge>,
-  date: ({ row }) => <span className="font-light">{formatDate(row.date)}</span>,
+  date: ({ row }) => (
+    <span className="font-light">{formatDate(row.createdAt)}</span>
+  ),
+  status: ({ row }) => {
+    const status = row.status === 'notified' ? 'pending' : row.status;
+    return <Badge variant={status}>{status}</Badge>;
+  },
 };
 
-export function WithdrawalsTable({ withdrawals, assets }) {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [filteredData, setFilteredData] = useState(withdrawals);
+export function DepositsTable({ deposits, assets }) {
+  const [filteredData, setFilteredData] = useState(deposits);
   const [selectedTab, setSelectedTab] = useState('all');
 
   const groupCounts = useMemo(
     () =>
       statusGroups.map((group) => ({
         ...group,
-        count: withdrawals.filter(group.filter).length,
+        count: deposits.filter(group.filter).length,
       })),
-    [withdrawals],
+    [deposits],
   );
 
   const itemsPerPage = 5;
@@ -111,26 +107,17 @@ export function WithdrawalsTable({ withdrawals, assets }) {
 
   useEffect(() => {
     const filterData = () => {
-      const filteredLinks = withdrawals.filter((withdrawal) => {
-        const matchesTab =
-          selectedTab === 'all' || withdrawal.status === selectedTab;
-        if (!searchQuery && matchesTab) return true;
-        const lowercasedQuery = searchQuery.toLowerCase();
-        return (
-          matchesTab &&
-          (withdrawal.status.toLowerCase().includes(lowercasedQuery) ||
-            formatDate(withdrawal.date).toLowerCase().includes(lowercasedQuery))
-        );
+      const filteredLinks = deposits.filter((deposit) => {
+        const status =
+          deposit.status === 'notified' ? 'pending' : deposit.status;
+        const matchesTab = selectedTab === 'all' || status === selectedTab;
+        return matchesTab;
       });
       setFilteredData(filteredLinks);
     };
 
     filterData();
-  }, [withdrawals, searchQuery, selectedTab]);
-
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
+  }, [deposits, selectedTab]);
 
   const handleTabChange = (tab) => {
     setSelectedTab(tab);
@@ -140,23 +127,12 @@ export function WithdrawalsTable({ withdrawals, assets }) {
     <div className="flex h-full flex-col gap-2">
       <Container className="flex h-full w-full flex-col px-6 py-8">
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
-          <h1 className="text-xl font-medium">Withdrawal History</h1>
+          <h1 className="text-xl font-medium">Deposit History</h1>
           <div className="flex flex-wrap items-center gap-2">
-            <Searchbar
-              placeholder="Search by Date, Time, Status"
-              className="w-fit border border-input bg-background"
-              onChange={handleSearch}
-              value={searchQuery}
-            />
             <FilterDropDown
               setFilteredData={setFilteredData}
               selectedTab={selectedTab}
             />
-            <Link href="/create-payment-link">
-              <Button className="font-light" size="sm">
-                Create payment withdrawal
-              </Button>
-            </Link>
           </div>
         </div>
         <Tabs

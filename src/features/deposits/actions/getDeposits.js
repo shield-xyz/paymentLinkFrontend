@@ -3,7 +3,7 @@
 import { env } from '@/config';
 import { fetchWithToken } from '@/lib/utils';
 
-export async function getRampTransactions(token) {
+export async function getDeposits(token) {
   try {
     if (!token) {
       throw new Error('No token provided');
@@ -22,7 +22,11 @@ export async function getRampTransactions(token) {
       throw new Error('Error fetching transactions');
     }
 
-    const sortedData = response.sort(
+    const deposits = response.filter(
+      (transaction) => transaction.type === 'buy',
+    );
+
+    const sortedData = deposits.sort(
       (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
     );
 
