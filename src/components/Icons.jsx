@@ -2,12 +2,14 @@ import {
   AlertTriangle,
   Archive,
   ArrowLeft,
+  ArrowLeftRight,
   ArrowRight,
   BarChart2,
   Check,
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  DollarSign,
   File,
   FileText,
   HelpCircle,
@@ -36,6 +38,7 @@ import {
 } from 'lucide-react';
 
 export const Icons = {
+  dollar: DollarSign,
   star: Star,
   close: X,
   loaderCircle: LoaderCircle,
@@ -56,6 +59,7 @@ export const Icons = {
   user: User,
   arrowRight: ArrowRight,
   arrowLeft: ArrowLeft,
+  arrowLeftRight: ArrowLeftRight,
   sparkles: Sparkles,
   help: HelpCircle,
   pizza: Pizza,
