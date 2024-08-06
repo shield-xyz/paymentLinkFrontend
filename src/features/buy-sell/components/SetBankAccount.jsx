@@ -29,7 +29,7 @@ export const SetBankAccount = ({ handleChangeStep }) => {
 
   return (
     <div className="max-w-lg rounded-2xl border p-8">
-      <div className="mb-4 min-w-[400px] text-black/30">
+      <div className="mb-4 w-full text-black/30 sm:min-w-[300px] xl:min-w-[400px]">
         Set the bank account for the wire
       </div>
       <Input
@@ -38,7 +38,7 @@ export const SetBankAccount = ({ handleChangeStep }) => {
         onChange={(e) => setBeneficiaryName(e.target.value)}
         className="mb-4"
       />
-      <div className="mb-4 flex flex-row space-x-2">
+      <div className="mb-4 flex flex-col space-x-0 sm:flex-row sm:space-x-2">
         <div>
           <span className="text-sm">Account Number</span>
           <Input
@@ -60,7 +60,7 @@ export const SetBankAccount = ({ handleChangeStep }) => {
         onChange={(e) => setBankName(e.target.value)}
         className="mb-4"
       />
-      <div className="mb-4 flex flex-row space-x-2">
+      <div className="mb-4 flex flex-col space-x-0 sm:flex-row sm:space-x-2">
         <div>
           <span className="text-sm">Country</span>
           <Input value={country} onChange={(e) => setCountry(e.target.value)} />
@@ -70,7 +70,7 @@ export const SetBankAccount = ({ handleChangeStep }) => {
           <Input value={state} onChange={(e) => setState(e.target.value)} />
         </div>
       </div>
-      <div className="mb-4 flex flex-row space-x-2">
+      <div className="mb-4 flex flex-col space-x-0 sm:flex-row sm:space-x-2">
         <div>
           <span className="text-sm">City</span>
           <Input value={city} onChange={(e) => setCity(e.target.value)} />
