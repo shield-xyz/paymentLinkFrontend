@@ -1,8 +1,8 @@
 import {
   AlertTriangle,
   Archive,
+  ArchiveRestore,
   ArrowLeft,
-  ArrowLeftRight,
   ArrowRight,
   BarChart2,
   Check,
@@ -34,7 +34,7 @@ import {
   SunMedium,
   Trash,
   User,
-  X,
+  X
 } from 'lucide-react';
 
 export const Icons = {
@@ -59,7 +59,7 @@ export const Icons = {
   user: User,
   arrowRight: ArrowRight,
   arrowLeft: ArrowLeft,
-  arrowLeftRight: ArrowLeftRight,
+  archiveRestore: ArchiveRestore,
   sparkles: Sparkles,
   help: HelpCircle,
   pizza: Pizza,
