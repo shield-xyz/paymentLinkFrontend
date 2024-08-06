@@ -21,10 +21,19 @@ export function DatePicker({
   const [date, setDate] = React.useState(value);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
+  console.log({ date });
+
   const handleDateChange = (newDate) => {
-    setDate(newDate);
+    const currentTime = new Date();
+    const dateWithCurrentTime = new Date(newDate);
+    dateWithCurrentTime.setHours(
+      currentTime.getHours(),
+      currentTime.getMinutes(),
+    );
+
+    setDate(dateWithCurrentTime);
     if (onChange) {
-      onChange(newDate);
+      onChange(dateWithCurrentTime);
     }
     setIsDialogOpen(false);
   };
