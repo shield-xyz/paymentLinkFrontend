@@ -23,9 +23,15 @@ const processData = (transactions) => {
 };
 
 const VolumeChart = ({ transactions }) => {
-  const data = processData(transactions);
-
+  const [data, setData] = useState([]);
   const [valuesMoney, setValuesMoney] = useState([]);
+
+  useEffect(() => {
+    if (transactions) {
+      const processedData = processData(transactions);
+      setData(processedData);
+    }
+  }, [transactions]);
 
   useEffect(() => {
     if (valuesMoney.length <= 0) {
@@ -40,10 +46,10 @@ const VolumeChart = ({ transactions }) => {
         resultArray.push(currentValue);
         currentValue -= decrement;
       }
-      console.log(resultArray);
       setValuesMoney(resultArray);
     }
   }, [data]);
+
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart

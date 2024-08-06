@@ -103,8 +103,6 @@ export function VolumeTransactionsTable({ transactions }) {
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
 
-  console.log({ transactions });
-
   const groupCounts = useMemo(
     () =>
       statusGroups.map((group) => ({
@@ -164,7 +162,7 @@ export function VolumeTransactionsTable({ transactions }) {
           <h1 className="text-xl font-medium">All volume transactions</h1>
           <div className="flex flex-wrap items-center gap-2">
             <Searchbar
-              placeholder="Search by Client, Blockchain, Date, Time"
+              placeholder="Search by Client, Blockchain"
               className="w-fit border border-input bg-background"
               onChange={handleSearch}
               value={searchQuery}

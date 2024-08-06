@@ -16,7 +16,7 @@ export default async function Layout({ children }) {
 
   const [transactions, transactionsAdmin] = await Promise.all([
     getVolumeTransactionsPerDay(),
-    getVolumeTransactionsAdmin(session?.accessToken),
+    getVolumeTransactionsAdmin(),
   ]);
 
   const isAdmin = session?.user.admin;
