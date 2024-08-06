@@ -37,9 +37,9 @@ export const SIDEBAR_PAGES = [
     path: '/withdrawals',
   },
   {
-    name: 'Ramps',
-    icon: 'arrowLeftRight',
-    path: '/ramps',
+    name: 'Deposits',
+    icon: 'archiveRestore',
+    path: '/deposits',
   },
   // {
   //   name: 'Settings',

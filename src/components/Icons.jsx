@@ -1,8 +1,8 @@
 import {
   AlertTriangle,
   Archive,
+  ArchiveRestore,
   ArrowLeft,
-  ArrowLeftRight,
   ArrowRight,
   BarChart2,
   Check,
@@ -57,7 +57,7 @@ export const Icons = {
   user: User,
   arrowRight: ArrowRight,
   arrowLeft: ArrowLeft,
-  arrowLeftRight: ArrowLeftRight,
+  archiveRestore: ArchiveRestore,
   sparkles: Sparkles,
   help: HelpCircle,
   pizza: Pizza,

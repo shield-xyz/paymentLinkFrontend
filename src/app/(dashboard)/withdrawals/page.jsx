@@ -1,11 +1,16 @@
 import { getAssets } from '@/actions/getAssets';
-import { WithdrawalsTable, getWithdrawals } from '@/features/withdrawals';
+import {
+  WithdrawalsTable,
+  getRampWithdrawals,
+  getWithdrawals,
+} from '@/features/withdrawals';
 import { getServerAuthSession } from '@/lib/auth';
 
 export default async function Page() {
   const session = await getServerAuthSession();
-  const [withdrawals, assets] = await Promise.all([
+  const [withdrawals, rampWithdrawals, assets] = await Promise.all([
     getWithdrawals(session.accessToken),
+    getRampWithdrawals(session.accessToken),
     getAssets(),
   ]);
 
@@ -14,5 +19,21 @@ export default async function Page() {
     return acc;
   }, {});
 
-  return <WithdrawalsTable withdrawals={withdrawals} assets={assetsObject} />;
+  const mergedWithdrawals = [
+    ...withdrawals,
+    ...rampWithdrawals.map((withdrawal) => {
+      const txn = withdrawal.transactionDetails;
+      return {
+        assetId: txn.assetId,
+        amount: txn.amountTransferred ?? txn.amountToTransfer,
+        date: withdrawal.createdAt,
+        status:
+          withdrawal.status === 'notified' ? 'pending' : withdrawal.status,
+      };
+    }),
+  ];
+
+  return (
+    <WithdrawalsTable withdrawals={mergedWithdrawals} assets={assetsObject} />
+  );
 }
