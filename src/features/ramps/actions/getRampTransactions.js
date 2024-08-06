@@ -22,7 +22,11 @@ export async function getRampTransactions(token) {
       throw new Error('Error fetching transactions');
     }
 
-    return response;
+    const sortedData = response.sort(
+      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+    );
+
+    return sortedData;
   } catch (error) {
     console.error(error);
     return [];
