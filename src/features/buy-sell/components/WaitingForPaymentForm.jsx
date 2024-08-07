@@ -125,8 +125,12 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
           <div className="mt-4 flex justify-between gap-8">
             <div className="text-black/60">Address</div>
             <div className="flex gap-4">
-              <div className='hidden sm:block'>{selectedNetwork.deposit_address}</div>
-              <div className='block sm:hidden'>{formatCryptoHash(selectedNetwork.deposit_address)}</div>
+              <div className="hidden sm:block">
+                {selectedNetwork.deposit_address}
+              </div>
+              <div className="block sm:hidden">
+                {formatCryptoHash(selectedNetwork.deposit_address)}
+              </div>
 
               <button
                 onClick={() => {
