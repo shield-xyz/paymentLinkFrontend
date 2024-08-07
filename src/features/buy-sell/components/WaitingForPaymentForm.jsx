@@ -13,6 +13,7 @@ import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Spinner from '@/components/ui/spinner';
+import { formatCryptoHash } from '@/lib/utils';
 
 export const WaitingForPaymentForm = ({ handleChangeStep }) => {
   const { data } = useSession();
@@ -124,7 +125,9 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
           <div className="mt-4 flex justify-between gap-8">
             <div className="text-black/60">Address</div>
             <div className="flex gap-4">
-              <div>{selectedNetwork.deposit_address}</div>
+              <div className='hidden sm:block'>{selectedNetwork.deposit_address}</div>
+              <div className='block sm:hidden'>{formatCryptoHash(selectedNetwork.deposit_address)}</div>
+
               <button
                 onClick={() => {
                   copy(selectedNetwork.deposit_address);
