@@ -1,5 +1,8 @@
 'use client';
 
+import { ClientAddressModal } from './ClientAddressModal';
+import { useClientAddresses } from '../hooks';
+
 import { CustomPagination, Icons } from '@/components';
 import CustomTable from '@/components/CustomTable';
 import { HashString } from '@/components/Hash';
@@ -7,9 +10,6 @@ import Searchbar from '@/components/Searchbar';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-
-import { ClientAddressModal } from './ClientAddressModal';
-import { useClientAddresses } from '../hooks';
 
 const headers = [
   {
