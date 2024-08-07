@@ -120,8 +120,16 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
         <div>
           <div className="text-black/30">Scan/Send Deposit</div>
           <div className="flex items-center justify-center p-4 sm:p-8">
-            <QRCode className='hidden sm:hidden' value={selectedNetwork.deposit_address} size={200} />
-            <QRCode className='block sm:hidden' value={selectedNetwork.deposit_address} size={180} />
+            <QRCode
+              className="hidden sm:block"
+              value={selectedNetwork.deposit_address}
+              size={200}
+            />
+            <QRCode
+              className="block sm:hidden"
+              value={selectedNetwork.deposit_address}
+              size={180}
+            />
           </div>
           <div className="mt-4 flex justify-between gap-4 sm:gap-8">
             <div className="text-black/60">Address</div>
