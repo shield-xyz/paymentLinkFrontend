@@ -47,7 +47,7 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
         ))}
       </div>
       <div className="mt-8 text-black/30">
-        Select the token you'd like to sell
+        Select the token you'd like to {side}
       </div>
       <div className="mt-4 flex flex-wrap gap-4">
         {selectedAsset &&
@@ -77,7 +77,7 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
             ))}
       </div>
       <div className="mt-8 text-black/30">
-        Select the amount you'd like to sell
+        Select the amount you'd like to {side}
       </div>
       <div className="mt-4 flex items-center justify-center space-x-2">
         <Input
