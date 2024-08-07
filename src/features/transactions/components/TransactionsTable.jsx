@@ -115,11 +115,7 @@ export function TransactionsTable({ transactions }) {
           selectedTab === 'all' || transaction.status === selectedTab;
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
-        // const assetName =
-        //   assetsByAssetId[transaction.assetId].name.toLowerCase();
-        // const networkName = networks
-        //   .find((network) => network._id === transaction.networkId)
-        //   .name.toLowerCase();
+
         return (
           matchesTab &&
           formatDate(transaction.date).toLowerCase().includes(lowercasedQuery)
@@ -167,7 +163,7 @@ export function TransactionsTable({ transactions }) {
           className="w-full overflow-auto"
           onValueChange={handleTabChange}
         >
-          <TabsList className="mb-5 w-full min-w-fit justify-start">
+          <TabsList className="sticky left-0 mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
               <TabsTrigger value={group.value} key={group.value + 'tab'}>
                 {group.label}{' '}

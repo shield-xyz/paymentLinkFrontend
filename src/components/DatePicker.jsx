@@ -21,8 +21,6 @@ export function DatePicker({
   const [date, setDate] = React.useState(value);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
 
-  console.log({ date });
-
   const handleDateChange = (newDate) => {
     const currentTime = new Date();
     const dateWithCurrentTime = new Date(newDate);

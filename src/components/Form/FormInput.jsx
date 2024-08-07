@@ -10,7 +10,7 @@ export const FormInput = ({
   errors,
   ...props
 }) => (
-  <div className="flex flex-col">
+  <div className="flex w-full flex-col">
     <Input
       label={label}
       placeholder={placeholder}

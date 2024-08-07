@@ -3,7 +3,7 @@ import { Input } from './ui/input';
 
 import { cn } from '@/lib/utils';
 
-const SearchBar = ({ placeholder = 'Search', value, onChange, className }) => {
+const Searchbar = ({ placeholder = 'Search', value, onChange, className }) => {
   return (
     <div
       className={cn('flex items-center rounded-xl bg-gray-100 px-2', className)}
@@ -12,7 +12,7 @@ const SearchBar = ({ placeholder = 'Search', value, onChange, className }) => {
       <Input
         type="text"
         placeholder={placeholder}
-        className="h-9 w-60 border-none bg-transparent px-2 text-sm outline-none ring-0 placeholder:text-gray-400 focus:bg-transparent focus:ring-0 focus-visible:ring-0"
+        className="h-9 w-full border-none bg-transparent px-2 text-sm outline-none ring-0 placeholder:text-gray-400 focus:bg-transparent focus:ring-0 focus-visible:ring-0"
         value={value}
         onChange={onChange}
       />
@@ -20,4 +20,4 @@ const SearchBar = ({ placeholder = 'Search', value, onChange, className }) => {
   );
 };
 
-export default SearchBar;
+export default Searchbar;

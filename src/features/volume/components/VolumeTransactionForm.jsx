@@ -124,9 +124,9 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="flex items-center justify-between">
-        <h2 className="mb-4 mt-2 flex items-center gap-4 text-xl font-bold">
+        <h2 className="mb-10 mt-2 flex items-center gap-4 text-xl font-bold">
           {volumeTransactionData ? 'Edit Transaction' : 'Create Transaction'}
         </h2>
       </div>

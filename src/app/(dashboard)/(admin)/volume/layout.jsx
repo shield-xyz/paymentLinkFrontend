@@ -1,5 +1,3 @@
-import Error from '../error';
-
 import Container from '@/components/ui/container';
 import { Volume } from '@/features/volume';
 import {
@@ -7,22 +5,14 @@ import {
   getVolumeTransactionsPerDay,
 } from '@/features/volume/actions';
 import { VolumeTransactionsTable } from '@/features/volume/components/VolumeTransactionsTable';
-import { getServerAuthSession } from '@/lib/auth';
 
-export const revalidate = 60;
+export const revalidate = 0;
 
 export default async function Layout({ children }) {
-  const session = await getServerAuthSession();
-
   const [transactions, transactionsAdmin] = await Promise.all([
     getVolumeTransactionsPerDay(),
     getVolumeTransactionsAdmin(),
   ]);
-
-  const isAdmin = session?.user.admin;
-  if (!isAdmin) {
-    return <Error statusCode={401} session={session} />;
-  }
 
   return (
     <>

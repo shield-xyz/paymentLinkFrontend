@@ -21,7 +21,7 @@ export const EditVolumeTransactionModal = ({ transaction }) => {
       title=""
       description=""
       showCloseButton={false}
-      className="flex max-w-[95vw] flex-col items-center justify-center rounded-3xl p-6 backdrop-blur-md sm:max-w-2xl"
+      className="flex max-w-[95vw] flex-col items-center justify-center rounded-3xl p-10 backdrop-blur-md sm:max-w-2xl"
       withBackdrop
       onClose={() => {}}
     >
