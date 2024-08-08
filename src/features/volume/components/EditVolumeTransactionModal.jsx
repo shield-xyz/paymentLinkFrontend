@@ -1,9 +1,9 @@
 'use client';
 
-import { VolumeTransactionForm } from './VolumeTransactionForm';
-
 import { CustomModal } from '@/components/CustomModal';
 import { useIsClient } from '@/hooks';
+
+import { VolumeTransactionForm } from './VolumeTransactionForm';
 
 export const EditVolumeTransactionModal = ({ transaction }) => {
   // const router = useRouter();

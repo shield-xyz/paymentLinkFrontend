@@ -2,10 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 
+import { cn } from '@/lib/utils';
+
 import { Icons } from './Icons';
 import { Button } from './ui/button';
-
-import { cn } from '@/lib/utils';
 
 export const GoBack = ({ className, children, onClick, ...props }) => {
   const router = useRouter();

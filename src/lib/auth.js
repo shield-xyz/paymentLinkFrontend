@@ -3,6 +3,7 @@ import Credentials from 'next-auth/providers/credentials';
 
 import { login, loginWithFootprint } from '@/features/auth';
 
+import { getLogoUrl } from './utils';
 import { authConfig } from '../../auth.config';
 
 // const SignInSchema = z.object({
@@ -21,12 +22,7 @@ import { authConfig } from '../../auth.config';
 //   }),
 // });
 
-export const {
-  handlers,
-  signIn,
-  signOut,
-  auth: getServerAuthSession,
-} = NextAuth({
+export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
@@ -69,7 +65,8 @@ export const {
             };
           } else {
             return {
-              ...data,
+              ...data.response,
+              logo: getLogoUrl(data.response.logo) || '',
               isRegistered: true,
               validationToken: credentials.validationToken,
             };
@@ -81,3 +78,21 @@ export const {
     }),
   ],
 });
+
+// {
+//   data: {
+//     response: {
+//       _id: '66b401c1c7114494486103d8',
+//       user_name: 'Sandbox',
+//       email: 'sandbox@onefootprint.com',
+//       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YjQwMWMxYzcxMTQ0OTQ0ODYxMDNkOCIsImlhdCI6MTcyMzExNjU3MCwiZXhwIjoxNzIzMTI3MzcwfQ.yXfr3Dwtq8UL2E17RJ1bHAg6HUymN75Th05-6j6H8jU',
+//       logo: 'uploads/default.jpg',
+//       company: '',
+//       apiKey: 'fe6c3e690e97caa9a9d4eb46121de1ad',
+//       verify: false,
+//       footId: 'fp_id_test_Cfwd5OaEXOoSOkPWc6bCd4',
+//       admin: false
+//     },
+//     status: 'success'
+//   }
+// }

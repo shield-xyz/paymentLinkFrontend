@@ -1,9 +1,9 @@
 import { redirect } from 'next/navigation';
 
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function AuthLayout({ children }) {
-  const session = await getServerAuthSession();
+  const session = await auth();
 
   console.log({ session });
 

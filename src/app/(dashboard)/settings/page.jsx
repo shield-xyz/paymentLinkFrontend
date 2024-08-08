@@ -2,10 +2,10 @@ import Container from '@/components/ui/container';
 import { getUser } from '@/features/auth';
 import { ProfileForm } from '@/features/auth/components/profile';
 import { SettingsNav } from '@/features/settings';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function Page() {
-  const session = await getServerAuthSession();
+  const session = await auth();
   const userData = await getUser(session?.accessToken);
 
   return (

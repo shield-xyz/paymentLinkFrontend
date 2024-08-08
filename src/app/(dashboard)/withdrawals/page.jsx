@@ -1,9 +1,9 @@
 import { getAssets } from '@/actions/getAssets';
 import { WithdrawalsTable, getWithdrawals } from '@/features/withdrawals';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function Page() {
-  const session = await getServerAuthSession();
+  const session = await auth();
   const [withdrawals, assets] = await Promise.all([
     getWithdrawals(session?.accessToken),
     getAssets(),

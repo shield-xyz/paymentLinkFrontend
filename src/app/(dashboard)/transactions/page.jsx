@@ -1,8 +1,8 @@
 import { TransactionsTable, getTransactions } from '@/features/transactions';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function Page() {
-  const session = await getServerAuthSession();
+  const session = await auth();
   const [transactions] = await Promise.all([
     getTransactions(session?.accessToken),
   ]);

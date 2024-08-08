@@ -1,8 +1,8 @@
 'use client';
 
-import { ClientAddressForm } from './ClientAddressForm';
-
 import { CustomModal } from '@/components/CustomModal';
+
+import { ClientAddressForm } from './ClientAddressForm';
 
 export const ClientAddressModal = ({ clientAddress, disabled, onClose }) => {
   return (

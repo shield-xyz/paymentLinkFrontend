@@ -4,11 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { updateBankingData } from '../actions';
-
 import { FormInput } from '@/components/Form';
 import { Button } from '@/components/ui/button';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
+
+import { updateBankingData } from '../actions';
 
 const bankDataSchema = z.object({
   'custom.beneficiary_name': z

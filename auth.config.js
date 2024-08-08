@@ -8,6 +8,7 @@ const allowedPaths = [
   '/paylink',
   '/register',
   '/reset-password/**',
+  '/getshield/volume',
 ];
 
 function isPathAllowed(pathname) {
@@ -55,7 +56,7 @@ export const authConfig = {
       const now = Date.now();
       if (user) {
         // Initial login, setting up token details and last activity time
-        token.accessToken = user.accessToken;
+        token.accessToken = user.token;
         token.email = user.email;
         token.id = user.id;
         token.lastActivity = now; // Store the current timestamp

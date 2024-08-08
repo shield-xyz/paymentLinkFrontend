@@ -1,7 +1,7 @@
 'use server';
 
 import { env } from '@/config';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import {
   NOTIFICATION_STATUS,
   fetchWithToken,
@@ -11,7 +11,7 @@ import {
 
 export async function updateNotificationStatus({ notificationId, status }) {
   try {
-    const session = await getServerAuthSession();
+    const session = await auth();
     const token = session?.accessToken;
 
     if (!Object.values(NOTIFICATION_STATUS).includes(status)) {

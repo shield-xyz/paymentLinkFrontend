@@ -1,13 +1,13 @@
 'use server';
 
 import { env } from '@/config';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import { fetchWithToken, handleError, validateResponse } from '@/lib/utils';
 
 export async function updateBankingData(formData) {
   try {
     console.log({ formData });
-    const session = await getServerAuthSession();
+    const session = await auth();
     const token = session?.accessToken;
 
     const res = await fetchWithToken(

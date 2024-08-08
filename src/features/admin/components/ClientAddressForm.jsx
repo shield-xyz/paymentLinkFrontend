@@ -6,12 +6,6 @@ import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  deleteClientAddress,
-  postClientAddress,
-  updateClientAddress,
-} from '../actions';
-
 import { FormInput } from '@/components/Form';
 import { GoBack } from '@/components/GoBack';
 import { Button } from '@/components/ui/button';
@@ -20,6 +14,12 @@ import {
   handleSubmissionError,
   handleSubmissionSuccess,
 } from '@/lib/utils';
+
+import {
+  deleteClientAddress,
+  postClientAddress,
+  updateClientAddress,
+} from '../actions';
 
 const selectedFieldsSchema = z.object({
   name: z.string().min(1, { message: 'Client Name is required' }),
@@ -127,7 +127,7 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
 
             if (key === 'wallets') {
               return (
-                <div className="col-span-2">
+                <div key={key} className="col-span-2">
                   <div className="flex w-full flex-col gap-2">
                     <h3>Wallets</h3>
                     {fields.map((field, index) => (

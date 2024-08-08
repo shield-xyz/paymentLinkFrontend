@@ -4,11 +4,11 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 
-import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
-
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
+
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog';
 
 export function DatePicker({
   value,

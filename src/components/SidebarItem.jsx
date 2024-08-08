@@ -1,18 +1,13 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { Icons } from './Icons';
-
 import { cn } from '@/lib/utils';
+
+import { Icons } from './Icons';
 
 const SidebarItem = ({ item, isAdmin, pathname }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMenu = item.subLinks ? true : false;
-
-  if (item.isAdmin && !isAdmin) return null;
-
-  const Icon = Icons[item.icon];
-  const isActive = pathname === item.path;
 
   useEffect(() => {
     if (item.subLinks) {
@@ -22,7 +17,12 @@ const SidebarItem = ({ item, isAdmin, pathname }) => {
         }
       });
     }
-  }, [pathname]);
+  }, [pathname, item.subLinks]);
+
+  if (item.isAdmin && !isAdmin) return null;
+
+  const Icon = Icons[item.icon];
+  const isActive = pathname === item.path;
 
   const LinkItem = (item) => {
     return (

@@ -3,13 +3,12 @@
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-import { Icons } from './Icons';
-import SidebarItem from './SidebarItem';
-import { Button } from './ui/button';
-
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
+import { Icons } from './Icons';
+import SidebarItem from './SidebarItem';
+import { Button } from './ui/button';
 
 export const MobileSidebar = ({ session }) => {
   const pathname = usePathname();

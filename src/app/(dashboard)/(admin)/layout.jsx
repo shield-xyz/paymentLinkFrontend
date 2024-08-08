@@ -1,10 +1,10 @@
 import Error from '@/app/error';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export const revalidate = 60;
 
 export default async function Layout({ children }) {
-  const session = await getServerAuthSession();
+  const session = await auth();
 
   const isAdmin = session?.user.admin;
   if (!isAdmin) {

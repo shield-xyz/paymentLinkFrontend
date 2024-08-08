@@ -4,11 +4,7 @@ const Steps = ({ step, setStep }) => {
   const OPTIONS = [
     {
       title: 'Your details',
-      description: 'Please provide your name and email',
-    },
-    {
-      title: 'Choose a password',
-      description: 'Choose a secure password',
+      description: 'Please provide your name and company details',
     },
   ];
   return (

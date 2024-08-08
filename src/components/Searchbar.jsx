@@ -3,7 +3,6 @@ import { cn } from '@/lib/utils';
 import { Icons } from './Icons';
 import { Input } from './ui/input';
 
-
 const Searchbar = ({ placeholder = 'Search', value, onChange, className }) => {
   return (
     <div

@@ -3,9 +3,9 @@ import clsx from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
-import { knownErrorsMessages } from './knownErrors';
-
 import { env } from '@/config';
+
+import { knownErrorsMessages } from './knownErrors';
 
 export function cn(...inputs) {
   return twMerge(clsx(inputs));
