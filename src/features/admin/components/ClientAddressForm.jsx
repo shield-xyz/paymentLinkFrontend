@@ -28,8 +28,12 @@ const selectedFieldsSchema = z.object({
     .array(
       z
         .string()
-        .min(26, { message: 'Please insert a valid address' })
-        .max(62, { message: 'Please insert a valid address' })
+        .min(26, {
+          message: 'Please insert a valid address between 26 and 62 characters',
+        })
+        .max(62, {
+          message: 'Please insert a valid address between 26 and 62 characters',
+        })
         .regex(/^[a-zA-Z0-9]+$/, {
           message: 'Please insert a valid address',
         }),
