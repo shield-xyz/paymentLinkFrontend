@@ -140,7 +140,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
             if (key === 'date') {
               return (
                 <DatePickerForm
-                  className=" w-full"
+                  className="w-full"
                   key={key}
                   label={label}
                   placeholder={label}

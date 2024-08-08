@@ -12,7 +12,7 @@ export const DatePickerForm = ({
   ...props
 }) => {
   return (
-    <div className=" w-full">
+    <div className="w-full">
       <Controller
         className=""
         name={name}
