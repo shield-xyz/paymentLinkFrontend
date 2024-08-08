@@ -1,9 +1,9 @@
 import { getAssets } from '@/actions';
 import { DepositsTable, getDeposits } from '@/features/deposits';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function Page() {
-  const session = await getServerAuthSession();
+  const session = await auth();
   const [deposits, assets] = await Promise.all([
     getDeposits(session.accessToken),
     getAssets(),

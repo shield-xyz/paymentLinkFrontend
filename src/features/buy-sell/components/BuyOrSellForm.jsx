@@ -1,6 +1,6 @@
-import { useStore } from '../store';
-
 import { Button } from '@/components/ui/button';
+
+import { useStore } from '../store';
 
 export const BuyOrSellForm = ({ handleChangeStep }) => {
   const { setSide } = useStore();
