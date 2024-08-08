@@ -64,6 +64,7 @@ export const authConfig = {
         token.name = user.name;
         token.verify = user.verify;
         token.isRegistered = user.isRegistered;
+        token.admin = user.admin;
       } else if (trigger === 'update' && session.updatedUser) {
         // Profile update, modifying token details and updating last activity time
         const updatedUser = session.updatedUser;
@@ -75,6 +76,7 @@ export const authConfig = {
         token.logo = logo;
         token.name = updatedUser.user_name;
         token.verify = updatedUser.verify;
+        token.admin = updatedUser.admin;
       }
 
       return token;
@@ -88,6 +90,7 @@ export const authConfig = {
         session.user.logo = token.logo;
         session.user.verify = token.verify;
         session.user.isRegistered = token.isRegistered;
+        session.user.admin = token.admin;
         session.accessToken = token.accessToken;
       }
       return session;

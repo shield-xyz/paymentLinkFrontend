@@ -36,6 +36,12 @@ const SidebarItem = ({ item, isAdmin, pathname }) => {
         )}
         href={item.path}
       >
+        <Icon
+          className={cn('h-5 w-5', {
+            'text-gray-500': pathname !== item.path,
+            'text-black': pathname === item.path,
+          })}
+        />
         {item.name}
         {isActive && <Icons.chevronRight className="ml-auto" />}
         {isMenu && isActive && <Icons.chevronDown className="ml-auto" />}
