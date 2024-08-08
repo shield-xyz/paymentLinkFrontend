@@ -24,7 +24,21 @@ import {
 const selectedFieldsSchema = z.object({
   name: z.string().min(1, { message: 'Client Name is required' }),
   groupIdWpp: z.string().optional(),
-  wallets: z.array(z.string()).optional(),
+  wallets: z
+    .array(
+      z
+        .string()
+        .min(26, {
+          message: 'Please insert a valid address between 26 and 62 characters',
+        })
+        .max(62, {
+          message: 'Please insert a valid address between 26 and 62 characters',
+        })
+        .regex(/^[a-zA-Z0-9]+$/, {
+          message: 'Please insert a valid address',
+        }),
+    )
+    .optional(),
 });
 
 export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
@@ -48,6 +62,8 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
     formState: { errors, isSubmitting },
     register,
     watch,
+    trigger,
+    setValue,
   } = form;
 
   const { fields, append, remove } = useFieldArray({
@@ -107,7 +123,9 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
     }
   };
 
-  const wallets = watch('wallets');
+  watch('wallets');
+
+  console.log({ fields });
 
   return (
     <div className="w-full">
@@ -133,7 +151,7 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
                     {fields.map((field, index) => (
                       <div
                         key={field.id}
-                        className="flex w-full items-center justify-between gap-4"
+                        className="flex w-full items-start justify-between gap-4"
                       >
                         <FormInput
                           className="w-full"
@@ -145,6 +163,11 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
                           placeholder="Wallet"
                           register={register}
                           type="text"
+                          onChange={(e) => {
+                            setValue(`wallets.${index}`, e.target.value, {
+                              shouldValidate: errors.wallets,
+                            });
+                          }}
                         />
                         <Button
                           variant="ghost"
@@ -158,8 +181,12 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
                     ))}
                     <Button
                       type="button"
-                      onClick={() => append('')}
-                      disabled={disabled || wallets[wallets.length - 1] === ''}
+                      onClick={async () => {
+                        const valid = await trigger('wallets');
+                        if (!valid) return;
+                        append('');
+                      }}
+                      disabled={disabled}
                     >
                       Add Wallet
                     </Button>
