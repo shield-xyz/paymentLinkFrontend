@@ -6,12 +6,12 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
+import { handleSubmissionError, parseAmountToDecimals } from '@/lib/utils';
+
 import { useManualPayment } from './useManualPayment';
 import { useMetaMask } from './useMetaMask';
 import { useTronLink } from './useTronLink';
 import { addWallet } from '../actions';
-
-import { handleSubmissionError, parseAmountToDecimals } from '@/lib/utils';
 
 const steps = [
   {

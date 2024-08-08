@@ -1,13 +1,7 @@
+/* eslint-disable react/jsx-key */
 'use client';
 
 import { useEffect, useState } from 'react';
-
-import { BuyOrSellForm } from './BuyOrSellForm';
-import { SelectTokenForm } from './SelectTokenForm';
-import { SetBankAccount } from './SetBankAccount';
-import { SuccessForm } from './SuccessForm';
-import { WaitingForPaymentForm } from './WaitingForPaymentForm';
-import { useStore } from '../store';
 
 import { getAssets } from '@/actions';
 import { LogoIcon } from '@/assets';
@@ -15,6 +9,13 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { getNetworks } from '@/features/payment-link';
 import { cn } from '@/lib/utils';
+
+import { BuyOrSellForm } from './BuyOrSellForm';
+import { SelectTokenForm } from './SelectTokenForm';
+import { SetBankAccount } from './SetBankAccount';
+import { SuccessForm } from './SuccessForm';
+import { WaitingForPaymentForm } from './WaitingForPaymentForm';
+import { useStore } from '../store';
 
 export const BuySellFrom = () => {
   const [step, setStep] = useState(0);
@@ -30,6 +31,7 @@ export const BuySellFrom = () => {
       setNetwork(networks.find((network) => network.networkId === 'tron'));
     });
     getAssets().then(setAssets);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -37,6 +39,7 @@ export const BuySellFrom = () => {
     setAsset(
       assets.find((asset) => asset.networkId === selectedNetwork.networkId),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedNetwork]);
 
   const LISTS = [

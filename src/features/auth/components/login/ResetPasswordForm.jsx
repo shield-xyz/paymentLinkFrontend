@@ -6,12 +6,12 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import { resetPassword } from '../../actions';
-
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
+
+import { resetPassword } from '../../actions';
 
 export const ResetSchema = z
   .object({

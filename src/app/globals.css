@@ -80,6 +80,12 @@
   }
 }
 
+@layer components {
+  .link {
+    @apply text-blue-500 text-sm tracking-tight hover:underline duration-100 underline-offset-2
+  }
+}
+
 html {
   min-width: 280px;
 }

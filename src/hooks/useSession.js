@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export const useSession = () => {
   const [session, setSession] = useState(null);
 
   useEffect(() => {
     const fetchSession = async () => {
-      const sessionData = await getServerAuthSession();
+      const sessionData = await auth();
       setSession(sessionData);
     };
 

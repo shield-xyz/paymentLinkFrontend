@@ -3,12 +3,12 @@
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
+import { SIDEBAR_PAGES } from '@/config';
+import { cn } from '@/lib/utils';
+
 import { Icons } from './Icons';
 import SidebarItem from './SidebarItem';
 import { Button } from './ui/button';
-
-import { SIDEBAR_PAGES } from '@/config';
-import { cn } from '@/lib/utils';
 
 export const MobileSidebar = ({ session }) => {
   const pathname = usePathname();
@@ -58,7 +58,7 @@ export const MobileSidebar = ({ session }) => {
           >
             <Icons.menu className="h-5 w-5" />
           </Button>
-          <div className="ml-14 flex w-fit items-center gap-3 pl-6 lg:ml-0">
+          <div className="ml-12 flex w-fit items-center gap-3 pl-6">
             <div className="flex items-center justify-center rounded-lg bg-black/5">
               <Icons.logo2 className="scale-[0.65]" />
             </div>

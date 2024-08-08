@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
+import { copyCode } from '@/features/payment-link';
+
 import { Icons } from './Icons';
 import { Button } from './ui/button';
-
-import { copyCode } from '@/features/payment-link';
 
 // copy: 'link' | 'hash'
 

@@ -21,7 +21,7 @@ export const FormInput = ({
       errors={errors}
       name={name}
       as="span"
-      className="mt-1 text-sm text-destructive"
+      className="mt-1 text-xs text-destructive sm:text-sm"
     />
   </div>
 );

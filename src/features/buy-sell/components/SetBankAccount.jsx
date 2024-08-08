@@ -1,9 +1,9 @@
 'use client';
 
-import { useStore } from '../store';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+import { useStore } from '../store';
 
 export const SetBankAccount = ({ handleChangeStep }) => {
   const {

@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { SettingsNav } from '@/features/settings';
 
@@ -12,14 +13,7 @@ export default async function Page() {
           your details.
         </p>
         <SettingsNav />
-        <div className="h-[600px] py-10">
-          <iframe
-            src="https://kyc-front-snowy.vercel.app/iframe"
-            width="100%"
-            height="100%"
-            className="border-none"
-          ></iframe>
-        </div>
+        <Button className="w-fit">Verify with Footprint</Button>
       </Container>
     </div>
   );

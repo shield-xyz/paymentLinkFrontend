@@ -1,13 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 
 const MAX_INACTIVITY_MS = 300000; // 5 minutes in milliseconds
 
 const AutoLogoutProvider = (props) => {
-  const router = useRouter();
   const timer = useRef(setTimeout(() => {}, 0));
 
   // logout and redirect
@@ -15,7 +13,7 @@ const AutoLogoutProvider = (props) => {
     await signOut({
       callbackUrl: '/login?sessionExpired=true',
     });
-  }, [router]);
+  }, []);
 
   // this function resets the timer on each mouse move or key press
   const onReset = useCallback(() => {
@@ -33,7 +31,7 @@ const AutoLogoutProvider = (props) => {
       window.removeEventListener('mousemove', onReset);
       window.removeEventListener('keypress', onReset);
     };
-  }, []);
+  }, [onReset]);
 
   return <>{props.children}</>;
 };

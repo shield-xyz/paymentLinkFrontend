@@ -1,8 +1,8 @@
 'use client';
 
-import VolumeChart from './VolumeChart';
-
 import Container from '@/components/ui/container';
+
+import VolumeChart from './VolumeChart';
 
 export const Volume = ({ transactions }) => {
   return (

@@ -147,3 +147,5 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton,
 };
+
+SelectItem.displayName = 'SelectItem';

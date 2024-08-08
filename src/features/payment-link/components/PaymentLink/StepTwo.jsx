@@ -3,13 +3,13 @@
 import { ErrorMessage } from '@hookform/error-message';
 import QRCode from 'qrcode.react';
 
-import { copyCode } from '../../utils';
-
 import { Icons, StepIndicator } from '@/components';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Input } from '@/components/ui/input';
 import { formatCryptoHash } from '@/lib/utils';
+
+import { copyCode } from '../../utils';
 
 export const StepTwo = ({
   onConnectWallet,

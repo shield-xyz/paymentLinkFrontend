@@ -1,6 +1,14 @@
 'use client';
 
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+
+import {
   Pagination,
   PaginationContent,
   PaginationEllipsis,
@@ -9,14 +17,6 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from './ui/pagination';
-
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 
 export const CustomPagination = ({
   currentPage,

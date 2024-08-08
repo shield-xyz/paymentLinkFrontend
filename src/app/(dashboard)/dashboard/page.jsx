@@ -6,10 +6,10 @@ import {
 } from '@/features/dashboard';
 import { getTransactions } from '@/features/transactions';
 import { getWithdrawals } from '@/features/withdrawals';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 
 export default async function Page() {
-  const session = await getServerAuthSession();
+  const session = await auth();
   const [balances, transactions, withdrawals] = await Promise.all([
     getBalances(session?.accessToken),
     getTransactions(session?.accessToken),

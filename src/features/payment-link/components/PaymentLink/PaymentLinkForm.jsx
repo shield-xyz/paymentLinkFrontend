@@ -1,11 +1,11 @@
 'use client';
 
+import { cn } from '@/lib/utils';
+
 import { StepOne } from './StepOne';
 import { StepThree } from './StepThree';
 import { StepTwo } from './StepTwo';
 import { usePaymentLink } from '../../hooks';
-
-import { cn } from '@/lib/utils';
 
 export const PaymentLinkForm = ({ paymentLinkData, userWallet }) => {
   const {

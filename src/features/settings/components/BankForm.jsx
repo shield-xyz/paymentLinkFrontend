@@ -1,36 +1,32 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-
-import { updateBankingData } from '../actions';
 
 import { FormInput } from '@/components/Form';
 import { Button } from '@/components/ui/button';
 import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 
+import { updateBankingData } from '../actions';
+
 const bankDataSchema = z.object({
-  'custom.beneficiary_name': z
+  beneficiary_name: z
     .string()
     .min(1, { message: 'Beneficiary name is required' }),
-  'custom.bank_name': z.string().min(1, { message: 'Bank name is required' }),
-  'custom.account_number': z
-    .string()
-    .min(1, { message: 'Account number is required' }),
-  'custom.routing_number': z
-    .string()
-    .min(1, { message: 'Routing number is required' }),
-  'custom.street_address': z
-    .string()
-    .min(1, { message: 'Street address is required' }),
-  'custom.city': z.string().min(1, { message: 'City is required' }),
-  'custom.state': z.string().min(1, { message: 'State is required' }),
-  'custom.zip_code': z.string().min(1, { message: 'Zip code is required' }),
-  'custom.country': z.string().min(1, { message: 'Country is required' }),
+  bank_name: z.string().min(1, { message: 'Bank name is required' }),
+  account_number: z.string().min(1, { message: 'Account number is required' }),
+  routing_number: z.string().min(1, { message: 'Routing number is required' }),
+  street_address: z.string().min(1, { message: 'Street address is required' }),
+  city: z.string().min(1, { message: 'City is required' }),
+  state: z.string().min(1, { message: 'State is required' }),
+  zip_code: z.string().min(1, { message: 'Zip code is required' }),
+  country: z.string().min(1, { message: 'Country is required' }),
 });
 
 export const BankForm = ({ bankData }) => {
+  const router = useRouter();
   // const [isVisible, _setIsVisible] = useState(true);
   // const toggleVisibility = () => setIsVisible(!isVisible);
 
@@ -38,15 +34,15 @@ export const BankForm = ({ bankData }) => {
     resolver: zodResolver(bankDataSchema),
     mode: 'onTouch',
     defaultValues: {
-      'custom.beneficiary_name': bankData['custom.beneficiary_name'] || '',
-      'custom.bank_name': bankData['custom.bank_name'] || '',
-      'custom.account_number': bankData['custom.account_number'] || '',
-      'custom.routing_number': bankData['custom.routing_number'] || '',
-      'custom.street_address': bankData['custom.street_address'] || '',
-      'custom.city': bankData['custom.city'] || '',
-      'custom.state': bankData['custom.state'] || '',
-      'custom.zip_code': bankData['custom.zip_code'] || '',
-      'custom.country': bankData['custom.country'] || '',
+      beneficiary_name: bankData['custom.beneficiary_name'] || '',
+      bank_name: bankData['custom.bank_name'] || '',
+      account_number: bankData['custom.account_number'] || '',
+      routing_number: bankData['custom.routing_number'] || '',
+      street_address: bankData['custom.street_address'] || '',
+      city: bankData['custom.city'] || '',
+      state: bankData['custom.state'] || '',
+      zip_code: bankData['custom.zip_code'] || '',
+      country: bankData['custom.country'] || '',
     },
   });
   const {
@@ -58,9 +54,17 @@ export const BankForm = ({ bankData }) => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const res = await updateBankingData(data);
-      console.log({ res });
+      const obj = {};
+      Object.keys(data).forEach((key) => {
+        obj[`custom.${key}`] = data[key];
+      });
+
+      const res = await updateBankingData(obj);
+      if (!res.status === 'success') {
+        throw new Error('Could not save banking data');
+      }
       handleSubmissionSuccess('Banking data saved successfully');
+      router.refresh();
     } catch (error) {
       handleSubmissionError(error, 'Could not save banking data');
     }
@@ -88,63 +92,63 @@ export const BankForm = ({ bankData }) => {
           <FormInput
             label="Beneficiary Name"
             placeholder="Beneficiary Name"
-            name="custom.beneficiary_name"
+            name="beneficiary_name"
             register={register}
             errors={errors}
           />
           <FormInput
             label="Bank Name"
             placeholder="Bank Name"
-            name="custom.bank_name"
+            name="bank_name"
             register={register}
             errors={errors}
           />
           <FormInput
             label="Account Number"
             placeholder="Account Number"
-            name="custom.account_number"
+            name="account_number"
             register={register}
             errors={errors}
           />
           <FormInput
             label="Routing Number"
             placeholder="Routing Number"
-            name="custom.routing_number"
+            name="routing_number"
             register={register}
             errors={errors}
           />
           <FormInput
             label="Street Address"
             placeholder="Street Address"
-            name="custom.street_address"
+            name="street_address"
             register={register}
             errors={errors}
           />
           <FormInput
             label="City"
             placeholder="City"
-            name="custom.city"
+            name="city"
             register={register}
             errors={errors}
           />
           <FormInput
             label="State"
             placeholder="State"
-            name="custom.state"
+            name="state"
             register={register}
             errors={errors}
           />
           <FormInput
             label="Zip Code"
             placeholder="Zip Code"
-            name="custom.zip_code"
+            name="zip_code"
             register={register}
             errors={errors}
           />
           <FormInput
             label="Country"
             placeholder="Country"
-            name="custom.country"
+            name="country"
             register={register}
             errors={errors}
           />

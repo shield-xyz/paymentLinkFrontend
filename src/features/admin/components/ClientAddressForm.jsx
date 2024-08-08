@@ -6,12 +6,7 @@ import { useState } from 'react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  deleteClientAddress,
-  postClientAddress,
-  updateClientAddress,
-} from '../actions';
-
+import { Icons } from '@/components';
 import { FormInput } from '@/components/Form';
 import { GoBack } from '@/components/GoBack';
 import { Button } from '@/components/ui/button';
@@ -20,6 +15,12 @@ import {
   handleSubmissionError,
   handleSubmissionSuccess,
 } from '@/lib/utils';
+
+import {
+  deleteClientAddress,
+  postClientAddress,
+  updateClientAddress,
+} from '../actions';
 
 const selectedFieldsSchema = z.object({
   name: z.string().min(1, { message: 'Client Name is required' }),
@@ -139,22 +140,22 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
         </h2>
       </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="grid max-h-[50vh] max-w-6xl grid-cols-1 gap-4 overflow-auto px-4 sm:grid-cols-2">
+        <div className="flex max-h-[50vh] max-w-6xl grid-cols-1 flex-col gap-4 overflow-auto sm:grid sm:grid-cols-2 sm:px-4">
           {Object.keys(selectedFieldsSchema.shape).map((key) => {
             const label = camelCaseToWords(key);
 
             if (key === 'wallets') {
               return (
-                <div className="col-span-2">
+                <div key={key} className="col-span-2">
                   <div className="flex w-full flex-col gap-2">
                     <h3>Wallets</h3>
                     {fields.map((field, index) => (
                       <div
                         key={field.id}
-                        className="flex w-full items-start justify-between gap-4"
+                        className="flex w-full items-start justify-between gap-2 sm:gap-4"
                       >
                         <FormInput
-                          className="w-full"
+                          className="w-full text-xs sm:text-sm"
                           defaultValue={`wallets.${index}`}
                           errors={errors}
                           key={`wallets.${index}`}
@@ -170,12 +171,22 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
                           }}
                         />
                         <Button
+                          className="hidden px-2 text-xs sm:flex sm:px-4 sm:text-sm"
                           variant="ghost"
                           type="button"
                           onClick={() => remove(index)}
                           disabled={disabled}
                         >
                           Remove
+                        </Button>
+                        <Button
+                          className="flex px-2 text-xs sm:hidden sm:px-4 sm:text-sm"
+                          variant="ghost"
+                          type="button"
+                          onClick={() => remove(index)}
+                          disabled={disabled}
+                        >
+                          <Icons.close className="text-xs" />
                         </Button>
                       </div>
                     ))}
