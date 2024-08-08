@@ -1,6 +1,7 @@
 import {
   AlertTriangle,
   Archive,
+  ArchiveRestore,
   ArrowLeft,
   ArrowRight,
   BarChart2,
@@ -9,12 +10,14 @@ import {
   ChevronLeft,
   ChevronRight,
   CreditCard,
+  DollarSign,
   File,
   FileText,
   FolderSearch,
   HelpCircle,
   Image,
   Laptop,
+  LineChartIcon,
   Link,
   Loader,
   Loader2,
@@ -40,6 +43,7 @@ import {
 } from 'lucide-react';
 
 export const Icons = {
+  dollar: DollarSign,
   star: Star,
   close: X,
   loaderCircle: LoaderCircle,
@@ -61,6 +65,7 @@ export const Icons = {
   user: User,
   arrowRight: ArrowRight,
   arrowLeft: ArrowLeft,
+  archiveRestore: ArchiveRestore,
   sparkles: Sparkles,
   help: HelpCircle,
   pizza: Pizza,
@@ -77,6 +82,7 @@ export const Icons = {
   wallets: WalletCards,
   folderSearch: FolderSearch,
   zoomIn: ZoomIn,
+  chartLine: LineChartIcon,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"
