@@ -78,21 +78,3 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     }),
   ],
 });
-
-// {
-//   data: {
-//     response: {
-//       _id: '66b401c1c7114494486103d8',
-//       user_name: 'Sandbox',
-//       email: 'sandbox@onefootprint.com',
-//       token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YjQwMWMxYzcxMTQ0OTQ0ODYxMDNkOCIsImlhdCI6MTcyMzExNjU3MCwiZXhwIjoxNzIzMTI3MzcwfQ.yXfr3Dwtq8UL2E17RJ1bHAg6HUymN75Th05-6j6H8jU',
-//       logo: 'uploads/default.jpg',
-//       company: '',
-//       apiKey: 'fe6c3e690e97caa9a9d4eb46121de1ad',
-//       verify: false,
-//       footId: 'fp_id_test_Cfwd5OaEXOoSOkPWc6bCd4',
-//       admin: false
-//     },
-//     status: 'success'
-//   }
-// }

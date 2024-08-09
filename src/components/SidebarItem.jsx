@@ -60,7 +60,7 @@ const SidebarItem = ({ item, isAdmin, pathname }) => {
         )}
         onClick={() => isMenu && setIsOpen(!isOpen)}
       >
-        {Icon && <Icon className="h-5 w-5" />}
+        <Icon className="h-5 w-5" />
         <span>{item.name}</span>
 
         {isOpen && <Icons.chevronRight className="ml-auto rotate-90" />}
