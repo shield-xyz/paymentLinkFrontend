@@ -12,7 +12,6 @@ import {
   updateClientAddress,
 } from '../actions';
 
-
 import { Icons } from '@/components';
 import { FormInput } from '@/components/Form';
 import { GoBack } from '@/components/GoBack';
