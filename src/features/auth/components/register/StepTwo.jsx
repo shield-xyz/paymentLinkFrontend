@@ -12,6 +12,9 @@ const StepTwo = ({ form }) => {
     formState: { errors, isSubmitting },
     getValues,
   } = form;
+
+  console.log(getValues());
+  console.log({ errors });
   const { password } = getValues();
 
   return (

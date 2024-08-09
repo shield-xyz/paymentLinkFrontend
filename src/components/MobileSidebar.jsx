@@ -1,20 +1,20 @@
 'use client';
 
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-import { Icons } from './Icons';
-import { Button } from './ui/button';
-
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
+
+import { Icons } from './Icons';
+import SidebarItem from './SidebarItem';
+import { Button } from './ui/button';
 
 export const MobileSidebar = ({ session }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const isAdmin = session?.user?.isAdmin;
+  const isAdmin = session?.user?.admin;
 
   const toggleSidebar = () => {
     setOpen(!open);
@@ -58,7 +58,7 @@ export const MobileSidebar = ({ session }) => {
           >
             <Icons.menu className="h-5 w-5" />
           </Button>
-          <div className="ml-14 flex w-fit items-center gap-3 pl-6 lg:ml-0">
+          <div className="ml-12 flex w-fit items-center gap-3 pl-6">
             <div className="flex items-center justify-center rounded-lg bg-black/5">
               <Icons.logo2 className="scale-[0.65]" />
             </div>
@@ -67,53 +67,19 @@ export const MobileSidebar = ({ session }) => {
         </div>
 
         <div className="flex flex-col gap-2 px-4">
-          {SIDEBAR_PAGES.map((page, index) => {
-            console.log({ page });
-            const Icon = Icons[page.icon];
-            if (page.isAdmin && !isAdmin) {
-              return null;
-            }
+          {SIDEBAR_PAGES.map((item, index) => {
+            if (item.isAdmin && !isAdmin) return null;
+
             return (
-              <Link
-                className="flex items-center gap-2 rounded-xl px-5 py-3 text-sm duration-300 hover:bg-gray-500/10"
-                href={page.path}
+              <SidebarItem
                 key={index}
-                onClick={toggleSidebar}
-              >
-                <Icon
-                  className={cn('h-4 w-4', {
-                    'text-gray-500': pathname !== page.path,
-                    'text-black': pathname === page.path,
-                  })}
-                />
-                <span
-                  className={cn('', {
-                    'text-gray-500': pathname !== page.path,
-                    'text-black': pathname === page.path,
-                  })}
-                >
-                  {page.name}
-                </span>
-                {pathname === page.path && (
-                  <Icons.chevronRight
-                    className={cn('ml-auto', {
-                      'text-gray-500': pathname !== page.path,
-                      'text-black': pathname === page.path,
-                    })}
-                  />
-                )}
-              </Link>
+                item={item}
+                isAdmin={isAdmin}
+                pathname={pathname}
+              />
             );
           })}
         </div>
-        {/* <div className="mt-auto px-8">
-          <div className="flex w-full items-center gap-2 border-t border-gray-200 py-4">
-            <Icons.help2 className="h-5 w-5 stroke-gray-300" />
-            <span className="text-sm text-gray-400">
-              Help & getting started
-            </span>
-          </div>
-        </div> */}
       </div>
     </>
   );

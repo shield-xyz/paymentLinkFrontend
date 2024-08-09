@@ -6,12 +6,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import {
-  deleteVolumeTransaction,
-  postVolumeTransaction,
-  putVolumeTransaction,
-} from '../actions';
-
 import { FormInput } from '@/components/Form';
 import { DatePickerForm } from '@/components/Form/DatePickerform';
 import { GoBack } from '@/components/GoBack';
@@ -21,6 +15,12 @@ import {
   handleSubmissionError,
   handleSubmissionSuccess,
 } from '@/lib/utils';
+
+import {
+  deleteVolumeTransaction,
+  postVolumeTransaction,
+  putVolumeTransaction,
+} from '../actions';
 
 const amountValidation = (keyText) =>
   z.preprocess(
@@ -124,9 +124,9 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
   };
 
   return (
-    <div className="">
+    <div className="w-full">
       <div className="flex items-center justify-between">
-        <h2 className="mb-4 mt-2 flex items-center gap-4 text-xl font-bold">
+        <h2 className="mb-10 mt-2 flex items-center gap-4 text-xl font-bold">
           {volumeTransactionData ? 'Edit Transaction' : 'Create Transaction'}
         </h2>
       </div>
@@ -140,7 +140,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
             if (key === 'date') {
               return (
                 <DatePickerForm
-                  className=" w-full"
+                  className="w-full"
                   key={key}
                   label={label}
                   placeholder={label}

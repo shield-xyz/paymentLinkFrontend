@@ -6,15 +6,18 @@ import {
   ArrowRight,
   BarChart2,
   Check,
+  ChevronDown,
   ChevronLeft,
   ChevronRight,
   CreditCard,
   DollarSign,
   File,
   FileText,
+  FolderSearch,
   HelpCircle,
   Image,
   Laptop,
+  LineChartIcon,
   Link,
   Loader,
   Loader2,
@@ -34,7 +37,9 @@ import {
   SunMedium,
   Trash,
   User,
+  WalletCards,
   X,
+  ZoomIn,
 } from 'lucide-react';
 
 export const Icons = {
@@ -46,6 +51,7 @@ export const Icons = {
   spinner: Loader2,
   chevronLeft: ChevronLeft,
   chevronRight: ChevronRight,
+  chevronDown: ChevronDown,
   trash: Trash,
   post: FileText,
   page: File,
@@ -73,6 +79,10 @@ export const Icons = {
   packageOpen: PackageOpen,
   shield: Shield,
   shieldCheck: ShieldCheck,
+  wallets: WalletCards,
+  folderSearch: FolderSearch,
+  zoomIn: ZoomIn,
+  chartLine: LineChartIcon,
   gitHub: ({ ...props }) => (
     <svg
       aria-hidden="true"

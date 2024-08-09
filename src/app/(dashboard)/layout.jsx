@@ -2,14 +2,14 @@ import { redirect } from 'next/navigation';
 
 import { Nav, Sidebar } from '@/components';
 import { getNotifications } from '@/features/notifications';
-import { getServerAuthSession } from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import AutoLogoutProvider from '@/lib/AutoLogoutProvider';
 
 export default async function DashboardLayout({ children }) {
-  const session = await getServerAuthSession();
+  const session = await auth();
   const notifications = await getNotifications();
 
-  if (session.isExpired) {
+  if (session?.isExpired) {
     redirect('/login?sessionExpired=true');
   }
 

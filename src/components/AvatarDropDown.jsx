@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { signOut } from 'next-auth/react';
 import { useState } from 'react';
 
+import { cn } from '@/lib/utils';
+
 import { Button } from './ui/button';
 import {
   DropdownMenu,
@@ -15,8 +17,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
-
-import { cn } from '@/lib/utils';
 
 const AvatarDropDown = ({ session }) => {
   const [position, setPosition] = useState('bottom');

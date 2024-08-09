@@ -2,11 +2,11 @@
 
 import { useState } from 'react';
 
-import ErrorModalContent from './ErrorModalContent';
-import SuccessModalContent from './SuccessModalContent';
-
 import { CustomModal } from '@/components/CustomModal';
 import { Button } from '@/components/ui/button';
+
+import ErrorModalContent from './ErrorModalContent';
+import SuccessModalContent from './SuccessModalContent';
 
 const Withdraw = () => {
   const [openModal, setOpenModal] = useState(false);

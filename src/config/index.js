@@ -42,17 +42,22 @@ export const SIDEBAR_PAGES = [
     icon: 'archiveRestore',
     path: '/deposits',
   },
-  // {
-  //   name: 'Volume',
-  //   icon: 'shieldCheck',
-  //   path: '/volume',
-  //   isAdmin: true,
-  // },
-  // {
-  //   name: 'Settings',
-  //   icon: 'pie_chart',
-  //   path: '/settings',
-  // },
+  {
+    name: 'Admin',
+    isAdmin: true,
+    subLinks: [
+      {
+        name: 'Volume',
+        icon: 'chartLine',
+        path: '/volume',
+      },
+      {
+        name: 'Client Addresses',
+        icon: 'wallets',
+        path: '/client-addresses',
+      },
+    ],
+  },
 ];
 
 export const COINS = [

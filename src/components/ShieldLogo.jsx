@@ -1,6 +1,6 @@
-import { Icons } from './Icons';
-
 import { cn } from '@/lib/utils';
+
+import { Icons } from './Icons';
 
 export const ShieldLogo = ({ className, ...props }) => {
   return (

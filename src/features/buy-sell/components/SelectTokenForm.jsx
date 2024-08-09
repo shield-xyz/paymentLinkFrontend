@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 
-import { useStore } from '../store';
-
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
+import { useStore } from '../store';
 
 export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
   const {
@@ -22,10 +22,13 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
 
   return (
     <div className="max-w-lg rounded-2xl border p-8">
-      <div className="text-black/30">Select the network you'd like to use</div>
+      <div className="text-black/30">
+        Select the network you&apos;d like to use
+      </div>
       <div className="mt-4 flex flex-wrap gap-4">
-        {networks.map((network) => (
+        {networks.map((network, index) => (
           <Button
+            key={index}
             onClick={() => setNetwork(network)}
             variant={
               selectedNetwork && selectedNetwork.name === network.name
@@ -47,7 +50,7 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
         ))}
       </div>
       <div className="mt-8 text-black/30">
-        Select the token you'd like to {side}
+        Select the token you&apos;d like to {side}
       </div>
       <div className="mt-4 flex flex-wrap gap-4">
         {selectedAsset &&
@@ -56,6 +59,7 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
             .filter((asset) => asset.networkId === selectedNetwork.networkId)
             .map((asset) => (
               <Button
+                key={asset.assetId}
                 onClick={() => setAsset(asset)}
                 variant={
                   selectedAsset && selectedAsset.name === asset.name
@@ -77,7 +81,7 @@ export const SelectTokenForm = ({ handleChangeStep, networks, assets }) => {
             ))}
       </div>
       <div className="mt-8 text-black/30">
-        Select the amount you'd like to {side}
+        Select the amount you&apos;d like to {side}
       </div>
       <div className="mt-4 flex items-center justify-center space-x-2">
         <Input

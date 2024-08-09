@@ -1,48 +1,12 @@
-import { withAuth } from 'next-auth/middleware';
+// import { withAuth } from 'next-auth/middleware';
 
-const allowedPaths = [
-  '/login',
-  '/register',
-  '/forgot-password',
-  '/paylink',
-  '/reset-password/**',
-  '/getshield/volume',
-];
+import NextAuth from 'next-auth';
 
-function isPathAllowed(pathname) {
-  return allowedPaths.some((allowedPath) => {
-    if (allowedPath.endsWith('**')) {
-      // Remove the '**' and check if the pathname starts with the base path
-      const basePath = allowedPath.slice(0, -2);
-      return pathname.startsWith(basePath);
-    }
-    return pathname === allowedPath;
-  });
-}
+import { authConfig } from '../auth.config';
 
-export default withAuth(
-  function middleware() {
-    // console.log('Middleware - Token:', req.nextauth.token);
-  },
-  {
-    callbacks: {
-      authorized: ({ token, req }) => {
-        // console.log(req.nextUrl.pathname);
-        const isMiddlewareAllowed = isPathAllowed(req.nextUrl.pathname);
+export const config = {
+  // https://nextjs.org/docs/app/building-your-application/routing/middleware#matcher
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+};
 
-        if (isMiddlewareAllowed) {
-          return true;
-        } else {
-          return token;
-        }
-      },
-    },
-    pages: {
-      signIn: '/login',
-      error: '/error',
-      signOut: '/',
-    },
-  },
-);
-
-export const config = { matcher: ['/:path*'] };
+export default NextAuth(authConfig).auth;

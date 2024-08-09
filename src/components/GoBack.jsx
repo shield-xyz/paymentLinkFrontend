@@ -2,17 +2,17 @@
 
 import { useRouter } from 'next/navigation';
 
+import { cn } from '@/lib/utils';
+
 import { Icons } from './Icons';
 import { Button } from './ui/button';
 
-import { cn } from '@/lib/utils';
-
-export const GoBack = ({ className, children, ...props }) => {
+export const GoBack = ({ className, children, onClick, ...props }) => {
   const router = useRouter();
   const { back } = router;
   return (
     <Button
-      onClick={() => back && back()}
+      onClick={() => (onClick ? onClick() : back ? back() : null)}
       className={cn('flex items-center gap-2', className)}
       variant="ghost"
       type="button"

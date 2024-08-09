@@ -1,6 +1,8 @@
 import Container from '@/components/ui/container';
 import { BankForm, SettingsNav, getBankingData } from '@/features/settings';
 
+export const revalidate = 0;
+
 export default async function Page() {
   const bankingData = await getBankingData();
 

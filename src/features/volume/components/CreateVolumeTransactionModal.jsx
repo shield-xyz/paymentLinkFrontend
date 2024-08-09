@@ -1,9 +1,9 @@
 'use client';
 
-import { VolumeTransactionForm } from './VolumeTransactionForm';
-
 import { CustomModal } from '@/components/CustomModal';
 import { useIsClient } from '@/hooks';
+
+import { VolumeTransactionForm } from './VolumeTransactionForm';
 
 export const CreateVolumeTransactionModal = () => {
   // const router = useRouter();
@@ -21,7 +21,7 @@ export const CreateVolumeTransactionModal = () => {
       title=""
       description=""
       showCloseButton={false}
-      className="flex max-w-[95vw] flex-col items-center justify-center rounded-3xl p-6 backdrop-blur-md sm:max-w-2xl"
+      className="flex max-w-[95vw] flex-col items-center justify-center rounded-3xl backdrop-blur-md sm:max-w-2xl sm:p-10"
       withBackdrop
       onClose={() => {}}
     >

@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
+import { copyCode } from '@/features/payment-link';
+
 import { Icons } from './Icons';
 import { Button } from './ui/button';
-
-import { copyCode } from '@/features/payment-link';
 
 // copy: 'link' | 'hash'
 
@@ -16,9 +16,14 @@ export const HashLink = ({ network, hash, copy = 'hash' }) => {
   const toCopy = copy === 'link' ? link : hash;
 
   return (
-    <div className="flex items-center gap-2">
-      <Link title={hash} href={link} target="_blank">
-        <span className="flex max-w-[150px] items-center gap-1 font-light">
+    <div className="flex w-full max-w-[150px] items-center gap-2">
+      <Link
+        className="flex w-full items-center gap-2"
+        title={hash}
+        href={link}
+        target="_blank"
+      >
+        <span className="flex w-full  items-center gap-1 font-light">
           <span className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400">
             {displayHash}
           </span>
@@ -41,8 +46,8 @@ export const HashString = ({ hash, withCopy }) => {
   const displayHash = `${hash?.slice(0, 4)}...${hash?.slice(-6)}`;
 
   return (
-    <div className="flex items-center gap-2">
-      <span className="flex max-w-[150px] items-center gap-1 font-light">
+    <div className="flex w-full max-w-[150px] items-center gap-2">
+      <span className="flex w-full items-center gap-1 font-light">
         <span
           className="line-clamp-1 cursor-pointer overflow-hidden text-ellipsis break-all text-blue-400"
           onClick={() => copyCode(hash, 'Link copied to clipboard')}

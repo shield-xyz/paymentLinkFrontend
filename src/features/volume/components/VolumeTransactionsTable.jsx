@@ -84,9 +84,6 @@ const cellRenderers = {
   actions: ({ row }) => {
     return (
       <div className="flex items-center gap-2">
-        {/* <Button variant="ghost" className="px-2 py-2 font-light">
-          <Icons.edit className="h-5 text-gray-500" />
-        </Button> */}
         <Link href={`/volume/${row._id}`} scroll={false}>
           <Button variant="ghost" className="px-2 py-2 font-light">
             <Icons.edit className="h-5 text-gray-500" />
@@ -179,7 +176,7 @@ export function VolumeTransactionsTable({ transactions }) {
           className="w-full overflow-auto"
           onValueChange={handleTabChange}
         >
-          <TabsList className="mb-5 w-full min-w-fit justify-start">
+          <TabsList className="sticky left-0 mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
               <TabsTrigger value={group.value} key={group.value}>
                 {group.label}{' '}

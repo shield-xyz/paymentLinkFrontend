@@ -4,8 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useMemo, useState } from 'react';
 
-import { copyCode, getFinalPaymentLink } from '../utils';
-
 import { CustomPagination, Icons } from '@/components';
 import { Badge } from '@/components/Bage';
 import CustomTable from '@/components/CustomTable';
@@ -16,6 +14,8 @@ import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
 import { PAYMENT_STATUSES, formatAmount, formatDate } from '@/lib/utils';
+
+import { copyCode, getFinalPaymentLink } from '../utils';
 
 const headers = [
   {
@@ -210,7 +210,7 @@ export function PaymentLinksTable({ paymentLinks }) {
           className="w-full overflow-auto"
           onValueChange={handleTabChange}
         >
-          <TabsList className="mb-5 w-full min-w-fit justify-start">
+          <TabsList className="sticky left-0 mb-5 w-full min-w-fit justify-start">
             {groupCounts.map((group) => (
               <TabsTrigger value={group.value} key={group.value}>
                 {group.label}{' '}

@@ -164,7 +164,8 @@ export function WithdrawalsTable({ withdrawals, assets }) {
           className="w-full overflow-auto"
           onValueChange={handleTabChange}
         >
-          <TabsList className="mb-5 w-full min-w-fit justify-start">
+          <TabsList className="sticky left-0 mb-5 w-full min-w-fit justify-start">
+            {' '}
             {groupCounts.map((group) => (
               <TabsTrigger value={group.value} key={group.value}>
                 {group.label}{' '}

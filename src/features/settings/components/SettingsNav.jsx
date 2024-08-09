@@ -33,7 +33,8 @@ export const SettingsNav = () => {
       className="w-full overflow-auto"
       onValueChange={handleRouteChange}
     >
-      <TabsList className="mb-5 w-full min-w-fit justify-start">
+      <TabsList className="sticky left-0 mb-5 w-full min-w-fit justify-start">
+        {' '}
         {statusGroups.map((group) => (
           <TabsTrigger value={group.value} key={group.value}>
             {group.label}

@@ -103,24 +103,24 @@ export const ProfileForm = ({ session, userData }) => {
 
   const values = getValues();
 
-  async function downloadAndSetImageAsFile(imageUrl) {
-    try {
-      const imageFile = await downloadImage(imageUrl);
-
-      form.setValue('logo', [imageFile]);
-
-      const fileUrl = URL.createObjectURL(imageFile);
-      setFileUrl(fileUrl);
-    } catch (error) {
-      handleSubmissionError('', 'Error downloading or setting image');
-    }
-  }
-
   useEffect(() => {
+    async function downloadAndSetImageAsFile(imageUrl) {
+      try {
+        const imageFile = await downloadImage(imageUrl);
+
+        form.setValue('logo', [imageFile]);
+
+        const fileUrl = URL.createObjectURL(imageFile);
+        setFileUrl(fileUrl);
+      } catch (error) {
+        handleSubmissionError('', 'Error downloading or setting image');
+      }
+    }
+
     if (userData.logo) {
       downloadAndSetImageAsFile(getLogoUrl(userData.logo));
     }
-  }, []);
+  }, [userData.logo, form]);
 
   useEffect(() => {
     if (watch('logo')) {
@@ -130,7 +130,7 @@ export const ProfileForm = ({ session, userData }) => {
         setFileUrl(fileUrl);
       }
     }
-  }, [watch('logo')]);
+  }, [watch]);
 
   const onSubmit = async (data) => {
     const { email, password, user_name, logo, company } = data;
@@ -313,7 +313,7 @@ export const ProfileForm = ({ session, userData }) => {
       </div>
 
       <Button
-        className="mb-2 ml-auto mt-4 flex"
+        className="mb-2 ml-auto mt-4 flex w-24"
         isLoading={isSubmitting}
         disabled={isSubmitting}
         type="submit"

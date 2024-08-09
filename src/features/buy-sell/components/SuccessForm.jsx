@@ -5,9 +5,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect } from 'react';
 
-import { useStore } from '../store';
-
 import { Button } from '@/components/ui/button';
+
+import { useStore } from '../store';
 
 export const SuccessForm = () => {
   const { setSuccess } = useStore();

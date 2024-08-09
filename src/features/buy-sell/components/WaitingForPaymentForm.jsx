@@ -6,14 +6,14 @@ import QRCode from 'qrcode.react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { submitRampOrder } from '../actions';
-import { useStore } from '../store';
-
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Spinner from '@/components/ui/spinner';
 import { formatCryptoHash } from '@/lib/utils';
+
+import { submitRampOrder } from '../actions';
+import { useStore } from '../store';
 
 export const WaitingForPaymentForm = ({ handleChangeStep }) => {
   const { data } = useSession();

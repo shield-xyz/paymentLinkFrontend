@@ -2,11 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 
-import { copyCode } from '../../utils';
-
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
+
+import { copyCode } from '../../utils';
 
 export const StepTwo = ({ link }) => {
   const router = useRouter();
@@ -18,7 +18,7 @@ export const StepTwo = ({ link }) => {
   return (
     <Container className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-5 sm:w-[450px]">
       <h1 className="mb-4 text-center text-2xl font-semibold">
-        You're all set
+        You&apos;re all set
       </h1>
       <span className="mb-4 text-center text-sm font-light tracking-tight text-muted-foreground">
         You can start accepting payments for this product
@@ -27,7 +27,9 @@ export const StepTwo = ({ link }) => {
         <div className="flex flex-col rounded-md bg-muted p-4">
           <div className="flex items-center gap-2">
             <Icons.shareLink className="h-6 w-6" />
-            <span className="text-muted-foreground">Share payment link</span>
+            <span className="text-muted-foreground">
+              Share payment link&apos;s
+            </span>
           </div>
           <div
             className="group mt-4 flex h-12 w-full items-center rounded-md border bg-background px-4"

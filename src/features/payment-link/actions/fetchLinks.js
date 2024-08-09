@@ -5,6 +5,10 @@ import { fetchWithToken } from '@/lib/utils';
 
 export async function fetchLinks(token) {
   try {
+    if (!token) {
+      throw new Error('No token provided');
+    }
+
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/linkPayments/`,
       token,

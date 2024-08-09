@@ -62,7 +62,7 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-screen flex-col">
+    <div className="flex flex-col">
       <form onSubmit={handleSubmit(onSubmit)} className="m-auto flex flex-col">
         <div className="m-auto flex w-96 max-w-[95vw] flex-col gap-2 rounded-lg border border-border p-4">
           <div className="mb-5 flex flex-col items-center">
@@ -107,23 +107,11 @@ const LoginForm = () => {
             Login
           </Button>
           <span className="my-2 text-center text-sm text-muted-foreground">
-            <Link
-              className="text-blue-400 duration-300 hover:text-blue-500"
-              href="/forgot-password"
-            >
+            <Link className="link" href="/forgot-password">
               Forgot password?
             </Link>
           </span>
         </div>
-        <span className="px-4 py-4 text-left text-sm text-muted-foreground">
-          Don&apos;t have an account?{' '}
-          <Link
-            className="text-blue-400 duration-300 hover:text-blue-500"
-            href="/register"
-          >
-            Sign up
-          </Link>
-        </span>
       </form>
     </div>
   );

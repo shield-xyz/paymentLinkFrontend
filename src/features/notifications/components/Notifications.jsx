@@ -1,8 +1,5 @@
 'use client';
 
-import { Notification } from './Notification';
-import { useNotifications } from '../hooks/useNotifications';
-
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,6 +10,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { NOTIFICATION_STATUS } from '@/lib/utils';
+
+import { Notification } from './Notification';
+import { useNotifications } from '../hooks/useNotifications';
 
 export const Notifications = ({ notifications, session }) => {
   const {
