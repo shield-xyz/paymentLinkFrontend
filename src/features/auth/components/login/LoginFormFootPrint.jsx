@@ -3,6 +3,7 @@
 import footprint from '@onefootprint/footprint-js';
 
 import { Button } from '@/components/ui/button';
+import { env } from '@/config';
 import { handleSubmissionError } from '@/lib/utils';
 
 import { onComplete } from '../../actions/onCompleteLogin';
@@ -24,7 +25,7 @@ export const LoginFormFootPrint = () => {
   const handleOpen = () => {
     const component = footprint.init({
       kind: 'auth',
-      publicKey: 'pb_test_OC1PnSJcbWNYLTCKAQpouc', // TODO: Replace with your .env
+      publicKey: env.NEXT_PUBLIC_FOOTPRINT_LOGIN_PB_KEY, // TODO: Replace with your .env
       onComplete: async (validationToken) => {
         handleLogin(validationToken);
       },
