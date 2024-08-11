@@ -1,9 +1,9 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { Icons } from './Icons';
-
 import { cn } from '@/lib/utils';
+
+import { Icons } from './Icons';
 
 const SidebarItem = ({ item, isAdmin, pathname, toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);

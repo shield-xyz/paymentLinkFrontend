@@ -1,10 +1,11 @@
+import Link from 'next/link';
+
 import { Notifications } from '@/features/notifications';
 
 import AvatarDropDown from './AvatarDropDown';
 import { Icons } from './Icons';
 import { MobileSidebar } from './MobileSidebar';
 import { Button } from './ui/button';
-
 
 const Nav = ({ session, notifications }) => {
   return (
