@@ -32,7 +32,6 @@ export const authConfig = {
   },
   callbacks: {
     async signIn({ user }) {
-      console.log('signIn CallBack: ', user);
       const { isRegistered, validationToken } = user;
       if (isRegistered) {
         return true;
@@ -41,7 +40,6 @@ export const authConfig = {
       }
     },
     authorized({ auth, request: { nextUrl } }) {
-      console.log({ auth });
       const isLoggedIn = !!auth?.user;
       const isMiddlewareAllowed = isPathAllowed(nextUrl.pathname);
       if (isMiddlewareAllowed) {
@@ -52,7 +50,6 @@ export const authConfig = {
       return false;
     },
     async jwt({ token, user, trigger, session }) {
-      console.log({ user, session, token });
       const now = Date.now();
       if (user) {
         // Initial login, setting up token details and last activity time
@@ -82,7 +79,6 @@ export const authConfig = {
       return token;
     },
     async session({ token, session }) {
-      console.log({ token, session });
       if (token) {
         session.user.id = token.id;
         session.user.email = token.email;

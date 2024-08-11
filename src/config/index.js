@@ -7,6 +7,10 @@ export const env = {
   NEXT_PUBLIC_TOKEN_USDT: process.env.NEXT_PUBLIC_TOKEN_USDT,
   NEXT_PUBLIC_ENV: process.env.NEXT_PUBLIC_ENV,
   MASTER_API_KEY: process.env.MASTER_API_KEY,
+  NEXT_PUBLIC_FOOTPRINT_KYB_PB_KEY:
+    process.env.NEXT_PUBLIC_FOOTPRINT_KYB_PB_KEY,
+  NEXT_PUBLIC_FOOTPRINT_LOGIN_PB_KEY:
+    process.env.NEXT_PUBLIC_FOOTPRINT_LOGIN_PB_KEY,
 };
 
 export const NODE_ENV = env.NEXT_PUBLIC_ENV; // 'development' or 'production'
@@ -45,6 +49,7 @@ export const SIDEBAR_PAGES = [
   {
     name: 'Admin',
     isAdmin: true,
+    icon: 'admin',
     subLinks: [
       {
         name: 'Volume',
