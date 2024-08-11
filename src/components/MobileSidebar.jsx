@@ -76,6 +76,7 @@ export const MobileSidebar = ({ session }) => {
                 item={item}
                 isAdmin={isAdmin}
                 pathname={pathname}
+                toggleSidebar={toggleSidebar}
               />
             );
           })}

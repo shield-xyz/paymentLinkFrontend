@@ -1,11 +1,11 @@
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
-import { cn } from '@/lib/utils';
-
 import { Icons } from './Icons';
 
-const SidebarItem = ({ item, isAdmin, pathname }) => {
+import { cn } from '@/lib/utils';
+
+const SidebarItem = ({ item, isAdmin, pathname, toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isMenu = item.subLinks ? true : false;
 
@@ -35,6 +35,7 @@ const SidebarItem = ({ item, isAdmin, pathname }) => {
           },
         )}
         href={item.path}
+        onClick={() => toggleSidebar && toggleSidebar()}
       >
         <Icon
           className={cn('h-5 w-5', {
@@ -83,6 +84,7 @@ const SidebarItem = ({ item, isAdmin, pathname }) => {
             const isActive = pathname === subLink.path;
             return (
               <Link
+                onClick={() => toggleSidebar && toggleSidebar()}
                 key={subIndex}
                 href={subLink.path}
                 className={cn(
