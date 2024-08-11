@@ -20,7 +20,7 @@ const Nav = ({ session, notifications }) => {
       <div className="m-auto flex h-20 w-full items-center justify-between gap-4 px-4 pr-8 lg:pl-[calc(320px+2rem)]">
         {!session?.user?.verify && (
           <Link className="hidden sm:flex" href={'/settings/verification'}>
-            <Button title="Please ver`ify to use the platform">
+            <Button title="Please verify to use the platform">
               Complete verification
             </Button>
           </Link>
