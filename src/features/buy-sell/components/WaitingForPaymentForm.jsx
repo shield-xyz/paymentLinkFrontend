@@ -99,23 +99,23 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
           <div className="text-black/30">Bank Transfer</div>
           <div className="mt-4 flex flex-col gap-2">
             <span>
-              <b>Beneficiary Name:</b> Xellar Technologies Inc.
+              <b>Beneficiary Name:</b> Bridge Ventures Inc
             </span>
             <span>
-              <b>Account Number:</b> 202415019079
+              <b>Account Number:</b> 218624789911
             </span>
             <span>
-              <b>Beneficiary Address:</b> 701 Tillery Street Unit 12, 2563,
-              Austin, TX 78702
+              <b>Beneficiary Address:</b> 21750 Hardy Oak Blvd, Ste 104 PMB
+              77950, San Antonio, TX 78258-4946
             </span>
             <span>
-              <b>Routing Number:</b> 091311229
+              <b>Routing Number:</b> 101019644
             </span>
             <span>
-              <b>Bank Name:</b> Choice Financial Group
+              <b>Bank Name:</b> Lead Bank
             </span>
             <span>
-              <b>Bank Address:</b> 4501 23rd Avenue S, Fargo, ND 58104
+              <b>Bank Address:</b> 1801 Main St, Kansas City, MO 64108
             </span>
           </div>
         </div>
