@@ -61,7 +61,12 @@ const SidebarItem = ({ item, isAdmin, pathname, toggleSidebar }) => {
         )}
         onClick={() => isMenu && setIsOpen(!isOpen)}
       >
-        <Icon className="h-5 w-5" />
+        <Icon
+          className={cn('h-5 w-5', {
+            'text-gray-500': pathname !== item.path,
+            'text-black': pathname === item.path,
+          })}
+        />
         <span>{item.name}</span>
 
         {isOpen && <Icons.chevronRight className="ml-auto rotate-90" />}
@@ -91,7 +96,14 @@ const SidebarItem = ({ item, isAdmin, pathname, toggleSidebar }) => {
                   'flex cursor-pointer items-center gap-4 rounded-xl px-5 py-3 duration-300',
                 )}
               >
-                {Icon && <Icon className="h-5 w-5" />}
+                {Icon && (
+                  <Icon
+                    className={cn('h-5 w-5', {
+                      'text-gray-500': pathname !== item.path,
+                      'text-black': isActive,
+                    })}
+                  />
+                )}
                 <span>{subLink.name}</span>
                 {isActive && <Icons.chevronRight className="ml-auto" />}
               </Link>

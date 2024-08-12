@@ -10,10 +10,6 @@ const statusGroups = [
     value: '/settings',
   },
   {
-    label: 'Verification',
-    value: '/settings/verification',
-  },
-  {
     label: 'Bank Account',
     value: '/settings/bank-account',
   },
