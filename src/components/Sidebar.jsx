@@ -2,12 +2,11 @@
 
 import { usePathname } from 'next/navigation';
 
-import { Icons } from './Icons';
-import SidebarItem from './SidebarItem';
-
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
+import { Icons } from './Icons';
+import SidebarItem from './SidebarItem';
 
 const Sidebar = ({ session }) => {
   const pathname = usePathname();

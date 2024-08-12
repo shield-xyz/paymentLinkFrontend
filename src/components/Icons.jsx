@@ -6,13 +6,15 @@ import {
   ArrowRight,
   BarChart2,
   Check,
-  ChevronDown, ChevronLeft,
+  ChevronDown,
+  ChevronLeft,
   ChevronRight,
   CreditCard,
   DollarSign,
   File,
   FileText,
-  FolderSearch, HelpCircle,
+  FolderSearch,
+  HelpCircle,
   Image,
   Laptop,
   LineChartIcon,
@@ -37,7 +39,7 @@ import {
   User,
   WalletCards,
   X,
-  ZoomIn
+  ZoomIn,
 } from 'lucide-react';
 
 export const Icons = {
