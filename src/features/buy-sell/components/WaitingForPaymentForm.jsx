@@ -83,6 +83,9 @@ export const WaitingForPaymentForm = ({ handleChangeStep }) => {
           handleChangeStep();
           reset();
         } else {
+          if (data.msg === 'unverified user') {
+            return toast.warning('Must verify your account to continue');
+          }
           toast.warning('Something went wrong. Please try again.');
         }
       })
