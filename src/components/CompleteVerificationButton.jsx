@@ -1,7 +1,8 @@
 'use client';
 
-import '@onefootprint/footprint-js/dist/footprint-js.css';
 import footprint from '@onefootprint/footprint-js';
+import '@onefootprint/footprint-js/dist/footprint-js.css';
+import { toast } from 'sonner';
 
 import { getUserAuthToken } from '@/actions/getUserAuthToken';
 import { handleSubmissionError } from '@/lib/utils';
@@ -18,6 +19,7 @@ const CompleteVerificationButton = ({ session }) => {
     // TODO: Post to Footprint server to fetch user ID and verification status
     try {
       console.log({ validationToken });
+      toast.info('Verification successful');
       // const res = await onComplete(validationToken);
       // if (res?.error) {
       //   throw new Error(res.error);
