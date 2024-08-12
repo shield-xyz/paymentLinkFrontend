@@ -6,22 +6,6 @@ import { login, loginWithFootprint } from '@/features/auth';
 import { getLogoUrl } from './utils';
 import { authConfig } from '../../auth.config';
 
-// const SignInSchema = z.object({
-//   validationToken: z.string().startsWith('vtok_').length(39),
-// });
-
-// const ValidationResponseSchema = z.object({
-//   user_auth: z.object({
-//     fp_id: z.string(),
-//     auth_events: z.array(
-//       z.object({
-//         kind: z.string(),
-//         timestamp: z.string(),
-//       }),
-//     ),
-//   }),
-// });
-
 export const { handlers, signIn, signOut, auth } = NextAuth({
   ...authConfig,
   providers: [
