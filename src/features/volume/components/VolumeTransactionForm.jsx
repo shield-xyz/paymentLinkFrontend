@@ -166,7 +166,9 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
                 name={key}
                 register={register}
                 errors={errors}
-                step="0.00000001"
+                step={key === 'shieldFee' ? '0.01' : '0.00000001'}
+                min="0"
+                isPercentage={key === 'shieldFee'}
               />
             );
           })}
