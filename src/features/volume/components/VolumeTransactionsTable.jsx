@@ -77,9 +77,7 @@ const cellRenderers = {
   shieldFee: ({ row }) => <span className="font-light">{row.shieldFee}</span>,
   symbol: ({ row }) => <span className="font-light">{row.symbol}</span>,
   blockchain: ({ row }) => <span className="font-light">{row.blockchain}</span>,
-  tx: ({ row }) => {
-    <HashString hash={row.tx} withCopy />;
-  },
+  tx: ({ row }) => <HashString hash={row.tx} withCopy />,
   walletSend: ({ row }) => <HashString hash={row.walletSend} withCopy />,
   actions: ({ row }) => {
     return (
@@ -99,6 +97,8 @@ export function VolumeTransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
+
+  console.log({ transactions });
 
   const groupCounts = useMemo(
     () =>

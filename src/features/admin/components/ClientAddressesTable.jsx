@@ -1,6 +1,6 @@
 'use client';
 
-import { CustomPagination, Icons } from '@/components';
+import { CustomPagination, Icons, WalletsModal } from '@/components';
 import CustomTable from '@/components/CustomTable';
 import { HashString } from '@/components/Hash';
 import Searchbar from '@/components/Searchbar';
@@ -13,61 +13,60 @@ import { useClientAddresses } from '../hooks';
 
 const headers = [
   {
-    key: '_id',
-    title: '_id',
-    className: 'px-2 min-w-[250px] font-light font-semibold',
-  },
-  {
     key: 'name',
     title: 'Name',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    className: 'px-2 min-w-[250px] font-semibold',
   },
   {
     key: 'wallets',
     title: 'Wallets',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    className: 'px-2 min-w-[250px] font-semibold',
   },
   {
     key: 'groupIdWpp',
     title: 'Wp Group Id',
-    className: 'px-2 min-w-[250px] font-light font-semibold',
+    className: 'px-2 min-w-[250px] font-semibold',
   },
 
   {
     key: 'actions',
     title: 'Actions',
-    className: 'px-2 min-w-[200px] font-light font-semibold',
+    className: 'px-2 min-w-[100px] text-right font-semibold',
   },
 ];
 
 const cellRenderers = {
-  _id: ({ row }) => (
-    <span className="line-clamp-1 text-ellipsis text-sm">{row._id}</span>
-  ),
   name: ({ row }) => (
     <span className="line-clamp-1 text-ellipsis text-sm">{row.name}</span>
   ),
-  wallets: ({ row }) => (
-    <span className="line-clamp-1 flex items-center gap-2 text-ellipsis text-xs">
-      <span className="w-5">{row.wallets.length}</span>
-      <HashString hash={row.wallets[0]} withCopy />
-    </span>
+  wallets: ({ row, handleSetWalletModalState }) => (
+    <div className="flex flex-col">
+      <span className="line-clamp-1 flex items-center gap-2 text-ellipsis text-xs">
+        <span className="w-5">{row.wallets.length}</span>
+        <HashString hash={row.wallets[0]} withCopy />
+      </span>
+      {row.wallets.length > 1 && (
+        <span
+          className="link ml-12 cursor-pointer text-xxs font-light"
+          onClick={() => handleSetWalletModalState(row)}
+        >
+          See more
+        </span>
+      )}
+    </div>
   ),
   groupIdWpp: ({ row }) => (
-    <span className="line-clamp-1 text-ellipsis text-sm">{row.groupIdWpp}</span>
+    <span className="line-clamp-1 text-ellipsis text-xs">{row.groupIdWpp}</span>
   ),
-  actions: ({ row, handleOpenEditModal, handleOpenInfo }) => {
+  actions: ({ row, handleOpenEditModal }) => {
     return (
-      <div className="flex items-center gap-2">
+      <div className="flex items-center justify-end gap-2">
         <Button
           variant="ghost"
           className="px-2 py-2 font-light"
           onClick={() => handleOpenEditModal(row)}
         >
           <Icons.edit className="h-5 text-gray-500" />
-        </Button>
-        <Button variant="ghost" onClick={() => handleOpenInfo(row)}>
-          <Icons.zoomIn className="h-5 text-gray-500" />
         </Button>
       </div>
     );
@@ -77,28 +76,28 @@ const cellRenderers = {
 
 export function ClientAddressesTable({ clientAddresses }) {
   const {
-    searchQuery,
-    handleSearch,
-    groupCounts,
-    statusGroups,
-    handleTabChange,
+    createClientAddress,
     currentData,
     currentPage,
+    editClientAddress,
+    groupCounts,
+    handleCloseCreateModal,
+    handleCloseEditModal,
+    handleCloseWalletModal,
+    handleOpenCreateModal,
+    handleOpenEditModal,
+    handleRowsPerPage,
+    handleSearch,
+    handleSetWalletModalState,
+    handleTabChange,
     jump,
     maxPage,
     next,
     prev,
     rowsPerPage,
-    handleRowsPerPage,
-    handleOpenEditModal,
-    handleCloseEditModal,
-    handleOpenCreateModal,
-    handleCloseCreateModal,
-    handleOpenInfo,
-    handleCloseInfo,
-    editClientAddress,
-    createClientAddress,
-    infoClientAddress,
+    searchQuery,
+    statusGroups,
+    walletsModalToState,
   } = useClientAddresses({ clientAddresses });
 
   return (
@@ -112,11 +111,11 @@ export function ClientAddressesTable({ clientAddresses }) {
       {createClientAddress && (
         <ClientAddressModal onClose={handleCloseCreateModal} />
       )}
-      {infoClientAddress && (
-        <ClientAddressModal
-          clientAddress={infoClientAddress}
-          onClose={handleCloseInfo}
-          disabled
+      {walletsModalToState && (
+        <WalletsModal
+          title={`Wallets of ${walletsModalToState.name}`}
+          wallets={walletsModalToState.wallets}
+          onClose={handleCloseWalletModal}
         />
       )}
       <Container className="flex h-full w-full flex-col px-6 py-8">
@@ -165,7 +164,8 @@ export function ClientAddressesTable({ clientAddresses }) {
                 rowKey="_id"
                 cellRenderers={cellRenderers}
                 handleOpenEditModal={handleOpenEditModal}
-                handleOpenInfo={handleOpenInfo}
+                handleSetWalletModalState={handleSetWalletModalState}
+                handleCloseWalletModal={handleCloseWalletModal}
               />
             </TabsContent>
           ))}

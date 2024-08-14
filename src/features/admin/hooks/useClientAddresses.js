@@ -15,6 +15,8 @@ export const useClientAddresses = ({ clientAddresses }) => {
   const [createClientAddress, setCreateClientAddress] = useState(null);
   const [infoClientAddress, setInfoClientAddress] = useState(null);
 
+  const [walletsModalToState, setWalletsModalToState] = useState(null);
+
   const groupCounts = useMemo(
     () =>
       statusGroups.map((group) => ({
@@ -85,29 +87,40 @@ export const useClientAddresses = ({ clientAddresses }) => {
     setInfoClientAddress(null);
   };
 
+  const handleSetWalletModalState = (clientAddress) => {
+    setWalletsModalToState(clientAddress);
+  };
+
+  const handleCloseWalletModal = () => {
+    setWalletsModalToState(null);
+  };
+
   return {
-    searchQuery,
-    handleSearch,
-    groupCounts,
-    selectedTab,
-    handleTabChange,
+    createClientAddress,
     currentData,
     currentPage,
+    editClientAddress,
+    groupCounts,
+    handleCloseCreateModal,
+    handleCloseEditModal,
+    handleCloseInfo,
+    handleCloseWalletModal,
+    handleOpenCreateModal,
+    handleOpenEditModal,
+    handleOpenInfo,
+    handleRowsPerPage,
+    handleSearch,
+    handleSetWalletModalState,
+    handleTabChange,
+    infoClientAddress,
     jump,
     maxPage,
     next,
     prev,
     rowsPerPage,
-    handleRowsPerPage,
-    handleOpenEditModal,
-    handleCloseEditModal,
-    handleOpenCreateModal,
-    handleCloseCreateModal,
-    handleOpenInfo,
-    handleCloseInfo,
-    editClientAddress,
-    createClientAddress,
-    infoClientAddress,
+    searchQuery,
+    selectedTab,
     statusGroups,
+    walletsModalToState,
   };
 };

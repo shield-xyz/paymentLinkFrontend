@@ -3,7 +3,9 @@
 import { signOut } from 'next-auth/react';
 import { useCallback, useEffect, useRef } from 'react';
 
-const MAX_INACTIVITY_MS = 300000; // 5 minutes in milliseconds
+import { env } from '@/config';
+
+const MAX_INACTIVITY_MS = env.NEXT_PUBLIC_MAX_INACTIVITY_MS || 300000; // 5 minutes in milliseconds
 
 const AutoLogoutProvider = (props) => {
   const timer = useRef(setTimeout(() => {}, 0));

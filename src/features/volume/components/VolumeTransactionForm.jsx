@@ -41,6 +41,7 @@ const selectedFieldsSchema = z.object({
   shieldFee: amountValidation('Shield Fee'),
   currencyPair: z.string().nullable(),
   blockchain: z.string().nullable(),
+  tx: z.string().nullable(),
   date: z.coerce.string().min(1, { message: 'Transaction Date is required' }),
 });
 
@@ -58,6 +59,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
       shieldFee: volumeTransactionData?.shieldFee || '',
       currencyPair: volumeTransactionData?.currencyPair || '',
       blockchain: volumeTransactionData?.blockchain || '',
+      tx: volumeTransactionData?.tx || '',
       date: volumeTransactionData?.date || '',
     },
   });
@@ -77,6 +79,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
         shieldFee: String(data.shieldFee),
         currencyPair: data.currencyPair,
         blockchain: data.blockchain,
+        tx: data.tx,
         date: data.date,
       };
 
