@@ -241,3 +241,7 @@ export const camelCaseToWords = (str) => {
     .join(' ') // Join array elements into a string, separated by spaces
     .replace(/^\w/, (c) => c.toUpperCase()); // Capitalize the first character of the resulting string
 };
+
+export const formatPercentage = (value) => {
+  return `${value}%`;
+};

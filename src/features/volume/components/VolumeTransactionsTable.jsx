@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePagination } from '@/hooks';
-import { formatDate } from '@/lib/utils';
+import { formatDate, formatPercentage } from '@/lib/utils';
 
 const headers = [
   {
@@ -27,11 +27,11 @@ const headers = [
   {
     key: 'receivedAmount',
     title: 'Received Amount',
-    className: 'px-2 min-w-[120px] font-light font-semibold',
+    className: 'px-2 min-w-[140px] font-light font-semibold',
   },
   {
     key: 'shieldFee',
-    title: 'Shield Fee',
+    title: 'Shield Fee %',
     className: 'px-2 min-w-[120px] font-light font-semibold',
   },
   {
@@ -74,7 +74,9 @@ const cellRenderers = {
   receivedAmount: ({ row }) => (
     <span className="font-light">{row.receivedAmount}</span>
   ),
-  shieldFee: ({ row }) => <span className="font-light">{row.shieldFee}</span>,
+  shieldFee: ({ row }) => (
+    <span className="font-light">{formatPercentage(row.shieldFee)}</span>
+  ),
   symbol: ({ row }) => <span className="font-light">{row.symbol}</span>,
   blockchain: ({ row }) => <span className="font-light">{row.blockchain}</span>,
   tx: ({ row }) => <HashString hash={row.tx} withCopy />,
@@ -97,8 +99,6 @@ export function VolumeTransactionsTable({ transactions }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
-
-  console.log({ transactions });
 
   const groupCounts = useMemo(
     () =>
