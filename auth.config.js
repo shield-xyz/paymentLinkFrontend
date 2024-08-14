@@ -28,7 +28,7 @@ export const authConfig = {
   },
   secret: env.NEXTAUTH_SECRET,
   session: {
-    maxAge: 36000,
+    maxAge: 36000, //
   },
   callbacks: {
     async signIn({ user }) {

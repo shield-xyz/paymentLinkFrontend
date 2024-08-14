@@ -9,3 +9,4 @@ export * from './StepIndicator';
 export * from './CustomPagination';
 export * from './NoData';
 export * from './Loader';
+export * from './WalletsModal';
