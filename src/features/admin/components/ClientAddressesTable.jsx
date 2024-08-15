@@ -131,7 +131,7 @@ export function ClientAddressesTable({ clientAddresses, wpGroups }) {
           <div className="flex flex-wrap items-center gap-2">
             <Searchbar
               placeholder="Search by Name, Group Id, Wallets"
-              className="w-80 border border-input bg-background"
+              className="border border-input bg-background sm:w-80"
               onChange={handleSearch}
               value={searchQuery}
             />

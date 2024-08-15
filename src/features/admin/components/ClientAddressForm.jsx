@@ -145,17 +145,8 @@ export const ClientAddressForm = ({
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between">
-        <h2 className="mb-10 mt-2 flex items-center gap-4 text-xl font-bold">
-          {disabled
-            ? 'Client Address'
-            : clientAddress
-              ? 'Edit Client Address'
-              : 'Create Client Address'}
-        </h2>
-      </div>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex max-h-[50vh] max-w-6xl grid-cols-1 flex-col gap-4 overflow-auto sm:grid sm:grid-cols-2 sm:px-4">
+        <div className="flex max-h-[50vh] max-w-6xl grid-cols-1 flex-col gap-4 overflow-auto p-2 sm:grid sm:grid-cols-2 sm:px-4">
           {Object.keys(selectedFieldsSchema.shape).map((key) => {
             const label = camelCaseToWords(key);
 
@@ -234,7 +225,7 @@ export const ClientAddressForm = ({
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select WhatsApp Group" />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className="max-h-48">
                       {wpGroups.map((group) => (
                         <SelectItem key={group.id} value={group.id}>
                           {group.name}

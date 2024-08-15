@@ -25,7 +25,17 @@ export async function getWhatsAppGroups() {
       throw new Error('Could not get WhatsApp Groups');
     }
 
-    return data.data;
+    const sortedData = data.data?.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      }
+      if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
+
+    return sortedData;
   } catch (error) {
     console.error('Could not get WhatsApp Groups', error);
     return [];

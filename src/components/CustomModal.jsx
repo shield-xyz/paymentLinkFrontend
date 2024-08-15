@@ -26,7 +26,7 @@ const CustomModal = ({
         showCloseButton={showCloseButton}
       >
         {(title || description) && (
-          <DialogHeader>
+          <DialogHeader className="w-full">
             <DialogTitle>{title}</DialogTitle>
             <DialogDescription>{description}</DialogDescription>
           </DialogHeader>
