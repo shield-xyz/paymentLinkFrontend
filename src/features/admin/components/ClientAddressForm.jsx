@@ -11,7 +11,15 @@ import { FormInput } from '@/components/Form';
 import { GoBack } from '@/components/GoBack';
 import { Button } from '@/components/ui/button';
 import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
   camelCaseToWords,
+  cn,
   handleSubmissionError,
   handleSubmissionSuccess,
 } from '@/lib/utils';
@@ -42,7 +50,12 @@ const selectedFieldsSchema = z.object({
     .optional(),
 });
 
-export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
+export const ClientAddressForm = ({
+  clientAddress,
+  onClose,
+  disabled,
+  wpGroups,
+}) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const isEdit = !!clientAddress;
@@ -126,7 +139,9 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
 
   watch('wallets');
 
-  console.log({ fields });
+  const handleGroupIdWpp = (groupIdWpp) => {
+    setValue('groupIdWpp', groupIdWpp);
+  };
 
   return (
     <div className="w-full">
@@ -202,6 +217,31 @@ export const ClientAddressForm = ({ clientAddress, onClose, disabled }) => {
                       Add Wallet
                     </Button>
                   </div>
+                </div>
+              );
+            }
+
+            if (key === 'groupIdWpp') {
+              return (
+                <div key={key}>
+                  <label className={cn('block text-sm')} htmlFor={'groupIdWpp'}>
+                    WhatsApp Group
+                  </label>
+                  <Select
+                    onValueChange={handleGroupIdWpp}
+                    value={watch('groupIdWpp')}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select WhatsApp Group" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {wpGroups.map((group) => (
+                        <SelectItem key={group.id} value={group.id}>
+                          {group.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               );
             }

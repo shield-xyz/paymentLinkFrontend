@@ -4,7 +4,12 @@ import { CustomModal } from '@/components/CustomModal';
 
 import { ClientAddressForm } from './ClientAddressForm';
 
-export const ClientAddressModal = ({ clientAddress, disabled, onClose }) => {
+export const ClientAddressModal = ({
+  clientAddress,
+  disabled,
+  onClose,
+  wpGroups,
+}) => {
   return (
     <CustomModal
       open={true}
@@ -19,6 +24,7 @@ export const ClientAddressModal = ({ clientAddress, disabled, onClose }) => {
         clientAddress={clientAddress}
         onClose={onClose}
         disabled={disabled}
+        wpGroups={wpGroups}
       />
     </CustomModal>
   );
