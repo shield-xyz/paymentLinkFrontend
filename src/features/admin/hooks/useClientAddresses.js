@@ -6,7 +6,7 @@ import { usePagination } from '@/hooks';
 
 const statusGroups = [{ label: 'All', value: 'all', filter: () => true }];
 
-export const useClientAddresses = ({ clientAddresses }) => {
+export const useClientAddresses = ({ clientAddresses, wpGroups }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filteredData, setFilteredData] = useState(clientAddresses);
   const [selectedTab, setSelectedTab] = useState('all');
@@ -41,11 +41,18 @@ export const useClientAddresses = ({ clientAddresses }) => {
     const filterData = () => {
       const filteredLinks = clientAddresses.filter((cA) => {
         const matchesTab = selectedTab === 'all' || cA.status === selectedTab;
+
         if (!searchQuery && matchesTab) return true;
         const lowercasedQuery = searchQuery.toLowerCase();
+
         return (
           (matchesTab && cA.name?.toLowerCase().includes(lowercasedQuery)) ||
           cA.groupIdWpp?.toLowerCase().includes(lowercasedQuery) ||
+          (cA.groupIdWpp &&
+            wpGroups
+              ?.find((wpGroup) => wpGroup?.id === cA.groupIdWpp)
+              ?.name?.toLowerCase()
+              .includes(lowercasedQuery)) ||
           JSON.stringify(cA.wallets).toLowerCase().includes(lowercasedQuery)
         );
       });
@@ -53,7 +60,7 @@ export const useClientAddresses = ({ clientAddresses }) => {
     };
 
     filterData();
-  }, [clientAddresses, searchQuery, selectedTab]);
+  }, [clientAddresses, searchQuery, selectedTab, wpGroups]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);

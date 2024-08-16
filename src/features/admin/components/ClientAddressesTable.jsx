@@ -101,7 +101,7 @@ export function ClientAddressesTable({ clientAddresses, wpGroups }) {
     searchQuery,
     statusGroups,
     walletsModalToState,
-  } = useClientAddresses({ clientAddresses });
+  } = useClientAddresses({ clientAddresses, wpGroups });
 
   return (
     <div className="flex h-full flex-col gap-2">
