@@ -92,7 +92,7 @@ export const BuySellForm2 = () => {
         <div className="min-w-[500px] rounded-2xl border">
           <div className="flex justify-between pt-2">
             <Tabs
-              defaultValue="all"
+              defaultValue="Buy"
               className="left-0 w-full overflow-auto"
               onValueChange={() => null}
             >
