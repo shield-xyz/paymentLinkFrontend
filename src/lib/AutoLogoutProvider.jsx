@@ -5,7 +5,9 @@ import { useCallback, useEffect, useRef } from 'react';
 
 import { env } from '@/config';
 
-const MAX_INACTIVITY_MS = env.NEXT_PUBLIC_MAX_INACTIVITY_MS || 300000; // 5 minutes in milliseconds
+// Change this before pushing changes
+
+const MAX_INACTIVITY_MS = env.NEXT_PUBLIC_MAX_INACTIVITY_MS || 3000000000000; // 5 minutes in milliseconds
 
 const AutoLogoutProvider = (props) => {
   const timer = useRef(setTimeout(() => {}, 0));

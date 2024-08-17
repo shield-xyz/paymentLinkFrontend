@@ -17,7 +17,7 @@ import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
 import { useStore } from '../store';
 
-export const BuySellFrom = () => {
+export const BuySellForm = () => {
   const [step, setStep] = useState(0);
 
   const { success, side, setNetwork, setAsset, selectedNetwork } = useStore();
