@@ -25,7 +25,7 @@ import { SetBankAccount } from './SetBankAccount';
 import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
 import { useStore } from '../store';
-import { ToggleGroupDemo } from '@/components/ui/toggle-group';
+import { ToggleGroupRoot, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 export const BuySellForm2 = () => {
   const [step, setStep] = useState(0);
@@ -122,15 +122,26 @@ export const BuySellForm2 = () => {
                     $100
                   </div>
 
-                  <ToggleGroupDemo classNames="mb-4" />
 
-                  <div className="grid grid-cols-5 rounded-full border text-center">
-                    <div className="border-r p-2">$50</div>
-                    <div className="border-r p-2">$100</div>
-                    <div className="border-r p-2">$250</div>
-                    <div className="border-r p-2">$500</div>
-                    <div className="p-2">$1k</div>
-                  </div>
+                  <ToggleGroupRoot
+                    classNames="my-4"
+                  >
+                    <ToggleGroupItem className="text-center py-2 border-r" value="50" aria-label="Left aligned">
+                      $50
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center border-r" value="100" aria-label="Center aligned">
+                      $100 
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center border-r" value="250" aria-label="Right aligned">
+                      $250
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center border-r" value="500" aria-label="Left aligned">
+                      $500
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center" value="1000" aria-label="Center aligned">
+                      $1k
+                    </ToggleGroupItem>
+                  </ToggleGroupRoot>
                   <div className="mt-4">
                     <Select onValueChange={() => null} defaultValue="USD">
                       <SelectTrigger className="w-full rounded-xl py-10">
