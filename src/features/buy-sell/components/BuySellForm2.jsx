@@ -1,11 +1,21 @@
 /* eslint-disable react/jsx-key */
 'use client';
 
+import { FileSliders, Info, Waves } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import { getAssets } from '@/actions';
 import { LogoIcon } from '@/assets';
+import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getNetworks } from '@/features/payment-link';
 import { cn } from '@/lib/utils';
 
@@ -15,16 +25,7 @@ import { SetBankAccount } from './SetBankAccount';
 import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
 import { useStore } from '../store';
-import { FileSliders, Info, Waves } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { ToggleGroupRoot, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 export const BuySellForm2 = () => {
   const [step, setStep] = useState(0);
@@ -96,10 +97,14 @@ export const BuySellForm2 = () => {
               className="left-0 w-full overflow-auto"
               onValueChange={() => null}
             >
-              <TabsList className="sticky left-0 mb-5 px-6 w-full min-w-fit justify-start items-center">
-                <TabsTrigger className="p-2" value="Buy">Buy</TabsTrigger>
-                <TabsTrigger className="p-2" value="Sell">Sell</TabsTrigger>
-                <FileSliders className='ml-auto text-gray-400 w-4' />
+              <TabsList className="sticky left-0 mb-5 w-full min-w-fit items-center justify-start px-6">
+                <TabsTrigger className="p-2" value="Buy">
+                  Buy
+                </TabsTrigger>
+                <TabsTrigger className="p-2" value="Sell">
+                  Sell
+                </TabsTrigger>
+                <FileSliders className="ml-auto w-4 text-gray-400" />
               </TabsList>
               <TabsContent className="w-full" value="Buy" s>
                 <div className="flex flex-col p-8">
@@ -116,13 +121,27 @@ export const BuySellForm2 = () => {
                   <div className="my-8 text-center text-7xl font-extrabold">
                     $100
                   </div>
-                  <div className="grid grid-cols-5 rounded-full border text-center">
-                    <div className="border-r p-2">$50</div>
-                    <div className="border-r p-2">$100</div>
-                    <div className="border-r p-2">$250</div>
-                    <div className="border-r p-2">$500</div>
-                    <div className="p-2">$1k</div>
-                  </div>
+
+
+                  <ToggleGroupRoot
+                    classNames="my-4"
+                  >
+                    <ToggleGroupItem className="text-center py-2 border-r" value="50" aria-label="Left aligned">
+                      $50
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center border-r" value="100" aria-label="Center aligned">
+                      $100 
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center border-r" value="250" aria-label="Right aligned">
+                      $250
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center border-r" value="500" aria-label="Left aligned">
+                      $500
+                    </ToggleGroupItem>
+                    <ToggleGroupItem className="text-center" value="1000" aria-label="Center aligned">
+                      $1k
+                    </ToggleGroupItem>
+                  </ToggleGroupRoot>
                   <div className="mt-4">
                     <Select onValueChange={() => null} defaultValue="USD">
                       <SelectTrigger className="w-full rounded-xl py-10">
@@ -140,7 +159,7 @@ export const BuySellForm2 = () => {
                       </SelectTrigger>
                       <SelectContent className="max-h-48">
                         <SelectItem value={'USD'}>
-                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3">
                             <img src="/images/Tether2.png" alt="..." />
                             <div>
                               <div className="text-start text-xl font-bold">
@@ -156,21 +175,21 @@ export const BuySellForm2 = () => {
                   <div className="my-4 w-auto self-center rounded-full bg-slate-100 px-4 py-1">
                     New quotes in <span className="font-semibold">0:18</span>
                   </div>
-                  <div className="rounded-lg border-2 p-4 border-blue-300">
+                  <div className="rounded-lg border-2 border-blue-300 p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2">
                         <div>Paypal</div>
-                        <Info className='text-gray-400 w-4' />
+                        <Info className="w-4 text-gray-400" />
                       </div>
                       <div className="text-end">
                         <div className="flex items-center gap-2 font-bold">
                           <Waves />
                           <div>100 USDT</div>
                         </div>
-                        <div className='text-gray-500'>100 USD</div>
+                        <div className="text-gray-500">100 USD</div>
                       </div>
                     </div>
-                    <Button className="w-full rounded-full mt-4">
+                    <Button className="mt-4 w-full rounded-full">
                       Continue with PayPal
                     </Button>
                   </div>
@@ -196,7 +215,11 @@ export const BuySellForm2 = () => {
                       <SelectTrigger className="w-full rounded-xl py-10">
                         <SelectValue placeholder="USD">
                           <div className="flex items-center gap-3">
-                            <img className='w-10' src="/images/ethereum2.png" alt="..." />
+                            <img
+                              className="w-10"
+                              src="/images/ethereum2.png"
+                              alt="..."
+                            />
                             <div>
                               <div className="text-start text-xl font-bold">
                                 Ethereum
@@ -208,7 +231,7 @@ export const BuySellForm2 = () => {
                       </SelectTrigger>
                       <SelectContent className="max-h-48">
                         <SelectItem value={'USD'}>
-                        <div className="flex items-center gap-3">
+                          <div className="flex items-center gap-3">
                             <img src="/images/Tether2.png" alt="..." />
                             <div>
                               <div className="text-start text-xl font-bold">
@@ -222,9 +245,10 @@ export const BuySellForm2 = () => {
                     </Select>
                   </div>
                   <div className="my-4 w-auto self-center rounded-full bg-slate-100 px-4 py-1">
-                    New quotes in <span className="font-semibold text-red-400">0:07</span>
+                    New quotes in{' '}
+                    <span className="font-semibold text-red-400">0:07</span>
                   </div>
-                  <div className="rounded-lg border-2 p-4 border-blue-300">
+                  <div className="rounded-lg border-2 border-blue-300 p-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-gray-500">
                         0.05 ETH
@@ -236,15 +260,13 @@ export const BuySellForm2 = () => {
                         </div>
                       </div>
                     </div>
-                    <Button className="w-full rounded-full mt-4">
+                    <Button className="mt-4 w-full rounded-full">
                       Continue with the Transfer
                     </Button>
                   </div>
                 </div>
               </TabsContent>
-              
             </Tabs>
-            
           </div>
         </div>
       </div>
