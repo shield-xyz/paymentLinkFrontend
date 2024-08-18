@@ -82,7 +82,7 @@
 
 @layer components {
   .link {
-    @apply text-blue-500 text-sm tracking-tight hover:underline duration-100 underline-offset-2
+    @apply text-sm tracking-tight text-blue-500 underline-offset-2 duration-100 hover:underline;
   }
 }
 
