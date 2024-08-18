@@ -16,6 +16,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ToggleGroupItem, ToggleGroupRoot } from '@/components/ui/toggle-group';
 import { getNetworks } from '@/features/payment-link';
 import { cn } from '@/lib/utils';
 
@@ -25,7 +26,6 @@ import { SetBankAccount } from './SetBankAccount';
 import { SuccessForm } from './SuccessForm';
 import { WaitingForPaymentForm } from './WaitingForPaymentForm';
 import { useStore } from '../store';
-import { ToggleGroupRoot, ToggleGroupItem } from '@/components/ui/toggle-group';
 
 export const BuySellForm2 = () => {
   const [step, setStep] = useState(0);
@@ -122,23 +122,40 @@ export const BuySellForm2 = () => {
                     $100
                   </div>
 
-
-                  <ToggleGroupRoot
-                    classNames="my-4"
-                  >
-                    <ToggleGroupItem className="text-center py-2 border-r" value="50" aria-label="Left aligned">
+                  <ToggleGroupRoot classNames="my-4">
+                    <ToggleGroupItem
+                      className="border-r py-2 text-center"
+                      value="50"
+                      aria-label="Left aligned"
+                    >
                       $50
                     </ToggleGroupItem>
-                    <ToggleGroupItem className="text-center border-r" value="100" aria-label="Center aligned">
-                      $100 
+                    <ToggleGroupItem
+                      className="border-r text-center"
+                      value="100"
+                      aria-label="Center aligned"
+                    >
+                      $100
                     </ToggleGroupItem>
-                    <ToggleGroupItem className="text-center border-r" value="250" aria-label="Right aligned">
+                    <ToggleGroupItem
+                      className="border-r text-center"
+                      value="250"
+                      aria-label="Right aligned"
+                    >
                       $250
                     </ToggleGroupItem>
-                    <ToggleGroupItem className="text-center border-r" value="500" aria-label="Left aligned">
+                    <ToggleGroupItem
+                      className="border-r text-center"
+                      value="500"
+                      aria-label="Left aligned"
+                    >
                       $500
                     </ToggleGroupItem>
-                    <ToggleGroupItem className="text-center" value="1000" aria-label="Center aligned">
+                    <ToggleGroupItem
+                      className="text-center"
+                      value="1000"
+                      aria-label="Center aligned"
+                    >
                       $1k
                     </ToggleGroupItem>
                   </ToggleGroupRoot>
