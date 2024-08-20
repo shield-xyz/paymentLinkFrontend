@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-key */
 'use client';
-
 import { FileSliders, Info, Waves } from 'lucide-react';
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
+// import { getAssets } from '@/actions';
+import Image from 'next/image';
 
-import { getAssets } from '@/actions';
 import { LogoIcon } from '@/assets';
 import { Button } from '@/components/ui/button';
 import Container from '@/components/ui/container';
@@ -17,64 +17,64 @@ import {
 } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ToggleGroupItem, ToggleGroupRoot } from '@/components/ui/toggle-group';
-import { getNetworks } from '@/features/payment-link';
+// import { getNetworks } from '@/features/payment-link';
 import { cn } from '@/lib/utils';
 
-import { BuyOrSellForm } from './BuyOrSellForm';
-import { SelectTokenForm } from './SelectTokenForm';
-import { SetBankAccount } from './SetBankAccount';
-import { SuccessForm } from './SuccessForm';
-import { WaitingForPaymentForm } from './WaitingForPaymentForm';
-import { useStore } from '../store';
+// import { BuyOrSellForm } from './BuyOrSellForm';
+// import { SelectTokenForm } from './SelectTokenForm';
+// import { SetBankAccount } from './SetBankAccount';
+// import { SuccessForm } from './SuccessForm';
+// import { WaitingForPaymentForm } from './WaitingForPaymentForm';
+// import { useStore } from '../store';
 
 export const BuySellForm2 = () => {
-  const [step, setStep] = useState(0);
+  // const [step, setStep] = useState(0);
 
-  const { success, side, setNetwork, setAsset, selectedNetwork } = useStore();
+  // const { success, side, setNetwork, setAsset, selectedNetwork } = useStore();
 
-  const [networks, setNetworks] = useState([]);
-  const [assets, setAssets] = useState([]);
+  // const [networks, setNetworks] = useState([]);
+  // const [assets, setAssets] = useState([]);
 
-  useEffect(() => {
-    getNetworks().then((networks) => {
-      setNetworks(networks);
-      setNetwork(networks.find((network) => network.networkId === 'tron'));
-    });
-    getAssets().then(setAssets);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // useEffect(() => {
+  //   getNetworks().then((networks) => {
+  //     setNetworks(networks);
+  //     setNetwork(networks.find((network) => network.networkId === 'tron'));
+  //   });
+  //   getAssets().then(setAssets);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  useEffect(() => {
-    if (!selectedNetwork) return;
-    setAsset(
-      assets.find((asset) => asset.networkId === selectedNetwork.networkId),
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedNetwork]);
+  // useEffect(() => {
+  //   if (!selectedNetwork) return;
+  //   setAsset(
+  //     assets.find((asset) => asset.networkId === selectedNetwork.networkId),
+  //   );
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [selectedNetwork]);
 
-  const LISTS = [
-    'Buy or Sell',
-    'Select token',
-    'Set bank account',
-    'Waiting for payment',
-    'Success',
-  ];
+  // const LISTS = [
+  //   'Buy or Sell',
+  //   'Select token',
+  //   'Set bank account',
+  //   'Waiting for payment',
+  //   'Success',
+  // ];
 
-  const handleChangeStep = () => {
-    setStep((prev) => prev + 1);
-  };
+  // const handleChangeStep = () => {
+  //   setStep((prev) => prev + 1);
+  // };
 
-  const STEPS = [
-    <BuyOrSellForm handleChangeStep={handleChangeStep} />,
-    <SelectTokenForm
-      handleChangeStep={handleChangeStep}
-      networks={networks}
-      assets={assets}
-    />,
-    <SetBankAccount handleChangeStep={handleChangeStep} />,
-    <WaitingForPaymentForm handleChangeStep={handleChangeStep} />,
-    <SuccessForm handleChangeStep={handleChangeStep} />,
-  ];
+  // const STEPS = [
+  //   <BuyOrSellForm handleChangeStep={handleChangeStep} />,
+  //   <SelectTokenForm
+  //     handleChangeStep={handleChangeStep}
+  //     networks={networks}
+  //     assets={assets}
+  //   />,
+  //   <SetBankAccount handleChangeStep={handleChangeStep} />,
+  //   <WaitingForPaymentForm handleChangeStep={handleChangeStep} />,
+  //   <SuccessForm handleChangeStep={handleChangeStep} />,
+  // ];
 
   return (
     <Container className="min-h-screen pt-12">
@@ -164,7 +164,12 @@ export const BuySellForm2 = () => {
                       <SelectTrigger className="w-full rounded-xl py-10">
                         <SelectValue placeholder="USD">
                           <div className="flex items-center gap-3">
-                            <img src="/images/Tether2.png" alt="..." />
+                            <Image
+                              width={50}
+                              height={50}
+                              src="/images/Tether2.png"
+                              alt="..."
+                            />
                             <div>
                               <div className="text-start text-xl font-bold">
                                 Tether USD
@@ -177,7 +182,12 @@ export const BuySellForm2 = () => {
                       <SelectContent className="max-h-48">
                         <SelectItem value={'USD'}>
                           <div className="flex items-center gap-3">
-                            <img src="/images/Tether2.png" alt="..." />
+                            <Image
+                              width={50}
+                              height={50}
+                              src="/images/Tether2.png"
+                              alt="..."
+                            />
                             <div>
                               <div className="text-start text-xl font-bold">
                                 Tether USD
@@ -232,7 +242,9 @@ export const BuySellForm2 = () => {
                       <SelectTrigger className="w-full rounded-xl py-10">
                         <SelectValue placeholder="USD">
                           <div className="flex items-center gap-3">
-                            <img
+                            <Image
+                              width={50}
+                              height={50}
                               className="w-10"
                               src="/images/ethereum2.png"
                               alt="..."
@@ -249,7 +261,12 @@ export const BuySellForm2 = () => {
                       <SelectContent className="max-h-48">
                         <SelectItem value={'USD'}>
                           <div className="flex items-center gap-3">
-                            <img src="/images/Tether2.png" alt="..." />
+                            <Image
+                              width={50}
+                              height={50}
+                              src="/images/Tether2.png"
+                              alt="..."
+                            />
                             <div>
                               <div className="text-start text-xl font-bold">
                                 Tether USD
