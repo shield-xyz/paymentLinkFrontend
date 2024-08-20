@@ -38,10 +38,10 @@ export const BuyOrSellForm = () => {
                   Sell
                 </TabsTrigger>
               </TabsList>
-              <TabsContent className="w-full" value="Buy" s>
+              <TabsContent className="w-full" value="Buy">
                 <BuyForm />
               </TabsContent>
-              <TabsContent className="w-full" value="Sell" s>
+              <TabsContent className="w-full" value="Sell">
                 <SellForm />
               </TabsContent>
             </Tabs>
