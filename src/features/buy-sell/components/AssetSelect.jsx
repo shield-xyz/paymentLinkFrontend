@@ -1,3 +1,6 @@
+import Image from 'next/image';
+import { useCallback, useEffect, useState } from 'react';
+
 import { getAssets } from '@/actions';
 import {
   Select,
@@ -7,7 +10,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useEffect, useState } from 'react';
 
 const AssetSelect = ({ value, onValueChange }) => {
   const [assets, setAssets] = useState([]);
@@ -16,10 +18,15 @@ const AssetSelect = ({ value, onValueChange }) => {
     getAssets().then(setAssets);
   }, []);
 
-  useEffect(() => {
-    if (!value)
+  const handleValueChange = useCallback(() => {
+    if (!value) {
       onValueChange(assets.find((asset) => asset.assetId === 'usdt-tron'));
-  }, [value, assets]);
+    }
+  }, [value, assets, onValueChange]);
+
+  useEffect(() => {
+    handleValueChange();
+  }, [handleValueChange]);
 
   if (!assets.length || !value)
     return <Skeleton className="h-[100px] w-[420px]" />;
@@ -34,7 +41,7 @@ const AssetSelect = ({ value, onValueChange }) => {
       <SelectTrigger className="w-full rounded-xl py-10">
         <SelectValue>
           <div className="flex items-center gap-3">
-            <img src={value.logo} alt={value.name} height={40} width={40} />
+            <Image src={value.logo} alt={value.name} height={40} width={40} />
             <div>
               <div className="text-start text-xl font-bold">{value.name}</div>
               <div className="text-start">
@@ -49,7 +56,7 @@ const AssetSelect = ({ value, onValueChange }) => {
         {assets.map((a) => (
           <SelectItem key={a._id} value={a._id}>
             <div className="flex items-center gap-4">
-              <img src={a.logo} alt={a.name} height={40} width={40} />
+              <Image src={a.logo} alt={a.name} height={40} width={40} />
               <div>
                 <div className="text-start text-xl font-bold">{a.name}</div>
                 <div>

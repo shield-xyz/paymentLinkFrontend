@@ -1,3 +1,6 @@
+import { Info } from 'lucide-react';
+import { useEffect, useState } from 'react';
+
 import { Button } from '@/components/ui/button';
 import {
   Select,
@@ -8,8 +11,7 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { env } from '@/config';
-import { Info } from 'lucide-react';
-import { useEffect, useState } from 'react';
+
 import { AssetSelect } from './AssetSelect';
 
 const BuyForm = () => {
