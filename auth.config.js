@@ -10,6 +10,7 @@ const allowedPaths = [
   '/register',
   '/reset-password/**',
   '/verify',
+  '/verify/**',
 ];
 
 function isPathAllowed(pathname) {

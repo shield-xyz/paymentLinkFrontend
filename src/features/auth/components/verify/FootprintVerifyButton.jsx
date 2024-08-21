@@ -2,21 +2,19 @@
 
 import footprint from '@onefootprint/footprint-js';
 import '@onefootprint/footprint-js/dist/footprint-js.css';
+import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { handleSubmissionError } from '@/lib/utils';
 
 const FootprintVerifyButton = ({ text, type }) => {
-  const handleComplete = async (validationToken) => {
+  const router = useRouter();
+
+  const handleComplete = async () => {
     try {
-      console.log({ validationToken });
-      toast.info('Verification successful');
-      // const res = await onComplete(validationToken);
-      // if (res?.error) {
-      //   throw new Error(res.error);
-      // }
-      // toast.info('To be implemented');
+      toast.info('Verification success');
+      router.push('/verify/success');
     } catch (error) {
       handleSubmissionError(error);
     }
@@ -44,8 +42,8 @@ const FootprintVerifyButton = ({ text, type }) => {
       const component = footprint.init({
         kind: 'verify',
         publicKey,
-        onComplete: (validationToken) => {
-          handleComplete(validationToken);
+        onComplete: () => {
+          handleComplete();
         },
       });
       component.render();
