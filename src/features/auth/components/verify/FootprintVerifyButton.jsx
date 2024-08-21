@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
-import { handleSubmissionError } from '@/lib/utils';
+import { cn, handleSubmissionError } from '@/lib/utils';
 
 const FootprintVerifyButton = ({ text, type }) => {
   const router = useRouter();
@@ -53,7 +53,7 @@ const FootprintVerifyButton = ({ text, type }) => {
   };
 
   return (
-    <Button onClick={handleOpen} title="Please verify">
+    <Button onClick={handleOpen} title="Please verify" className={cn('w-full')}>
       {text}
     </Button>
   );

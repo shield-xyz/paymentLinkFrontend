@@ -7,7 +7,7 @@ export default async function Page() {
         <div className="mb-8 flex flex-col items-center justify-center gap-4">
           <Icons.logo />
           <h1 className="text-center text-4xl font-bold">
-            Verification Success
+            Verification Submitted
           </h1>
         </div>
       </div>
