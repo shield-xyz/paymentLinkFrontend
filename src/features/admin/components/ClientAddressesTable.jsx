@@ -55,9 +55,12 @@ const cellRenderers = {
       )}
     </div>
   ),
-  groupIdWpp: ({ row }) => (
-    <span className="line-clamp-1 text-ellipsis text-xs">{row.groupIdWpp}</span>
-  ),
+  groupIdWpp: ({ row, wpGroups }) => {
+    const group = wpGroups.find((group) => group.id === row.groupIdWpp);
+    return (
+      <span className="line-clamp-1 text-ellipsis text-xs">{group?.name}</span>
+    );
+  },
   actions: ({ row, handleOpenEditModal }) => {
     return (
       <div className="flex items-center justify-end gap-2">
@@ -74,7 +77,7 @@ const cellRenderers = {
   // Add or modify renderers as necessary
 };
 
-export function ClientAddressesTable({ clientAddresses }) {
+export function ClientAddressesTable({ clientAddresses, wpGroups }) {
   const {
     createClientAddress,
     currentData,
@@ -98,7 +101,7 @@ export function ClientAddressesTable({ clientAddresses }) {
     searchQuery,
     statusGroups,
     walletsModalToState,
-  } = useClientAddresses({ clientAddresses });
+  } = useClientAddresses({ clientAddresses, wpGroups });
 
   return (
     <div className="flex h-full flex-col gap-2">
@@ -106,10 +109,14 @@ export function ClientAddressesTable({ clientAddresses }) {
         <ClientAddressModal
           clientAddress={editClientAddress}
           onClose={handleCloseEditModal}
+          wpGroups={wpGroups}
         />
       )}
       {createClientAddress && (
-        <ClientAddressModal onClose={handleCloseCreateModal} />
+        <ClientAddressModal
+          onClose={handleCloseCreateModal}
+          wpGroups={wpGroups}
+        />
       )}
       {walletsModalToState && (
         <WalletsModal
@@ -124,7 +131,7 @@ export function ClientAddressesTable({ clientAddresses }) {
           <div className="flex flex-wrap items-center gap-2">
             <Searchbar
               placeholder="Search by Name, Group Id, Wallets"
-              className="w-80 border border-input bg-background"
+              className="border border-input bg-background sm:w-80"
               onChange={handleSearch}
               value={searchQuery}
             />
@@ -166,6 +173,7 @@ export function ClientAddressesTable({ clientAddresses }) {
                 handleOpenEditModal={handleOpenEditModal}
                 handleSetWalletModalState={handleSetWalletModalState}
                 handleCloseWalletModal={handleCloseWalletModal}
+                wpGroups={wpGroups}
               />
             </TabsContent>
           ))}

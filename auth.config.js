@@ -3,12 +3,14 @@ import { getLogoUrl } from '@/lib/utils';
 
 const allowedPaths = [
   '/forgot-password',
+  '/getshield/volume',
   '/login',
   '/login/**',
   '/paylink',
   '/register',
   '/reset-password/**',
-  '/getshield/volume',
+  '/verify',
+  '/verify/**',
 ];
 
 function isPathAllowed(pathname) {

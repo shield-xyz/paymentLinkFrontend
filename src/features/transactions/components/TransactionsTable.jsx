@@ -83,15 +83,6 @@ export function TransactionsTable({ transactions }) {
   const [filteredData, setFilteredData] = useState(transactions);
   const [selectedTab, setSelectedTab] = useState('all');
 
-  // const assetsByAssetId = useMemo(
-  //   () =>
-  //     Object.values(assets).reduce((acc, asset) => {
-  //       acc[asset._id] = asset;
-  //       return acc;
-  //     }, {}),
-  //   [assets],
-  // );
-
   const groupCounts = useMemo(
     () =>
       statusGroups.map((group) => ({
