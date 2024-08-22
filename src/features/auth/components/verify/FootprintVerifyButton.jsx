@@ -3,25 +3,33 @@
 import footprint from '@onefootprint/footprint-js';
 import '@onefootprint/footprint-js/dist/footprint-js.css';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { toast } from 'sonner';
 
 import { Button } from '@/components/ui/button';
 import { cn, handleSubmissionError } from '@/lib/utils';
 
+import { postVerificationSubmittedConfirmation } from '../../actions/postVerificationSubmittedConfirmation';
+
 const FootprintVerifyButton = ({ text, type }) => {
   const router = useRouter();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleComplete = async () => {
+  const handleComplete = async ({ validationToken, KYC }) => {
     try {
       toast.info('Verification success');
+      await postVerificationSubmittedConfirmation({ validationToken, KYC });
       router.push('/verify/success');
     } catch (error) {
       handleSubmissionError(error);
+      setIsSubmitting(false);
     }
   };
 
   const handleOpen = async () => {
     try {
+      setIsSubmitting(true);
+
       let publicKey = '';
 
       switch (type) {
@@ -42,18 +50,25 @@ const FootprintVerifyButton = ({ text, type }) => {
       const component = footprint.init({
         kind: 'verify',
         publicKey,
-        onComplete: () => {
-          handleComplete();
+        onComplete: (validationToken) => {
+          console.log({ validationToken });
+          handleComplete({ validationToken, KYC: type !== 'KYB' });
         },
       });
       component.render();
     } catch (error) {
       handleSubmissionError(error);
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <Button onClick={handleOpen} title="Please verify" className={cn('w-full')}>
+    <Button
+      onClick={handleOpen}
+      title="Please verify"
+      className={cn('w-full')}
+      isLoading={isSubmitting}
+    >
       {text}
     </Button>
   );
