@@ -121,33 +121,35 @@ const SellForm = () => {
           <Skeleton className="my-6 h-[40px] w-[280px] self-center rounded-full" />
           <Skeleton className="h-[174px] w-[418px] rounded-lg" />
         </>
+      ) : quote && quote.error ? (
+        <div className="px-4 pt-8">
+          <h3 className="text-center text-lg font-normal">{quote.error}</h3>
+        </div>
       ) : (
-        quote && (
-          <>
-            <div className="my-6 w-auto self-center rounded-full bg-slate-100 px-4 py-1">
-              New quote in <span className="font-semibold">{quoteTimeout}</span>{' '}
-              seconds
-            </div>
-            <div className="rounded-lg border-2 border-blue-300 p-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2 text-gray-500">
-                  {quote.amountIn} {quote.assetIn}
-                </div>
-                <div className="text-end">
-                  <div className="flex items-center gap-2 font-bold">
-                    <span>≈</span>
-                    <div>
-                      {quote.amountOut} {quote.assetOut}
-                    </div>
+        <>
+          <div className="my-6 w-auto self-center rounded-full bg-slate-100 px-4 py-1">
+            New quote in <span className="font-semibold">{quoteTimeout}</span>{' '}
+            seconds
+          </div>
+          <div className="rounded-lg border-2 border-blue-300 p-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2 text-gray-500">
+                {quote.amountIn} {quote.assetIn}
+              </div>
+              <div className="text-end">
+                <div className="flex items-center gap-2 font-bold">
+                  <span>≈</span>
+                  <div>
+                    {quote.amountOut} {quote.assetOut}
                   </div>
                 </div>
               </div>
-              <Button className="mt-4 w-full rounded-full">
-                Continue with the Transfer
-              </Button>
             </div>
-          </>
-        )
+            <Button className="mt-4 w-full rounded-full">
+              Continue with the Transfer
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );
