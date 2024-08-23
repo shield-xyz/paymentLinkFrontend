@@ -113,6 +113,7 @@ const BuyForm = () => {
     return createPayPalOrder(
       session.accessToken,
       quote.encoded,
+      asset,
       walletInputRef.current.value,
     );
   };
@@ -176,9 +177,9 @@ const BuyForm = () => {
               disabled={!wallet}
               quote={quote}
               createOrder={createOrder}
-              onCancel={() => window.location.reload()}
+              // onCancel={() => window.location.reload()}
               onApprove={() => setSuccess(true)}
-              onError={() => window.location.reload()}
+              // onError={() => window.location.reload()}
             />
           </div>
         </>
