@@ -1,6 +1,8 @@
 /* eslint-disable react/jsx-key */
 'use client';
 
+import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+
 import { LogoIcon } from '@/assets';
 import Container from '@/components/ui/container';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -8,6 +10,12 @@ import { cn } from '@/lib/utils';
 
 import { BuyForm } from './BuyForm';
 import { SellForm } from './SellForm';
+
+const initialOptions = {
+  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+  currency: 'USD',
+  intent: 'capture',
+};
 
 export const BuyOrSellForm = () => {
   return (
@@ -39,7 +47,9 @@ export const BuyOrSellForm = () => {
                 </TabsTrigger>
               </TabsList>
               <TabsContent className="w-full" value="Buy">
-                <BuyForm />
+                <PayPalScriptProvider options={initialOptions}>
+                  <BuyForm />
+                </PayPalScriptProvider>
               </TabsContent>
               <TabsContent className="w-full" value="Sell">
                 <SellForm />
