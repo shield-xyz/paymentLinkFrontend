@@ -13,9 +13,9 @@ import {
 import { Skeleton } from '@/components/ui/skeleton';
 import { env } from '@/config';
 
-import { createPayPalOrder } from '../actions';
 import { AssetSelect } from './AssetSelect';
 import { PayPalCard } from './PayPalCard';
+import { createPayPalOrder } from '../actions';
 
 const BuyForm = () => {
   const { data: session } = useSession();
