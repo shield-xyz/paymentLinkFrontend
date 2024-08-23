@@ -10,7 +10,6 @@ import { handleSubmissionError } from '@/lib/utils';
 import { Button } from './ui/button';
 
 const CompleteVerificationButton = ({ session }) => {
-  console.log({ session });
   const isVerified = session.user?.verify; //
 
   if (isVerified) return null;
