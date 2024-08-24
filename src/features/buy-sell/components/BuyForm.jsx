@@ -1,7 +1,3 @@
-import { ShieldCheck } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import { useCallback, useEffect, useRef, useState } from 'react';
-
 import { Input } from '@/components/ui/input';
 import {
   Select,
@@ -12,10 +8,12 @@ import {
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
 import { env } from '@/config';
-
+import { ShieldCheck } from 'lucide-react';
+import { useSession } from 'next-auth/react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPayPalOrder } from '../actions';
 import { AssetSelect } from './AssetSelect';
 import { PayPalCard } from './PayPalCard';
-import { createPayPalOrder } from '../actions';
 
 const BuyForm = () => {
   const { data: session } = useSession();
@@ -104,20 +102,6 @@ const BuyForm = () => {
     setWallet('');
   }, [asset]);
 
-  const createOrder = () => {
-    if (intervalId) {
-      clearInterval(intervalId);
-      setIntervalId(null);
-    }
-
-    return createPayPalOrder(
-      session.accessToken,
-      quote.encoded,
-      asset,
-      walletInputRef.current.value,
-    );
-  };
-
   if (success) {
     return (
       <div className="flex flex-col items-center justify-center space-y-2 py-8">
@@ -176,10 +160,23 @@ const BuyForm = () => {
             <PayPalCard
               disabled={!wallet}
               quote={quote}
-              createOrder={createOrder}
-              // onCancel={() => window.location.reload()}
+              onClick={() => {
+                if (intervalId) {
+                  clearInterval(intervalId);
+                  setIntervalId(null);
+                }
+              }}
+              createOrder={() => {
+                return createPayPalOrder(
+                  session.accessToken,
+                  quote.encoded,
+                  asset.networkId,
+                  walletInputRef.current.value,
+                );
+              }}
+              onCancel={() => window.location.reload()}
               onApprove={() => setSuccess(true)}
-              // onError={() => window.location.reload()}
+              onError={() => window.location.reload()}
             />
           </div>
         </>

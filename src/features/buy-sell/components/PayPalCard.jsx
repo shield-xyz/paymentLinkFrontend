@@ -1,8 +1,11 @@
+'use client';
+
 import { FUNDING, PayPalButtons } from '@paypal/react-paypal-js';
 
 const PayPalCard = ({
   disabled,
   quote,
+  onClick,
   createOrder,
   onCancel,
   onApprove,
@@ -30,6 +33,7 @@ const PayPalCard = ({
         disabled={disabled}
         fundingSource={FUNDING.PAYPAL}
         className="mt-4"
+        onClick={onClick}
         createOrder={createOrder}
         onCancel={onCancel}
         onApprove={onApprove}

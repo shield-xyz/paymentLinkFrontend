@@ -1,8 +1,10 @@
+'use server';
+
 import { env } from '@/config';
 import { fetchWithToken } from '@/lib/utils';
 
-export async function createPayPalOrder(token, encoded, asset, wallet) {
-  if (!encoded || !wallet || !asset) {
+export async function createPayPalOrder(token, encoded, network, wallet) {
+  if (!encoded || !wallet || !network) {
     console.log('Missing required parameters', encoded, wallet);
   }
 
@@ -11,8 +13,10 @@ export async function createPayPalOrder(token, encoded, asset, wallet) {
     token,
     {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ encoded, asset, wallet }),
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ encoded, network, wallet }),
     },
   );
 
