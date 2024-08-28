@@ -163,12 +163,6 @@ const BuyForm = () => {
             <PayPalCard
               disabled={!wallet}
               quote={quote}
-              onClick={() => {
-                if (intervalId) {
-                  clearInterval(intervalId);
-                  setIntervalId(null);
-                }
-              }}
               createOrder={async () => {
                 const { status, id } = await createPayPalOrder(
                   session.accessToken,
@@ -181,11 +175,15 @@ const BuyForm = () => {
                   return toast.warning('Must verify your account to continue');
                 }
 
+                if (intervalId) {
+                  clearInterval(intervalId);
+                  setIntervalId(null);
+                }
+
                 return id;
               }}
               onCancel={() => window.location.reload()}
               onApprove={() => setSuccess(true)}
-              onError={() => window.location.reload()}
             />
           </div>
         </>
