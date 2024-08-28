@@ -18,6 +18,8 @@ const initialOptions = {
 
 export const BuyOrSellForm = ({ bankingData }) => {
   const hasBankingData = [...new Set(Object.values(bankingData))].length > 1;
+  console.log('hasBankingData', hasBankingData);
+
   return (
     <Container className="min-h-screen pt-12">
       <div className="flex flex-col items-center justify-center gap-8">
