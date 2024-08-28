@@ -9,7 +9,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 import { BuyForm } from './BuyForm';
-import { SellForm } from './SellForm';
 
 const initialOptions = {
   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
@@ -17,7 +16,8 @@ const initialOptions = {
   intent: 'capture',
 };
 
-export const BuyOrSellForm = () => {
+export const BuyOrSellForm = ({ bankingData }) => {
+  const hasBankingData = [...new Set(Object.values(bankingData))].length > 1;
   return (
     <Container className="min-h-screen pt-12">
       <div className="flex flex-col items-center justify-center gap-8">
@@ -42,18 +42,18 @@ export const BuyOrSellForm = () => {
                 <TabsTrigger className="p-2" value="Buy">
                   Buy
                 </TabsTrigger>
-                <TabsTrigger className="p-2" value="Sell">
+                {/* <TabsTrigger className="p-2" value="Sell">
                   Sell
-                </TabsTrigger>
+                </TabsTrigger> */}
               </TabsList>
               <TabsContent className="w-full" value="Buy">
                 <PayPalScriptProvider options={initialOptions}>
                   <BuyForm />
                 </PayPalScriptProvider>
               </TabsContent>
-              <TabsContent className="w-full" value="Sell">
-                <SellForm />
-              </TabsContent>
+              {/* <TabsContent className="w-full" value="Sell">
+                <SellForm enabled={hasBankingData} bankingData={bankingData} />
+              </TabsContent> */}
             </Tabs>
           </div>
         </div>
