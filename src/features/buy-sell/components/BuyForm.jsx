@@ -1,6 +1,7 @@
 import { ShieldCheck } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Input } from '@/components/ui/input';
 import {
@@ -168,13 +169,19 @@ const BuyForm = () => {
                   setIntervalId(null);
                 }
               }}
-              createOrder={() => {
-                return createPayPalOrder(
+              createOrder={async () => {
+                const { status, id } = await createPayPalOrder(
                   session.accessToken,
                   quote.encoded,
                   asset.networkId,
                   walletInputRef.current.value,
                 );
+
+                if (status === 'unverified') {
+                  return toast.warning('Must verify your account to continue');
+                }
+
+                return id;
               }}
               onCancel={() => window.location.reload()}
               onApprove={() => setSuccess(true)}
