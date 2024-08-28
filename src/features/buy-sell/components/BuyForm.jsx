@@ -1,5 +1,4 @@
 import { ShieldCheck } from 'lucide-react';
-import { useSession } from 'next-auth/react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
@@ -18,8 +17,7 @@ import { AssetSelect } from './AssetSelect';
 import { PayPalCard } from './PayPalCard';
 import { createPayPalOrder } from '../actions';
 
-const BuyForm = () => {
-  const { data: session } = useSession();
+const BuyForm = ({ session }) => {
   const [fiat, setFiat] = useState('usd');
   const [amount, setAmount] = useState('$100');
   const [asset, setAsset] = useState(null);
@@ -159,6 +157,7 @@ const BuyForm = () => {
             New quote in <span className="font-semibold">{quoteTimeout}</span>{' '}
             seconds
           </div>
+
           <div className="flex flex-col">
             <PayPalCard
               disabled={!wallet}

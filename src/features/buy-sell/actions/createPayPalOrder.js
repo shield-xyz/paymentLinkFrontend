@@ -22,5 +22,9 @@ export async function createPayPalOrder(token, encoded, network, wallet) {
 
   const data = await res.json();
 
-  return data.id;
+  if (data.msg === 'unverified user') {
+    return { status: 'unverified' };
+  }
+
+  return { status: 'success', id: data.id };
 }

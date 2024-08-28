@@ -16,7 +16,7 @@ const initialOptions = {
   intent: 'capture',
 };
 
-export const BuyOrSellForm = ({ bankingData }) => {
+export const BuyOrSellForm = async ({ session, bankingData }) => {
   const hasBankingData = [...new Set(Object.values(bankingData))].length > 1;
   console.log('hasBankingData', hasBankingData);
 
@@ -50,7 +50,7 @@ export const BuyOrSellForm = ({ bankingData }) => {
               </TabsList>
               <TabsContent className="w-full" value="Buy">
                 <PayPalScriptProvider options={initialOptions}>
-                  <BuyForm />
+                  <BuyForm session={session} />
                 </PayPalScriptProvider>
               </TabsContent>
               {/* <TabsContent className="w-full" value="Sell">
