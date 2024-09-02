@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
+import { createPayPalOrder, createWireOrder } from '../actions';
 import { PayPalCard } from './PayPalCard';
 import { WireCard } from './WireCard';
-import { createPayPalOrder, createWireOrder } from '../actions';
 
 const QuotesList = ({
   quotes,
@@ -56,6 +56,8 @@ const QuotesList = ({
                     walletInputRef.current.value,
                   );
 
+                  setIsWireLoading(false);
+
                   if (status === 'unverified') {
                     toast.warning('Must verify your account to continue');
                   } else if (status !== 'success') {
@@ -65,7 +67,6 @@ const QuotesList = ({
                     setIntervalId(null);
                     setWireOrder(id);
                     setShowWireDetails(true);
-                    setIsWireLoading(false);
                   }
                 }}
               />
