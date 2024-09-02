@@ -1,8 +1,6 @@
-import { ShieldCheck } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -11,81 +9,42 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
-import { env } from '@/config';
 
+import { AmountInput } from './AmountInput';
 import { AssetSelect } from './AssetSelect';
-import { PayPalCard } from './PayPalCard';
-import { createPayPalOrder } from '../actions';
+import { QuotesList } from './QuotesList';
+import { SuccessMessage } from './SuccessMessage';
+import { WalletInput } from './WalletInput';
+import { WireDetails } from './WireDetails';
+import { confirmWireOrder, fetchQuotes } from '../actions';
 
 const BuyForm = ({ session }) => {
   const [fiat, setFiat] = useState('usd');
   const [amount, setAmount] = useState('$100');
   const [asset, setAsset] = useState(null);
-  const [quote, setQuote] = useState(null);
+  const [quotes, setQuotes] = useState(null);
   const [wallet, setWallet] = useState('');
-  const [quoteTimeout, setQuoteTimeout] = useState(30);
-  const [isFetchingQuote, setIsFetchingQuote] = useState(false);
+  const [quoteTimeout, setQuotesTimeout] = useState(30);
+  const [isFetchingQuote, setIsFetchingQuotes] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
   const [success, setSuccess] = useState(false);
+  const [showWireDetails, setShowWireDetails] = useState(false);
+  const [wireOrder, setWireOrder] = useState(null);
 
-  // Use ref for the PayPalButton to access the wallet input
   const walletInputRef = useRef(null);
 
-  const handleAmountChange = (e) => {
-    const value = e.target.value;
-
-    if (!value) {
-      setAmount('');
-      return;
-    }
-
-    const validAmountRegex = /^\$?\d*\.?\d*$/;
-    if (!validAmountRegex.test(value)) {
-      return;
-    }
-
-    if (value.startsWith('$')) {
-      setAmount(value === '$' ? '' : value);
-    } else {
-      if (Number(value) > 0) {
-        setAmount(`$${value}`);
-      }
-    }
-  };
-
-  const fetchQuote = useCallback(() => {
-    if (!amount || !asset) {
-      setQuote(null);
-      return;
-    }
-
-    setIsFetchingQuote(true);
-
-    const assetOut = asset.symbol;
-    const amountIn = amount.replace('$', '');
-
-    const params = new URLSearchParams({ assetIn: fiat, assetOut, amountIn });
-
-    fetch(`${env.NEXT_PUBLIC_API_URL}/api/quotes/onramp?${params.toString()}`)
-      .then((res) => res.json())
-      .then(setQuote)
-      .catch((error) => {
-        if (error.name === 'AbortError') {
-          return;
-        }
-        console.error('Error fetching quote:', error);
-      })
-      .finally(() => setIsFetchingQuote(false));
+  const handleFetchQuotes = useCallback(() => {
+    fetchQuotes({ amount, asset, fiat, setQuotes, setIsFetchingQuotes });
   }, [amount, asset, fiat]);
 
   useEffect(() => {
-    fetchQuote();
-    setQuoteTimeout(30);
+    handleFetchQuotes();
+    setQuotesTimeout(30);
 
     const countdownInterval = setInterval(() => {
-      setQuoteTimeout((prev) => {
+      setQuotesTimeout((prev) => {
         if (prev === 1) {
-          fetchQuote();
+          handleFetchQuotes();
           return 30;
         }
         return prev - 1;
@@ -94,26 +53,27 @@ const BuyForm = ({ session }) => {
 
     setIntervalId(countdownInterval);
 
-    return () => {
-      clearInterval(countdownInterval);
-    };
-  }, [fetchQuote]);
+    return () => clearInterval(countdownInterval);
+  }, [handleFetchQuotes]);
 
-  useEffect(() => {
-    setWallet('');
-  }, [asset]);
+  useEffect(() => setWallet(''), [asset]);
 
-  if (success) {
-    return (
-      <div className="flex flex-col items-center justify-center space-y-2 py-8">
-        <ShieldCheck size={64} />
-        <h3 className="text-lg font-bold">Your order has been received!</h3>
-        <p className="text-center text-sm">
-          You will receive an email confirmation shortly.
-        </p>
-      </div>
-    );
-  }
+  const handleConfirmWireOrder = async () => {
+    const { status } = await confirmWireOrder(session.accessToken, wireOrder);
+
+    if (status === 'unverified') {
+      toast.warning('Must verify your account to continue');
+    } else if (status !== 'success') {
+      toast.error('Error confirming wire order');
+    } else {
+      setSuccess(true);
+    }
+  };
+
+  if (success) return <SuccessMessage />;
+
+  if (showWireDetails)
+    return <WireDetails onConfirm={handleConfirmWireOrder} />;
 
   return (
     <div className="flex flex-col p-8">
@@ -125,67 +85,30 @@ const BuyForm = ({ session }) => {
           <SelectItem value="usd">USD</SelectItem>
         </SelectContent>
       </Select>
-      <input
-        className="my-8 w-full text-center text-6xl font-extrabold focus:outline-none"
-        type="text"
-        placeholder="$0"
-        value={amount}
-        inputMode="numeric"
-        onChange={handleAmountChange}
-      />
+
+      <AmountInput amount={amount} setAmount={setAmount} />
       <AssetSelect value={asset} onValueChange={setAsset} />
-      <Input
-        type="text"
-        className="mt-6"
-        placeholder="Enter your wallet address"
-        ref={walletInputRef}
-        value={wallet}
-        onChange={(e) => setWallet(e.target.value)}
-      />
-      {isFetchingQuote || !quote ? (
+      <WalletInput wallet={wallet} setWallet={setWallet} ref={walletInputRef} />
+
+      {isFetchingQuote || !quotes ? (
         <>
           <Skeleton className="my-6 h-[40px] w-[280px] self-center rounded-full" />
           <Skeleton className="h-[174px] w-[418px] rounded-lg" />
         </>
-      ) : quote.error ? (
-        <div className="px-4 pt-8">
-          <h3 className="text-center text-lg font-normal">{quote.error}</h3>
-        </div>
       ) : (
-        <>
-          <div className="my-6 w-auto self-center rounded-full bg-slate-100 px-4 py-1">
-            New quote in <span className="font-semibold">{quoteTimeout}</span>{' '}
-            seconds
-          </div>
-
-          <div className="flex flex-col">
-            <PayPalCard
-              disabled={!wallet}
-              quote={quote}
-              createOrder={async () => {
-                const { status, id } = await createPayPalOrder(
-                  session.accessToken,
-                  quote.encoded,
-                  asset.networkId,
-                  walletInputRef.current.value,
-                );
-
-                if (status === 'unverified') {
-                  return toast.warning('Must verify your account to continue');
-                }
-
-                if (intervalId) {
-                  clearInterval(intervalId);
-                  setIntervalId(null);
-                }
-
-                return id;
-              }}
-              onCancel={() => window.location.reload()}
-              onApprove={() => setSuccess(true)}
-            />
-          </div>
-        </>
+        <QuotesList
+          quotes={quotes}
+          quoteTimeout={quoteTimeout}
+          walletInputRef={walletInputRef}
+          wallet={wallet}
+          intervalId={intervalId}
+          setIntervalId={setIntervalId}
+          setShowWireDetails={setShowWireDetails}
+          setWireOrder={setWireOrder}
+          setSuccess={setSuccess}
+          session={session}
+          asset={asset}
+        />
       )}
     </div>
   );
