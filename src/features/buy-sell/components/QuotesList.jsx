@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-import { createPayPalOrder, createWireOrder } from '../actions';
 import { PayPalCard } from './PayPalCard';
 import { WireCard } from './WireCard';
+import { createPayPalOrder, createWireOrder } from '../actions';
 
 const QuotesList = ({
   quotes,
