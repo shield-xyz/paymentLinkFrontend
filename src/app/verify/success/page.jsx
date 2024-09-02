@@ -1,4 +1,7 @@
+import Link from 'next/link';
+
 import { Icons } from '@/components';
+import { Button } from '@/components/ui/button';
 
 export default async function Page() {
   return (
@@ -9,6 +12,9 @@ export default async function Page() {
           <h1 className="text-center text-4xl font-bold">
             Verification Submitted
           </h1>
+          <Link href="/">
+            <Button>Continue</Button>
+          </Link>
         </div>
       </div>
     </div>
