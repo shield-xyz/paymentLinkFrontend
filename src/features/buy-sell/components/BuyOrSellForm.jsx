@@ -2,6 +2,7 @@
 'use client';
 
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+import { useEffect, useState } from 'react';
 
 import { LogoIcon } from '@/assets';
 import Container from '@/components/ui/container';
@@ -9,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { cn } from '@/lib/utils';
 
 import { BuyForm } from './BuyForm';
+import { SellForm } from './SellForm';
 
 const initialOptions = {
   clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
@@ -17,8 +19,13 @@ const initialOptions = {
 };
 
 export const BuyOrSellForm = async ({ session, bankingData }) => {
-  const hasBankingData = [...new Set(Object.values(bankingData))].length > 1;
-  console.log('hasBankingData', hasBankingData);
+  const [hasBankingData, setHasBankingData] = useState(false);
+
+  useEffect(() => {
+    if (bankingData) {
+      setHasBankingData([...new Set(Object.values(bankingData))].length > 1);
+    }
+  }, [bankingData]);
 
   return (
     <Container className="min-h-screen pt-12">
@@ -44,18 +51,18 @@ export const BuyOrSellForm = async ({ session, bankingData }) => {
                 <TabsTrigger className="p-2" value="Buy">
                   Buy
                 </TabsTrigger>
-                {/* <TabsTrigger className="p-2" value="Sell">
+                <TabsTrigger className="p-2" value="Sell">
                   Sell
-                </TabsTrigger> */}
+                </TabsTrigger>
               </TabsList>
               <TabsContent className="w-full" value="Buy">
                 <PayPalScriptProvider options={initialOptions}>
                   <BuyForm session={session} />
                 </PayPalScriptProvider>
               </TabsContent>
-              {/* <TabsContent className="w-full" value="Sell">
-                <SellForm enabled={hasBankingData} bankingData={bankingData} />
-              </TabsContent> */}
+              <TabsContent className="w-full" value="Sell">
+                <SellForm enabled={hasBankingData} />
+              </TabsContent>
             </Tabs>
           </div>
         </div>

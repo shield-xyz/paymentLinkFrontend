@@ -1,6 +1,13 @@
 'use client';
 
 import { FUNDING, PayPalButtons } from '@paypal/react-paypal-js';
+import { Info } from 'lucide-react';
+
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 
 const PayPalCard = ({
   disabled,
@@ -16,6 +23,16 @@ const PayPalCard = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div>Paypal</div>
+          <HoverCard>
+            <HoverCardTrigger>
+              <Info className="ml-2" size={15} />
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <ul className="text-sm">
+                <li>Fee: 3.49 % + fixed fee</li>
+              </ul>
+            </HoverCardContent>
+          </HoverCard>
         </div>
         <div className="text-end">
           <div className="flex items-center gap-2 font-bold">
