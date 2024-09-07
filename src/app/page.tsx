@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
 
-export default function Home() {
-  return redirect('/payment-links');
+export default function Page() {
+  return redirect('/buy-sell');
 }

@@ -54,7 +54,7 @@ const LoginForm = () => {
         throw new Error('Invalid credentials');
       }
 
-      router.push('/payment-links');
+      router.push('/buy-sell');
       handleSubmissionSuccess('Logged in successfully');
     } catch (error) {
       handleSubmissionError(error, 'Could not login');
