@@ -21,7 +21,9 @@ export async function getWithdrawals(token) {
       'Error fetching withdrawals',
     );
 
-    const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedData = data.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
 
     return sortedData;
   } catch (error) {
@@ -54,7 +56,8 @@ export async function getRampWithdrawals(token) {
     );
 
     const sortedData = deposits.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
     return sortedData;

@@ -146,10 +146,8 @@ export function PaymentLinksTable({ paymentLinks }) {
 
   const itemsPerPage = 5;
 
-  const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    filteredData,
-    itemsPerPage,
-  );
+  const { currentData, currentPage, jump, maxPage, next, prev } =
+    usePagination(filteredData);
 
   useEffect(() => {
     const filterData = () => {
@@ -194,10 +192,7 @@ export function PaymentLinksTable({ paymentLinks }) {
               <Icons.filter className="h-5 text-gray-500" />
               Filter
             </Button> */}
-            <FilterDropDown
-              setFilteredData={setFilteredData}
-              selectedTab={selectedTab}
-            />
+            <FilterDropDown setFilteredData={setFilteredData} />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment link

@@ -9,7 +9,7 @@ import { z } from 'zod';
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
+import { handleSubmissionError } from '@/lib/utils';
 
 import { resetPassword } from '../../actions';
 
@@ -56,12 +56,9 @@ const ResetPasswordForm = ({ resetToken }) => {
         resetToken,
       });
 
-      if (res?.error) {
+      if ('error' in res) {
         throw new Error(res.error);
       }
-
-      handleSubmissionSuccess('Password reset successfully');
-      router.push('/login');
     } catch (error) {
       handleSubmissionError(error, 'Error resetting password');
     }

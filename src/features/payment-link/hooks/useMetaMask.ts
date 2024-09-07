@@ -149,7 +149,7 @@ export const useMetaMask = () => {
           name,
         });
 
-        if (res.error) {
+        if ('error' in res) {
           throw new Error(res.error);
         }
 

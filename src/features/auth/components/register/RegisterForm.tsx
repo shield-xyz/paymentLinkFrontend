@@ -20,35 +20,30 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 const MAX_FILE_SIZE = 5000000;
 
-export const RegisterSchema = z
-  .object({
-    user_name: z
-      .string()
-      .min(1, { message: 'Name is required' })
-      .min(3, { message: 'Name must be at least 3 characters long' })
-      .max(60, { message: 'Name must be at most 60 characters long' }),
-    logo: z
-      .any()
-      .optional() // Keep it optional
-      .refine(
-        (file) =>
-          !file || file[0] === undefined || file[0]?.size <= MAX_FILE_SIZE,
-        `Max image size is 5MB.`,
-      )
-      .refine(
-        (file) =>
-          !file ||
-          file[0] === undefined ||
-          ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
-        'Only .jpg, .jpeg, .png, and .webp formats are supported.',
-      ),
-    company: z.string().optional(),
-    validationToken: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirm, {
-    message: 'Passwords do not match',
-    path: ['passwordConfirm'],
-  });
+export const RegisterSchema = z.object({
+  user_name: z
+    .string()
+    .min(1, { message: 'Name is required' })
+    .min(3, { message: 'Name must be at least 3 characters long' })
+    .max(60, { message: 'Name must be at most 60 characters long' }),
+  logo: z
+    .any()
+    .optional() // Keep it optional
+    .refine(
+      (file) =>
+        !file || file[0] === undefined || file[0]?.size <= MAX_FILE_SIZE,
+      `Max image size is 5MB.`,
+    )
+    .refine(
+      (file) =>
+        !file ||
+        file[0] === undefined ||
+        ACCEPTED_IMAGE_TYPES.includes(file[0]?.type),
+      'Only .jpg, .jpeg, .png, and .webp formats are supported.',
+    ),
+  company: z.string().optional(),
+  validationToken: z.string(),
+});
 
 const RegisterForm = ({ validationToken, login }) => {
   const [step, setStep] = useState(1);
@@ -78,7 +73,7 @@ const RegisterForm = ({ validationToken, login }) => {
 
       const res = await register(formData);
 
-      if (res.error) {
+      if ('error' in res) {
         throw new Error(res.error);
       }
 

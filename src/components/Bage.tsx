@@ -18,7 +18,15 @@ const inverseVariants = {
   Paused: 'bg-muted-foreground text-muted',
 };
 
-export const Badge = ({ children, className, variant = 'primary' }) => {
+export const Badge = ({
+  children,
+  className,
+  variant = 'primary',
+}: {
+  children: React.ReactNode;
+  className?: string;
+  variant?: keyof typeof variants;
+}) => {
   const variantClasses = variants[variant] || variants.primary;
   const inverseVariantClasses =
     inverseVariants[variant] || inverseVariants.primary;

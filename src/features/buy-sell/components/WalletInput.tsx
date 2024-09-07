@@ -1,17 +1,24 @@
-import { forwardRef } from 'react';
+import { ChangeEvent, forwardRef } from 'react';
 
 import { Input } from '@/components/ui/input';
 
-const WalletInput = forwardRef(({ wallet, setWallet }, ref) => (
-  <Input
-    type="text"
-    className="mt-6"
-    placeholder="Enter your wallet address"
-    ref={ref}
-    value={wallet}
-    onChange={(e) => setWallet(e.target.value)}
-  />
-));
+interface WalletInputProps {
+  wallet: string;
+  setWallet: (value: string) => void;
+}
+
+const WalletInput = forwardRef<HTMLInputElement, WalletInputProps>(
+  ({ wallet, setWallet }, ref) => (
+    <Input
+      type="text"
+      className="mt-6"
+      placeholder="Enter your wallet address"
+      ref={ref}
+      value={wallet}
+      onChange={(e: ChangeEvent<HTMLInputElement>) => setWallet(e.target.value)}
+    />
+  ),
+);
 
 WalletInput.displayName = 'WalletInput';
 

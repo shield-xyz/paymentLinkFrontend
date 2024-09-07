@@ -15,7 +15,7 @@ import { createPaymentLink } from '../actions';
 import { getFinalPaymentLink } from '../utils';
 
 export const CreatePaymentLinkSchema = z.object({
-  id: z.nullable(),
+  id: z.string().nullable(),
   name: z
     .string()
     .min(3, { message: 'Name must be at least 3 characters long' }),
@@ -50,7 +50,7 @@ export const useCreatePaymentLink = () => {
     try {
       const res = await createPaymentLink(data, session?.accessToken);
 
-      if (res.error) {
+      if ('error' in res) {
         throw new Error(res.error);
       }
 
@@ -63,7 +63,7 @@ export const useCreatePaymentLink = () => {
         toast(knownErrorsMessages['unverified user'], {
           action: {
             label: 'Verify',
-            onClick: () => router.push('/settings/verification'),
+            onClick: () => router.push('/verify'),
           },
           duration: 20000,
         });

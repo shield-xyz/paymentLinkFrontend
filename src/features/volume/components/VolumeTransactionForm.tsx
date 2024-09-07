@@ -24,7 +24,7 @@ import {
 
 const amountValidation = (keyText) =>
   z.preprocess(
-    (input) => {
+    (input: any) => {
       if (input === '') {
         return NaN;
       }
@@ -45,14 +45,18 @@ const selectedFieldsSchema = z.object({
   date: z.coerce.string().min(1, { message: 'Transaction Date is required' }),
 });
 
-export const VolumeTransactionForm = ({ volumeTransactionData }) => {
+export const VolumeTransactionForm = ({
+  volumeTransactionData,
+}: {
+  volumeTransactionData?: any;
+}) => {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
   const isEdit = !!volumeTransactionData;
 
   const form = useForm({
     resolver: zodResolver(selectedFieldsSchema),
-    mode: 'onTouch',
+    mode: 'onTouched',
     defaultValues: {
       receivedAmount: volumeTransactionData?.receivedAmount || '',
       client: volumeTransactionData?.client || '',
@@ -93,7 +97,7 @@ export const VolumeTransactionForm = ({ volumeTransactionData }) => {
         res = await postVolumeTransaction(payload);
       }
 
-      if (res.error) {
+      if ('error' in res) {
         throw new Error(res.error);
       }
       router.push('/volume', { scroll: false });

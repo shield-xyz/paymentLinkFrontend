@@ -34,7 +34,7 @@ const LoginForm = () => {
 
   const form = useForm({
     resolver: zodResolver(LoginSchema),
-    mode: 'onTouch',
+    mode: 'onTouched',
   });
   const {
     handleSubmit,

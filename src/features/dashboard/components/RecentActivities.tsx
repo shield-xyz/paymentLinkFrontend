@@ -27,10 +27,8 @@ const useProcessedData = (transactions, withdrawals) =>
 
 export const RecentActivities = ({ transactions, withdrawals }) => {
   const processedData = useProcessedData(transactions, withdrawals) || [];
-  const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    processedData,
-    5,
-  );
+  const { currentData, currentPage, jump, maxPage, next, prev } =
+    usePagination(processedData);
 
   return (
     <Container className="w-full px-5 py-6">

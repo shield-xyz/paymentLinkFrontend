@@ -1,7 +1,17 @@
 import { Button } from '@/components/ui/button';
 import Spinner from '@/components/ui/spinner';
 
-const WireCard = ({ quote, disabled, loading, onWire }) => {
+const WireCard = ({
+  quote,
+  disabled,
+  loading,
+  onWire,
+}: {
+  quote: any;
+  disabled: boolean;
+  loading: boolean;
+  onWire: () => void;
+}) => {
   return (
     <div className="rounded-lg border-2 border-blue-300 p-4">
       <div className="flex items-center justify-between">
@@ -21,7 +31,7 @@ const WireCard = ({ quote, disabled, loading, onWire }) => {
         </div>
       </div>
       <Button
-        disabled={disabled | loading}
+        disabled={disabled || loading}
         className="mt-4 w-full"
         onClick={onWire}
       >

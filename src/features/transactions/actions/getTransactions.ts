@@ -21,7 +21,9 @@ export async function getTransactions(token) {
       'Error fetching transactions',
     );
 
-    const sortedData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const sortedData = data.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+    );
 
     return sortedData;
   } catch (error) {

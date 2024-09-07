@@ -9,17 +9,28 @@ export const DatePickerForm = ({
   name,
   control,
   errors,
+  key,
+  className,
   ...props
+}: {
+  label: string;
+  placeholder: string;
+  name: string;
+  control: any;
+  errors: any;
+  key: string;
+  className?: string;
+  modal?: boolean;
 }) => {
   return (
     <div className="w-full">
       <Controller
-        className=""
         name={name}
         control={control}
         rules={{ required: `${label} is required` }}
         render={({ field }) => (
           <DatePicker
+            id={name}
             value={field.value}
             onChange={field.onChange}
             placeholder={placeholder}

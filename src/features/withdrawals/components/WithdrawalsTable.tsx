@@ -104,10 +104,8 @@ export function WithdrawalsTable({ withdrawals, assets }) {
 
   const itemsPerPage = 5;
 
-  const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    filteredData,
-    itemsPerPage,
-  );
+  const { currentData, currentPage, jump, maxPage, next, prev } =
+    usePagination(filteredData);
 
   useEffect(() => {
     const filterData = () => {
@@ -148,10 +146,7 @@ export function WithdrawalsTable({ withdrawals, assets }) {
               onChange={handleSearch}
               value={searchQuery}
             />
-            <FilterDropDown
-              setFilteredData={setFilteredData}
-              selectedTab={selectedTab}
-            />
+            <FilterDropDown setFilteredData={setFilteredData} />
             <Link href="/create-payment-link">
               <Button className="font-light" size="sm">
                 Create payment withdrawal

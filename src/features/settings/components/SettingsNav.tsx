@@ -34,7 +34,6 @@ export const SettingsNav = () => {
         {statusGroups.map((group) => (
           <TabsTrigger value={group.value} key={group.value}>
             {group.label}
-            <span className="ml-1 text-muted-foreground">{group.count}</span>
           </TabsTrigger>
         ))}
       </TabsList>

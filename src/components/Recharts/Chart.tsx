@@ -11,7 +11,7 @@ import {
 
 import CustomTooltip from './CustomTooltip';
 
-const Chart = ({ data }) => {
+const Chart = ({ data }: { data: { name: string; amt: number }[] }) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart

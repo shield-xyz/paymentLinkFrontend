@@ -32,7 +32,7 @@ export const BankForm = ({ bankData }) => {
 
   const form = useForm({
     resolver: zodResolver(bankDataSchema),
-    mode: 'onTouch',
+    mode: 'onTouched',
     defaultValues: {
       beneficiary_name: bankData['custom.beneficiary_name'] || '',
       bank_name: bankData['custom.bank_name'] || '',
@@ -60,7 +60,7 @@ export const BankForm = ({ bankData }) => {
       });
 
       const res = await updateBankingData(obj);
-      if (!res.status === 'success') {
+      if (res.status !== 'success') {
         throw new Error('Could not save banking data');
       }
       handleSubmissionSuccess('Banking data saved successfully');

@@ -12,7 +12,11 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu';
 
-const FilterDropDown = ({ setFilteredData }) => {
+const FilterDropDown = ({
+  setFilteredData,
+}: {
+  setFilteredData: React.Dispatch<React.SetStateAction<any[]>>;
+}) => {
   const [selectedFilter, setSelectedFilter] = useState('');
   const [selectedOrder, setSelectedOrder] = useState('');
 

@@ -17,6 +17,13 @@ export function DatePicker({
   label,
   labelClassName,
   ...props
+}: {
+  value: Date;
+  onChange: (date: Date) => void;
+  placeholder?: string;
+  label?: string;
+  labelClassName?: string;
+  id: string;
 }) {
   const [date, setDate] = React.useState(value);
   const [isDialogOpen, setIsDialogOpen] = React.useState(false);
@@ -71,7 +78,6 @@ export function DatePicker({
       </DialogTrigger>
       <DialogContent showCloseButton={false} className="w-auto p-0">
         <Calendar
-          className=""
           mode="single"
           selected={date}
           onSelect={handleDateChange}

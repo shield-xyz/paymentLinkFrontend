@@ -28,6 +28,16 @@ export const CustomPagination = ({
   withRowsPerPage = false,
   handleRowsPerPage,
   rowsPerPage,
+}: {
+  currentPage: number;
+  maxPage: number;
+  jump: (page: number) => void;
+  prev: () => void;
+  next: () => void;
+  isShort?: boolean;
+  withRowsPerPage?: boolean;
+  handleRowsPerPage?: (value: string) => void;
+  rowsPerPage?: number;
 }) => {
   if (maxPage <= 1) {
     return (
@@ -56,14 +66,14 @@ export const CustomPagination = ({
   return (
     <div className="mt-5 flex items-center gap-2">
       {withRowsPerPage && (
-        <Select onValueChange={handleRowsPerPage} value={rowsPerPage}>
+        <Select onValueChange={handleRowsPerPage} value={String(rowsPerPage)}>
           <SelectTrigger className="w-20">
             <SelectValue placeholder="Rows per page" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value={5}>5</SelectItem>
-            <SelectItem value={10}>10</SelectItem>
-            <SelectItem value={20}>20</SelectItem>
+            <SelectItem value={'5'}>5</SelectItem>
+            <SelectItem value={'10'}>10</SelectItem>
+            <SelectItem value={'20'}>20</SelectItem>
           </SelectContent>
         </Select>
       )}

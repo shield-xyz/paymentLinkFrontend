@@ -29,10 +29,10 @@ const SellForm = ({ enabled }) => {
   const { data: session } = useSession();
 
   const [networks, setNetworks] = useState([]);
-  const [selectedNetwork, setSelectedNetwork] = useState();
+  const [selectedNetwork, setSelectedNetwork] = useState<any>();
   const [fiat, setFiat] = useState('usd');
-  const [amount, setAmount] = useState(100);
-  const [asset, setAsset] = useState();
+  const [amount, setAmount] = useState<string | number>(100);
+  const [asset, setAsset] = useState<any>();
   const [quote, setQuote] = useState(null);
   const [quoteTimeout, setQuoteTimeout] = useState(30);
   const [isFetchingQuote, setIsFetchingQuote] = useState(true);
@@ -88,7 +88,7 @@ const SellForm = ({ enabled }) => {
     const params = new URLSearchParams({
       assetIn,
       assetOut: fiat,
-      amountIn: amount,
+      amountIn: amount.toString(),
     });
 
     fetch(`${env.NEXT_PUBLIC_API_URL}/api/quotes/offramp?${params.toString()}`)

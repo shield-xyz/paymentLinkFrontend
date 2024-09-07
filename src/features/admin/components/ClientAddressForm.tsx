@@ -62,7 +62,7 @@ export const ClientAddressForm = ({
 
   const form = useForm({
     resolver: zodResolver(selectedFieldsSchema),
-    mode: 'onTouch',
+    mode: 'onTouched',
     defaultValues: {
       name: clientAddress?.name || '',
       groupIdWpp: clientAddress?.groupIdWpp || '',
@@ -104,7 +104,7 @@ export const ClientAddressForm = ({
         res = await postClientAddress(payload);
       }
 
-      if (res.error) {
+      if ('error' in res) {
         throw new Error(res.error);
       }
       handleSubmissionSuccess(
@@ -172,7 +172,7 @@ export const ClientAddressForm = ({
                           type="text"
                           onChange={(e) => {
                             setValue(`wallets.${index}`, e.target.value, {
-                              shouldValidate: errors.wallets,
+                              shouldValidate: !!errors.wallets,
                             });
                           }}
                         />

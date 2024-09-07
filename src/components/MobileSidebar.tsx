@@ -23,11 +23,7 @@ export const MobileSidebar = ({ session }) => {
   return (
     <>
       <div className="flex items-center">
-        <Button
-          className="absolute left-4"
-          variant="icon"
-          onClick={toggleSidebar}
-        >
+        <Button className="absolute left-4" onClick={toggleSidebar}>
           <Icons.menu className="h-5 w-5" />
         </Button>
       </div>
@@ -51,11 +47,7 @@ export const MobileSidebar = ({ session }) => {
         )}
       >
         <div className="top-0 flex h-[var(--nav-height)] items-center gap-2 border-b border-gray-200 ">
-          <Button
-            className="absolute left-4"
-            variant="icon"
-            onClick={toggleSidebar}
-          >
+          <Button className="absolute left-4" onClick={toggleSidebar}>
             <Icons.menu className="h-5 w-5" />
           </Button>
           <div className="ml-12 flex w-fit items-center gap-3 pl-6">

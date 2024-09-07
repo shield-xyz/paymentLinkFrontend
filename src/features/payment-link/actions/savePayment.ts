@@ -3,9 +3,21 @@
 import { env } from '@/config';
 import { handleReturnError, validateResponse } from '@/lib/utils';
 
-export async function savePayment({ id, hash, assetId, email, name }) {
+export async function savePayment({
+  id,
+  hash,
+  assetId,
+  email,
+  name,
+}: {
+  id: string;
+  hash: string;
+  assetId: string;
+  email?: string;
+  name?: string;
+}) {
   try {
-    let payload = {
+    let payload: object = {
       hash,
       assetId,
     };

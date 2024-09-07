@@ -26,7 +26,7 @@ export async function getNotifications() {
     );
 
     const sortedData = data.sort((a, b) => {
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
 
     return sortedData;

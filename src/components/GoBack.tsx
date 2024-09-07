@@ -7,7 +7,16 @@ import { cn } from '@/lib/utils';
 import { Icons } from './Icons';
 import { Button } from './ui/button';
 
-export const GoBack = ({ className, children, onClick, ...props }) => {
+export const GoBack = ({
+  className,
+  children,
+  onClick,
+  ...props
+}: {
+  className?: string;
+  children?: React.ReactNode;
+  onClick?: () => void;
+}) => {
   const router = useRouter();
   const { back } = router;
   return (

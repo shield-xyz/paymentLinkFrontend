@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 const fixedClass = ' animate-spin pointer-events-none stroke-white ';
 
-const Spinner = ({ customClass }) => {
+const Spinner = ({ customClass }: { customClass?: string }) => {
   return (
     <svg
       width="24"

@@ -8,10 +8,8 @@ import { usePagination } from '@/hooks';
 import { formatAmount, formatCurrency } from '@/lib/utils';
 
 export const Assets = ({ balances }) => {
-  const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    balances,
-    5,
-  );
+  const { currentData, currentPage, jump, maxPage, next, prev } =
+    usePagination(balances);
 
   return (
     <Container className="w-full px-5 py-6">

@@ -1,14 +1,18 @@
 'use server';
 
 import { env } from '@/config';
+import { auth } from '@/lib/auth';
 import {
   fetchWithToken,
   handleReturnError,
   validateResponse,
 } from '@/lib/utils';
 
-export async function deleteVolumeTransaction(_id, token) {
+export async function deleteVolumeTransaction(_id) {
   try {
+    const session = await auth();
+    const token = session?.accessToken;
+
     const res = await fetchWithToken(
       `${env.NEXT_PUBLIC_API_URL}/api/volumetransactions/${_id}`,
       token,

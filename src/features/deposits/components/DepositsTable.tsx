@@ -98,12 +98,8 @@ export function DepositsTable({ deposits, assets }) {
     [deposits],
   );
 
-  const itemsPerPage = 5;
-
-  const { currentData, currentPage, jump, maxPage, next, prev } = usePagination(
-    filteredData,
-    itemsPerPage,
-  );
+  const { currentData, currentPage, jump, maxPage, next, prev } =
+    usePagination(filteredData);
 
   useEffect(() => {
     const filterData = () => {
@@ -129,10 +125,7 @@ export function DepositsTable({ deposits, assets }) {
         <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
           <h1 className="text-xl font-medium">Deposit History</h1>
           <div className="flex flex-wrap items-center gap-2">
-            <FilterDropDown
-              setFilteredData={setFilteredData}
-              selectedTab={selectedTab}
-            />
+            <FilterDropDown setFilteredData={setFilteredData} />
           </div>
         </div>
         <Tabs

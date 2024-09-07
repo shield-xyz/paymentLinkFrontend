@@ -12,11 +12,11 @@ import {
 interface Props {
   disabled: boolean;
   quote: any;
-  onClick: any;
+  onClick?: any;
   createOrder: any;
   onCancel: any;
   onApprove: any;
-  onError: any;
+  onError?: any;
 }
 
 const PayPalCard = ({

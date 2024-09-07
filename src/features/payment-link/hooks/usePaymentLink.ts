@@ -49,16 +49,19 @@ export const PaymentSchema = z
     const hasName = data.name !== undefined && data.name !== '';
     if (hasEmail && !hasName) {
       ctx.addIssue({
+        code: 'custom',
         path: ['name'],
         message: 'Name is required',
       });
     } else if (hasName && !hasEmail) {
       ctx.addIssue({
+        code: 'custom',
         path: ['email'],
         message: 'Email is required',
       });
     } else if (!data.paymentHash || data.paymentHash === '') {
       ctx.addIssue({
+        code: 'custom',
         path: ['paymentHash'],
         message: 'Payment hash is required',
       });
@@ -105,7 +108,7 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
 
   const form = useForm({
     resolver: zodResolver(PaymentSchema),
-    mode: 'onTouch',
+    mode: 'onTouched',
     defaultValues: {
       email: '',
       name: '',
@@ -166,7 +169,7 @@ export const usePaymentLink = ({ paymentLinkData, userWallet }) => {
       }
     } catch (error) {
       console.error({ error });
-      router.push(pathname + '?' + `id=${id}&transferError=true`);
+      router.push((pathname + '?' + `id=${id}&transferError=true`) as any);
     } finally {
       router.refresh();
       setTimeout(() => {

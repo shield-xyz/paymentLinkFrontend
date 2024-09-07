@@ -1,6 +1,16 @@
 import { cn, formatCurrency } from '@/lib/utils';
 
-const CustomTooltip = ({ active, payload, label, dateClassName }) => {
+const CustomTooltip = ({
+  active,
+  payload,
+  label,
+  dateClassName,
+}: {
+  active: boolean;
+  payload: any;
+  label: string;
+  dateClassName?: string;
+}) => {
   if (active && payload && payload.length) {
     return (
       <div className="flex flex-col items-center justify-center rounded-lg  bg-white/30 p-2 backdrop-blur-sm">

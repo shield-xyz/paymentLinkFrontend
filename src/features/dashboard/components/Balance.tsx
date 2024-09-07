@@ -10,7 +10,12 @@ import { Withdraw } from '@/features/withdrawals';
 import { formatCurrency } from '@/lib/utils';
 
 // Custom hook for processing transactions
-const useProcessedData = (transactions) =>
+const useProcessedData = (
+  transactions,
+): {
+  name: string;
+  amt: number;
+}[] =>
   useMemo(() => {
     const sortedTransactions = transactions.sort((a, b) =>
       a.date.localeCompare(b.date),
@@ -25,7 +30,9 @@ const useProcessedData = (transactions) =>
       cumulativeSum += transaction.usdValue;
     });
 
-    return Object.entries(groupedByDay).map(([name, amt]) => ({ name, amt }));
+    return Object.entries(groupedByDay).map(
+      ([name, amt]: [string, number]) => ({ name, amt }),
+    );
   }, [transactions]);
 
 // Custom hook for calculating total amount
@@ -53,7 +60,10 @@ export const Balance = ({ balances, transactions }) => {
     if (data.length > 1) {
       const last = data[data.length - 1].amt;
       const secondLast = data[data.length - 2].amt;
-      return (((last - secondLast) / secondLast) * 100).toFixed(2);
+      return (
+        ((Number(last) - Number(secondLast)) / Number(secondLast)) *
+        100
+      ).toFixed(2);
     }
     return 0;
   }, [data]);
@@ -80,7 +90,7 @@ export const Balance = ({ balances, transactions }) => {
       </div>
 
       <div className="h-96">
-        <Chart transactions={transactions} data={data} />
+        <Chart data={data} />
       </div>
     </Container>
   );

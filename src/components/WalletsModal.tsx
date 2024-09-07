@@ -4,7 +4,19 @@ import { CustomModal } from '@/components/CustomModal';
 
 import { HashString } from './Hash';
 
-export const WalletsModal = ({ wallets, onClose, title, description }) => {
+interface Props {
+  wallets: string[];
+  onClose: () => void;
+  title: string;
+  description?: string;
+}
+
+export const WalletsModal = ({
+  wallets,
+  onClose,
+  title,
+  description,
+}: Props) => {
   return (
     <CustomModal
       open={true}

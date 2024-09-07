@@ -27,7 +27,8 @@ export async function getDeposits(token) {
     );
 
     const sortedData = deposits.sort(
-      (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
     );
 
     return sortedData;

@@ -15,10 +15,10 @@ const FootprintVerifyButton = ({ text, type }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleComplete = async ({ validationToken, KYC }) => {
+  const handleComplete = async ({ validationToken, isKYC }) => {
     try {
       toast.info('Verification success');
-      await postVerificationSubmittedConfirmation({ validationToken, KYC });
+      await postVerificationSubmittedConfirmation({ validationToken, isKYC });
       router.push('/verify/success');
     } catch (error) {
       handleSubmissionError(error);
@@ -52,7 +52,7 @@ const FootprintVerifyButton = ({ text, type }) => {
         publicKey,
         onComplete: (validationToken) => {
           console.log({ validationToken });
-          handleComplete({ validationToken, KYC: type !== 'KYB' });
+          handleComplete({ validationToken, isKYC: type !== 'KYB' });
         },
       });
       component.render();

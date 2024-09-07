@@ -8,7 +8,15 @@ import { Button } from './ui/button';
 
 // copy: 'link' | 'hash'
 
-export const HashLink = ({ network, hash, copy = 'hash' }) => {
+export const HashLink = ({
+  network,
+  hash,
+  copy = 'hash',
+}: {
+  network: any;
+  hash: string;
+  copy?: 'link' | 'hash';
+}) => {
   if (!hash) return null;
 
   const displayHash = `${hash?.slice(0, 4)}...${hash?.slice(-6)}`;
@@ -41,7 +49,15 @@ export const HashLink = ({ network, hash, copy = 'hash' }) => {
   );
 };
 
-export const HashString = ({ hash, withCopy, showFullString }) => {
+export const HashString = ({
+  hash,
+  withCopy,
+  showFullString,
+}: {
+  hash: string;
+  withCopy?: boolean;
+  showFullString?: boolean;
+}) => {
   if (!hash) return null;
 
   const displayHash = showFullString

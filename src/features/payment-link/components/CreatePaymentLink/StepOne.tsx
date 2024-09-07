@@ -133,7 +133,7 @@ export const StepOne = ({ form, networks }) => {
           <Link
             href="/settings"
             className="text-primary underline"
-            tabIndex="-1"
+            tabIndex={-1}
           >
             account settings
           </Link>
@@ -156,7 +156,7 @@ export const StepOne = ({ form, networks }) => {
           disabled={!token}
           title={!token ? 'Please select a network and currency' : ''}
           {...register('amount')}
-          onInvalid={(e) => {
+          onInvalid={(e: React.ChangeEvent<HTMLInputElement>) => {
             if (e.target.validity.stepMismatch) {
               e.target.setCustomValidity(
                 `Please enter a value with up to ${assetSelected?.decimals} decimal places for ${assetSelected?.symbol}`,

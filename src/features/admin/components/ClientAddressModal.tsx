@@ -4,12 +4,19 @@ import { CustomModal } from '@/components/CustomModal';
 
 import { ClientAddressForm } from './ClientAddressForm';
 
+interface Props {
+  clientAddress?: any;
+  disabled?: boolean;
+  onClose: () => void;
+  wpGroups: any;
+}
+
 export const ClientAddressModal = ({
   clientAddress,
   disabled,
   onClose,
   wpGroups,
-}) => {
+}: Props) => {
   return (
     <CustomModal
       open={true}

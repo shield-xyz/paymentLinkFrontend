@@ -100,11 +100,11 @@ const PaymentLinkFooter = () => {
         <span className="font-bold tracking-tight text-primary">Shield</span>
       </div>
       <div className="flex items-center gap-2 text-xxs font-light text-muted-foreground sm:text-xs lg:gap-4 lg:text-sm">
-        <Link href="/status">Status</Link>
+        <Link href={{ pathname: '/status' }}>Status</Link>
         <span>&bull;</span>
-        <Link href="/terms">Terms</Link>
+        <Link href={{ pathname: '/terms' }}>Terms</Link>
         <span>&bull;</span>
-        <Link href="/privacy">Privacy</Link>
+        <Link href={{ pathname: '/privacy' }}>Privacy</Link>
       </div>
     </div>
   );
