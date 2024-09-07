@@ -1,80 +1,65 @@
 module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2018,
+    sourceType: 'module',
+  },
   env: {
-    browser: true, // Add this line
     node: true,
-    es6: true,
   },
-  settings: {
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-      'eslint-import-resolver-custom-alias': {
-        alias: {
-          '@': './src',
-        },
-        extensions: ['.js', '.jsx'],
-        packages: ['packages/*'],
-      },
-    },
-  },
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   extends: [
     'eslint:recommended',
-    'plugin:@next/next/recommended',
-    'plugin:import/recommended',
+    'plugin:@typescript-eslint/recommended',
     'plugin:prettier/recommended',
-    'plugin:import/react',
-    'next',
-    'prettier',
-    'next/core-web-vitals',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
+    'plugin:@next/next/recommended',
   ],
-
-  parserOptions: {
-    ecmaVersion: 2020,
-    sourceType: 'module',
-    ecmaFeatures: {
-      jsx: true,
-    },
-  },
-  plugins: ['prettier', 'import', 'react'],
   rules: {
-    'import/order': [
-      'error',
-      {
-        alphabetize: {
-          caseInsensitive: true,
-          order: 'asc',
-        },
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          ['sibling', 'parent'],
-          'index',
-          'unknown',
-        ],
-        'newlines-between': 'always',
-      },
-    ],
+    '@typescript-eslint/no-unused-vars': 'off',
+    '@typescript-eslint/no-explicit-any': 'off',
+    '@typescript-eslint/ban-ts-comment': 'off',
     'sort-imports': [
       'error',
       {
-        allowSeparatedGroups: true,
         ignoreCase: false,
-        ignoreDeclarationSort: true,
+        ignoreDeclarationSort: true, // don't want to sort import lines, use eslint-plugin-import instead
         ignoreMemberSort: false,
         memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+        allowSeparatedGroups: true,
       },
     ],
-    'sort-keys': [
-      'off',
-      'asc',
+    // turn on errors for missing imports
+    'import/no-unresolved': 'error',
+    'import/no-named-as-default-member': 'off',
+    'import/no-named-as-default': 'off',
+    'import/order': [
+      'error',
       {
-        caseSensitive: false,
-        natural: true,
+        groups: [
+          'builtin', // Built-in imports (come from NodeJS native) go first
+          'external', // <- External imports
+          'internal', // <- Absolute imports
+          ['sibling', 'parent'], // <- Relative imports, the sibling and parent types they can be mingled together
+          'index', // <- index imports
+          'unknown', // <- unknown
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          /* sort in ascending order. Options: ["ignore", "asc", "desc"] */
+          order: 'asc',
+          /* ignore case. Options: [true, false] */
+          caseInsensitive: true,
+        },
       },
     ],
-    'react/jsx-uses-react': 'error',
-    'react/jsx-uses-vars': 'error',
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project: './client/tsconfig.json',
+      },
+    },
   },
 };
