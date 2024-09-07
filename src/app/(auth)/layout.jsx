@@ -6,7 +6,7 @@ export default async function AuthLayout({ children }) {
   const session = await auth();
 
   if (session && !session.isExpired) {
-    redirect('/payment-links');
+    redirect('/buy-sell');
   }
 
   return <main className="h-full min-h-screen">{children}</main>;

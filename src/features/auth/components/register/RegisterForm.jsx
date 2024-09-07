@@ -84,7 +84,7 @@ const RegisterForm = ({ validationToken, login }) => {
 
       handleSubmissionSuccess('Registered successfully');
       login(validationToken);
-      router.push('/payment-links');
+      router.push('/buy-sell');
     } catch (error) {
       handleSubmissionError(error, 'Could not register');
     }
