@@ -66,6 +66,7 @@ export const authConfig = {
         token.verify = user.verify;
         token.isRegistered = user.isRegistered;
         token.admin = user.admin;
+        token.isVerifySubmitted = user.isVerifySubmitted;
       } else if (trigger === 'update' && session.updatedUser) {
         // Profile update, modifying token details and updating last activity time
         const updatedUser = session.updatedUser;
@@ -78,20 +79,22 @@ export const authConfig = {
         token.name = updatedUser.user_name;
         token.verify = updatedUser.verify;
         token.admin = updatedUser.admin;
+        token.isVerifySubmitted = updatedUser.isVerifySubmitted;
       }
 
       return token;
     },
     async session({ token, session }) {
       if (token) {
-        session.user.id = token.id;
-        session.user.email = token.email;
-        session.user.name = token.name;
-        session.user.logo = token.logo;
-        session.user.verify = token.verify;
-        session.user.isRegistered = token.isRegistered;
-        session.user.admin = token.admin;
         session.accessToken = token.accessToken;
+        session.user.admin = token.admin;
+        session.user.email = token.email;
+        session.user.id = token.id;
+        session.user.isRegistered = token.isRegistered;
+        session.user.isVerifySubmitted = token.isVerifySubmitted;
+        session.user.logo = token.logo;
+        session.user.name = token.name;
+        session.user.verify = token.verify;
       }
       return session;
     },

@@ -2,13 +2,22 @@
 
 import '@onefootprint/footprint-js/dist/footprint-js.css';
 import Link from 'next/link';
+import { Session } from 'next-auth';
 
 import { Button } from './ui/button';
 
-const CompleteVerificationButton = ({ session }) => {
-  const isVerified = session.user?.verify;
+const CompleteVerificationButton = ({ session }: { session: Session }) => {
+  const { isVerifySubmitted, verify } = session.user;
 
-  if (isVerified) return null;
+  if (verify) return null;
+
+  if (isVerifySubmitted && !verify) {
+    return (
+      <Button title="Verification is in progress" disabled>
+        Verification in progress
+      </Button>
+    );
+  }
 
   return (
     <Link href="/verify">

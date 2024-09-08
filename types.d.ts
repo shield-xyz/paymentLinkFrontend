@@ -6,6 +6,7 @@ declare module 'next-auth' {
   interface User {
     admin: boolean;
     isRegistered: boolean;
+    isVerifySubmitted: boolean;
     logo: string;
     name: string;
     token: string;
@@ -38,6 +39,7 @@ declare module 'next-auth/jwt' {
     email: string;
     id: string;
     isRegistered: boolean;
+    isVerifySubmitted: boolean;
     lastActivity: number;
     logo: string;
     name: string;

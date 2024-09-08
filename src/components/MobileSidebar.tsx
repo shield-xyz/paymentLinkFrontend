@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { SIDEBAR_PAGES } from '@/config';
 import { cn } from '@/lib/utils';
 
+import CompleteVerificationButton from './CompleteVerificationButton';
 import { Icons } from './Icons';
 import SidebarItem from './SidebarItem';
 import { Button } from './ui/button';
@@ -72,6 +73,9 @@ export const MobileSidebar = ({ session }) => {
               />
             );
           })}
+        </div>
+        <div className="flex justify-center">
+          <CompleteVerificationButton session={session} />
         </div>
       </div>
     </>
