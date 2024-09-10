@@ -270,7 +270,7 @@ const SellForm = ({ enabled, session }) => {
         />
         {quote && (
           <span className="text-xs text-gray-500">
-            1 {quote.assetIn} = {quote.exchangeRate} {quote.assetOut}
+            1 {quote.assetIn} = {quote.exchangeRate} USD
           </span>
         )}
       </div>
