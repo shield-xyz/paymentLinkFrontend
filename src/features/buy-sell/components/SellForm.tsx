@@ -1,6 +1,5 @@
 import copy from 'copy-to-clipboard';
 import Link from 'next/link';
-import { useSession } from 'next-auth/react';
 import QRCode from 'qrcode.react';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
@@ -25,9 +24,7 @@ import { AssetSelect } from './AssetSelect';
 import { SuccessMessage } from './SuccessMessage';
 import { confirmOffRampOrder, createOffRampOrder } from '../actions';
 
-const SellForm = ({ enabled }) => {
-  const { data: session } = useSession();
-
+const SellForm = ({ enabled, session }) => {
   const [networks, setNetworks] = useState([]);
   const [selectedNetwork, setSelectedNetwork] = useState<any>();
   const [fiat, setFiat] = useState('usd');
