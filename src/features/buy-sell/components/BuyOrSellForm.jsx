@@ -61,7 +61,7 @@ export const BuyOrSellForm = async ({ session, bankingData }) => {
                 </PayPalScriptProvider>
               </TabsContent>
               <TabsContent className="w-full" value="Sell">
-                <SellForm enabled={hasBankingData} />
+                <SellForm enabled={hasBankingData} session={session} />
               </TabsContent>
             </Tabs>
           </div>
