@@ -86,7 +86,7 @@ const BuyForm = ({ session }) => {
         </SelectContent>
       </Select>
 
-      <AmountInput amount={amount} setAmount={setAmount} />
+      <AmountInput amount={amount} setAmount={setAmount} quotes={quotes} />
       <AssetSelect value={asset} onValueChange={setAsset} />
       <WalletInput wallet={wallet} setWallet={setWallet} ref={walletInputRef} />
 
