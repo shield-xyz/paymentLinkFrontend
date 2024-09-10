@@ -1,4 +1,11 @@
+import { Info } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 import Spinner from '@/components/ui/spinner';
 
 const WireCard = ({
@@ -17,6 +24,16 @@ const WireCard = ({
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <div>Wire</div>
+          <HoverCard>
+            <HoverCardTrigger>
+              <Info className="ml-2" size={15} />
+            </HoverCardTrigger>
+            <HoverCardContent>
+              <ul className="text-sm">
+                <li>Shield's Fee: 1%</li>
+              </ul>
+            </HoverCardContent>
+          </HoverCard>
         </div>
         <div className="text-end">
           <div className="flex items-center gap-2 font-bold">
