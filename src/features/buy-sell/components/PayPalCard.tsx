@@ -39,7 +39,8 @@ const PayPalCard = ({
             </HoverCardTrigger>
             <HoverCardContent>
               <ul className="text-sm">
-                <li>Fee: 3.49 % + fixed fee</li>
+                <li>Shield's Fee: 1%</li>
+                <li>PayPal's Fee: 3.49 % + fixed fee</li>
               </ul>
             </HoverCardContent>
           </HoverCard>
