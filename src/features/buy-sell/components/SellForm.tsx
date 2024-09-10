@@ -259,14 +259,21 @@ const SellForm = ({ enabled, session }) => {
           <SelectItem value="usd">USD</SelectItem>
         </SelectContent>
       </Select>
-      <input
-        className="my-8 w-full text-center text-6xl font-extrabold focus:outline-none"
-        type="text"
-        placeholder="0"
-        value={amount}
-        inputMode="numeric"
-        onChange={handleAmountChange}
-      />
+      <div className="my-8 flex flex-col items-center justify-center space-y-2">
+        <input
+          className="w-full text-center text-6xl font-extrabold focus:outline-none"
+          type="text"
+          placeholder="0"
+          value={amount}
+          inputMode="numeric"
+          onChange={handleAmountChange}
+        />
+        {quote && (
+          <span className="text-xs text-gray-500">
+            1 {quote.assetIn} = {quote.exchangeRate} {quote.assetOut}
+          </span>
+        )}
+      </div>
       <AssetSelect value={asset} onValueChange={setAsset} />
       {isFetchingQuote || !quote ? (
         <>
