@@ -20,9 +20,9 @@ import { env } from '@/config';
 import { getNetworks } from '@/features/payment-link';
 import { formatCryptoHash } from '@/lib/utils';
 
-import { confirmOffRampOrder, createOffRampOrder } from '../actions';
 import { AssetSelect } from './AssetSelect';
 import { SuccessMessage } from './SuccessMessage';
+import { confirmOffRampOrder, createOffRampOrder } from '../actions';
 
 const SellForm = ({ enabled, session }) => {
   const [networks, setNetworks] = useState([]);
