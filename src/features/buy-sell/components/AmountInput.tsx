@@ -40,7 +40,7 @@ const AmountInput = ({ amount, setAmount, quotes }) => {
         onChange={handleAmountChange}
       />
       <span className="text-xs text-gray-500">
-        1 USD = {exchangeRate} {exchangeSymbol}
+        1 {exchangeSymbol} = {exchangeRate} USD
       </span>
     </div>
   );
