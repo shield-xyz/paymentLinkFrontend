@@ -1,8 +1,8 @@
 import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
-
 import Provider from '@/lib/Provider';
 import './globals.css';
+import { PHProvider } from '@/lib/PHProvider';
 
 export const viewport = {
   width: 'device-width',
@@ -21,10 +21,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-muted text-foreground`}>
-        <Provider>{children}</Provider>
-        <Analytics />
-      </body>
+      <PHProvider>
+        <body className={`${inter.className} bg-muted text-foreground`}>
+          <Provider>{children}</Provider>
+          <Analytics />
+        </body>
+      </PHProvider>
     </html>
   );
 }

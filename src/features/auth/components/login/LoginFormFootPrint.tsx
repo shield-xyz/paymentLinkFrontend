@@ -8,6 +8,7 @@ import { env } from '@/config';
 import { handleSubmissionError } from '@/lib/utils';
 
 import { onComplete } from '../../actions/onCompleteLogin';
+import posthog from 'posthog-js';
 
 import '@onefootprint/footprint-js/dist/footprint-js.css';
 
@@ -21,6 +22,13 @@ export const LoginFormFootPrint = () => {
       if (res?.error) {
         throw new Error(res.error);
       }
+
+      // PostHog logged user login
+      posthog.capture('user_logged_in', {
+        timestamp: new Date().toISOString(),
+        test: 'HELLO WORLD',
+      });
+      console.log('SUCCESSFULLY LOG IN');
     } catch (error) {
       handleSubmissionError(error);
     } finally {

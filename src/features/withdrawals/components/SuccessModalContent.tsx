@@ -1,7 +1,18 @@
 import { Icons } from '@/components';
 import { Button } from '@/components/ui/button';
+import { useEffect } from 'react';
 
 const SuccessModalContent = ({ handleClose }) => {
+  useEffect(() => {
+    // Add this Logger this after the withdraw feature is integrated
+    // posthog.capture('withdrawal', {
+    //   distinctId: 'user-id',
+    //   amount: amount,
+    //   currency: currency,
+    //   timestamp: new Date().toISOString()
+    // })
+  }, []);
+
   return (
     <div>
       <Icons.successfullySent className="ml-40" />

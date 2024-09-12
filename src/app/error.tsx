@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-
+import posthog from 'posthog-js';
 import { Nav, Sidebar } from '@/components';
 import { Button } from '@/components/ui/button';
 
@@ -22,6 +22,15 @@ export default function Error({
 }: Props) {
   useEffect(() => {
     console.error(error);
+    posthog.capture('system_error', {
+      distinctId: 'system',
+      error: error,
+      properties: {
+        error_message: error.message,
+        error_type: error.name,
+        stack: error.stack,
+      },
+    });
   }, [error]);
 
   const reset = () => {
