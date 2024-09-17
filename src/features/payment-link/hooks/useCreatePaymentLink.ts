@@ -57,7 +57,6 @@ export const useCreatePaymentLink = () => {
       const finalLink = getFinalPaymentLink(res.id);
       setLink(finalLink);
       toast.success('Payment link created successfully');
-
       setStep(2);
     } catch (error) {
       if (error.message === knownErrors['unverified user']) {
