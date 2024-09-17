@@ -1,8 +1,9 @@
 import { Analytics } from '@vercel/analytics/react';
 import { Inter } from 'next/font/google';
+
+import { PHProvider } from '@/lib/PHProvider';
 import Provider from '@/lib/Provider';
 import './globals.css';
-import { PHProvider } from '@/lib/PHProvider';
 
 export const viewport = {
   width: 'device-width',

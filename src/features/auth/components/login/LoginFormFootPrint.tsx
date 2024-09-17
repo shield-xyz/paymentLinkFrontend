@@ -1,6 +1,7 @@
 'use client';
 
 import footprint from '@onefootprint/footprint-js';
+import posthog from 'posthog-js';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -8,7 +9,6 @@ import { env } from '@/config';
 import { handleSubmissionError } from '@/lib/utils';
 
 import { onComplete } from '../../actions/onCompleteLogin';
-import posthog from 'posthog-js';
 
 import '@onefootprint/footprint-js/dist/footprint-js.css';
 
