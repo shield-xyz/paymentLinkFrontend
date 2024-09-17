@@ -26,7 +26,7 @@ export const LoginFormFootPrint = () => {
       // PostHog logged user login
       posthog.capture('user_logged_in', {
         timestamp: new Date().toISOString(),
-        test: 'HELLO WORLD',
+        message: 'User logged in',
       });
       console.log('SUCCESSFULLY LOG IN');
     } catch (error) {

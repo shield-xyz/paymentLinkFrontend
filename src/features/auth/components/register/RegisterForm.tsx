@@ -11,7 +11,6 @@ import { handleSubmissionError, handleSubmissionSuccess } from '@/lib/utils';
 import StepOne from './StepOne';
 import Steps from './Steps';
 import { register } from '../..';
-import posthog from 'posthog-js';
 
 const ACCEPTED_IMAGE_TYPES = [
   'image/jpeg',
@@ -79,14 +78,6 @@ const RegisterForm = ({ validationToken, login }) => {
       }
 
       handleSubmissionSuccess('Registered successfully');
-
-      // Logger Signup
-      posthog.capture('user_signed_up', {
-        user_name: user_name,
-        event: 'user_signup',
-        signup_time: new Date().toISOString(),
-      });
-
       login(validationToken);
       router.push('/buy-sell');
     } catch (error) {

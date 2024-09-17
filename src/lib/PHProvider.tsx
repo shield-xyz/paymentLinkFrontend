@@ -29,11 +29,6 @@ export function PHProvider({ children }: { children: ReactNode }) {
       posthog.capture('$pageview', {
         $current_url: url,
       });
-      // posthog.capture('user_signed_up123', {
-      //   distinct_id: 'Test123s@',
-      //   event: 'user_signup',
-      //   signup_time: new Date().toISOString(),
-      // });
     }
   }, [pathname, searchParams]);
 
