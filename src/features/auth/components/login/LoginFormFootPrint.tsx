@@ -1,6 +1,7 @@
 'use client';
 
 import footprint from '@onefootprint/footprint-js';
+import posthog from 'posthog-js';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,13 @@ export const LoginFormFootPrint = () => {
       if (res?.error) {
         throw new Error(res.error);
       }
+
+      // PostHog logged user login
+      posthog.capture('user_logged_in', {
+        timestamp: new Date().toISOString(),
+        message: 'User logged in',
+      });
+      console.log('SUCCESSFULLY LOG IN');
     } catch (error) {
       handleSubmissionError(error);
     } finally {
