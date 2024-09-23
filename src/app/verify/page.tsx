@@ -1,4 +1,7 @@
+import Link from 'next/link';
+
 import { Icons } from '@/components';
+import { Button } from '@/components/ui/button';
 import { FootprintVerifyButton } from '@/features/auth/components/verify';
 
 export default async function Page() {
@@ -10,7 +13,10 @@ export default async function Page() {
           <h1 className="text-4xl font-bold">Please Verify</h1>
         </div>
         <div className="flex w-full max-w-xs flex-col gap-4 sm:w-full">
-          <FootprintVerifyButton text="Businesses" type="KYB" />
+          <Link href="https://form.typeform.com/to/t7VYyR5g" target="_blank">
+            <Button className="w-full">Businesses</Button>
+          </Link>
+          <FootprintVerifyButton text="US Businesses" type="KYB" />
           <div className="flex  w-full flex-col items-center gap-4 sm:flex-row">
             <FootprintVerifyButton text="US Residents Only" type="KYC_US" />
             <FootprintVerifyButton text="Non US Residents" type="KYC_NON_US" />
