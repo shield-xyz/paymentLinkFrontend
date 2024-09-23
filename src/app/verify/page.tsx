@@ -12,15 +12,13 @@ export default async function Page() {
           <Icons.logo />
           <h1 className="text-4xl font-bold">Please Verify</h1>
         </div>
-        <div className="flex w-full max-w-xs flex-col gap-4 sm:w-full">
-          <Link href="https://form.typeform.com/to/t7VYyR5g" target="_blank">
-            <Button className="w-full">Businesses</Button>
-          </Link>
+        <div className="grid w-full max-w-sm grid-cols-1 gap-4 sm:w-full sm:grid-cols-2">
           <FootprintVerifyButton text="US Businesses" type="KYB" />
-          <div className="flex  w-full flex-col items-center gap-4 sm:flex-row">
-            <FootprintVerifyButton text="US Residents Only" type="KYC_US" />
-            <FootprintVerifyButton text="Non US Residents" type="KYC_NON_US" />
-          </div>
+          <Link href="https://form.typeform.com/to/t7VYyR5g" target="_blank">
+            <Button className="w-full">Non US Businesses</Button>
+          </Link>
+          <FootprintVerifyButton text="US Residents" type="KYC_US" />
+          <FootprintVerifyButton text="Non US Residents" type="KYC_NON_US" />
         </div>
       </div>
     </div>
