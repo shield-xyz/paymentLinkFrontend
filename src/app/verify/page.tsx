@@ -21,6 +21,16 @@ export default async function Page() {
           <FootprintVerifyButton text="Non US Residents" type="KYC_NON_US" />
         </div>
       </div>
+      <div className="absolute bottom-4 left-auto right-auto flex px-10">
+        <h3 className="text-justify text-xs font-light">
+          By completing the verification process, you acknowledge that you have
+          read through our{' '}
+          <a href="https://getshield.xyz/terms" target="_blank">
+            <b className="underline">Terms and Conditions</b>
+          </a>{' '}
+          and consent to the written guidelines.
+        </h3>
+      </div>
     </div>
   );
 }
