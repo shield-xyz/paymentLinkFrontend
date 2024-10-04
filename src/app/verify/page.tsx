@@ -14,7 +14,10 @@ export default async function Page() {
         </div>
         <div className="grid w-full max-w-sm grid-cols-1 gap-4 sm:w-full sm:grid-cols-2">
           <FootprintVerifyButton text="US Businesses" type="KYB" />
-          <Link href="https://form.typeform.com/to/t7VYyR5g" target="_blank">
+          <Link
+            href="https://shieldpay.typeform.com/to/vphWHfkz"
+            target="_blank"
+          >
             <Button className="w-full">Non US Businesses</Button>
           </Link>
           <FootprintVerifyButton text="US Residents" type="KYC_US" />
