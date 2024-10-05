@@ -37,7 +37,7 @@ const VolumeChart = ({ transactions }) => {
     if (valuesMoney.length <= 0) {
       const maxAmt = Math.max(...data.map((item) => item.amt));
       const roundUpTo = (num, to) => Math.ceil(num / to) * to;
-      const maxRoundedAmt = roundUpTo(maxAmt, 50000);
+      const maxRoundedAmt = roundUpTo(maxAmt, 100000);
 
       const decrement = 100000;
       let currentValue = maxRoundedAmt;
