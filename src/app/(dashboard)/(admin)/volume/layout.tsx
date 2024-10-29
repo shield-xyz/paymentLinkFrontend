@@ -1,18 +1,11 @@
 import Container from '@/components/ui/container';
 import { Volume } from '@/features/volume';
-import {
-  getVolumeTransactionsAdmin,
-  getVolumeTransactionsPerDay,
-} from '@/features/volume/actions';
-import { VolumeTransactionsTable } from '@/features/volume/components/VolumeTransactionsTable';
+import { getVolumeTransactions } from '@/features/volume/actions';
 
 export const revalidate = 0;
 
 export default async function Layout({ children }) {
-  const [transactions, transactionsAdmin] = await Promise.all([
-    getVolumeTransactionsPerDay(),
-    getVolumeTransactionsAdmin(),
-  ]);
+  const transactions = await getVolumeTransactions();
 
   return (
     <>
@@ -20,7 +13,7 @@ export default async function Layout({ children }) {
         <Container className="overflow-auto">
           <Volume transactions={transactions} />
         </Container>
-        <VolumeTransactionsTable transactions={transactionsAdmin} />
+        {/* <VolumeTransactionsTable transactions={transactionsAdmin} /> */}
       </div>
       {children}
     </>

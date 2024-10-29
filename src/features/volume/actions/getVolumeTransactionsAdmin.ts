@@ -3,10 +3,10 @@
 import { env } from '@/config';
 import { fetchWithToken, validateResponse } from '@/lib/utils';
 
-export async function getVolumeTransactionsAdmin(accessToken?: string) {
+export async function getVolumeTransactions(accessToken?: string) {
   try {
     const res = await fetchWithToken(
-      `${env.NEXT_PUBLIC_API_URL}/api/volumetransactions/getAdmin`,
+      `${env.NEXT_PUBLIC_API_URL}/api/volumetransactions`,
       accessToken,
       {
         headers: {
@@ -18,7 +18,7 @@ export async function getVolumeTransactionsAdmin(accessToken?: string) {
 
     const { response: data } = await validateResponse(
       res,
-      'Error fetching transactions admin',
+      'Error fetching transactions',
     );
 
     const sortedData = data.sort((a, b) => {
