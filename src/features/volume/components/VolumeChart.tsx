@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import {
   Area,
   AreaChart,
@@ -15,47 +14,13 @@ import {
 import CustomTooltip from '@/components/Recharts/CustomTooltip';
 import { formatCurrency } from '@/lib/utils';
 
-const processData = (transactions) => {
-  return Object.entries(transactions).map(([name, amt]) => ({
-    name, // Week start date in "MM-DD-YYYY" format
-    amt, // Sum of amounts for the week
-  }));
-};
-
 const VolumeChart = ({ transactions }) => {
-  const [data, setData] = useState([]);
-  const [valuesMoney, setValuesMoney] = useState([]);
-
-  useEffect(() => {
-    if (transactions) {
-      const processedData = processData(transactions);
-      setData(processedData);
-    }
-  }, [transactions]);
-
-  useEffect(() => {
-    if (valuesMoney.length <= 0) {
-      const maxAmt = Math.max(...data.map((item) => item.amt));
-      const roundUpTo = (num, to) => Math.ceil(num / to) * to;
-      const maxRoundedAmt = roundUpTo(maxAmt, 50000);
-
-      const decrement = 100000;
-      let currentValue = maxRoundedAmt;
-      const resultArray = [];
-      while (currentValue >= 0) {
-        resultArray.push(currentValue);
-        currentValue -= decrement;
-      }
-      setValuesMoney(resultArray);
-    }
-  }, [data]);
-
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
         width={500}
         height={400}
-        data={data}
+        data={transactions}
         margin={{
           top: 10,
           right: 10,
@@ -80,28 +45,26 @@ const VolumeChart = ({ transactions }) => {
           style={{ fill: '#FFFFFF' }}
         >
           <Label
-            value="Date"
+            value="Month"
             position="insideBottom"
             style={{ textAnchor: 'middle', fill: '#FFFFFF' }}
-            dy={80}
+            dy={90}
           />
         </XAxis>
         <YAxis
           type="number"
           hide={false}
-          domain={[0, 'dataMax']}
-          ticks={valuesMoney}
           tickFormatter={(value) => `${formatCurrency(value, 0)}`}
           fontSize={15}
           style={{ fill: '#FFFFFF' }}
         >
-          <Label
-            value="Total Received"
+          {/* <Label
+            value="Volume"
             angle={-90}
             position="insideLeft"
             style={{ textAnchor: 'middle', fill: '#FFFFFF' }}
-            dx={-50}
-          />
+            dx={-70}
+          /> */}
         </YAxis>
         <Tooltip
           content={(props) => (
